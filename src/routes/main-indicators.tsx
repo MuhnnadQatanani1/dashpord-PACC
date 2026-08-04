@@ -7,7 +7,7 @@ import {
   type IndicatorEntity,
   type IndicatorDefinition,
 } from "@/data/indicators-catalog";
-import { BadgeInfo, Database, Calculator, CalendarRange, ShieldCheck } from "lucide-react";
+import { ShieldCheck, FileDown } from "lucide-react";
 
 export const Route = createFileRoute("/main-indicators")({
   component: MainIndicators,
@@ -31,47 +31,38 @@ const MAIN_IDS = new Set([
   "court-confiscated",
 ]);
 
-function highlight(item: IndicatorDefinition): number {
-  let max = 0;
-  for (const row of item.table.rows) {
-    for (const cell of row) {
-      if (typeof cell === "number" && cell > max) max = cell;
-    }
-  }
-  return max;
-}
-
 function MainCard({ item }: { item: IndicatorDefinition }) {
   return (
     <article className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="text-[15px] font-bold leading-8 text-foreground">{item.title}</h3>
-        <div className="shrink-0 rounded-lg bg-primary/10 px-3 py-1.5 text-center">
-          <div className="text-xl font-extrabold text-primary">{highlight(item).toLocaleString("ar-EG")}</div>
-          <div className="text-[10px] text-muted-foreground">أعلى قيمة مرصودة</div>
-        </div>
-      </div>
-      <dl className="mt-4 space-y-3 rounded-xl border border-border bg-surface p-4 text-sm leading-7">
-        <div>
-          <dt className="flex items-center gap-1.5 font-bold text-primary"><BadgeInfo className="h-4 w-4" /> التعريف</dt>
-          <dd className="text-muted-foreground">{item.definition}</dd>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <div>
-            <dt className="flex items-center gap-1.5 font-bold text-primary"><Database className="h-4 w-4" /> مصدر البيانات</dt>
-            <dd className="text-muted-foreground">{item.source}</dd>
-          </div>
-          <div>
-            <dt className="flex items-center gap-1.5 font-bold text-primary"><Calculator className="h-4 w-4" /> طريقة الحساب</dt>
-            <dd className="text-muted-foreground">{item.calculation}</dd>
-          </div>
-          <div>
-            <dt className="flex items-center gap-1.5 font-bold text-primary"><CalendarRange className="h-4 w-4" /> الفترة الزمنية</dt>
-            <dd className="text-muted-foreground">{item.period}</dd>
-          </div>
-        </div>
-      </dl>
+      <h3 className="text-[15px] font-bold leading-8 text-foreground">{item.title}</h3>
+      <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.definition}</p>
     </article>
+  );
+}
+
+function PrintDocument({ byEntity }: { byEntity: Record<IndicatorEntity, IndicatorDefinition[]> }) {
+  return (
+    <div className="print-doc hidden print:block">
+      <header className="print-doc__header">
+        <div className="print-doc__org">المرصد الوطني لمؤشرات النزاهة والحوكمة ومكافحة الفساد</div>
+        <h1>المؤشرات الرئيسية لجهات إنفاذ القانون</h1>
+        <p className="print-doc__intro">
+          أبرز المؤشرات الرسمية للهيئة والنيابة ومحكمة جرائم الفساد مع البطاقة التعريفية لكل مؤشر.
+        </p>
+      </header>
+
+      {ENTITY_ORDER.map((e) => (
+        <section key={e} className="print-doc__section">
+          <h2>{ENTITY_LABELS[e]}</h2>
+          {byEntity[e].map((item) => (
+            <div key={item.id} className="print-doc__indicator">
+              <div className="print-doc__bitle">{item.title}</div>
+              <div className="print-doc__def">{item.definition}</div>
+            </div>
+          ))}
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -87,29 +78,47 @@ function MainIndicators() {
 
   return (
     <SiteLayout>
-      <PageHeader
-        eyebrow="المؤشرات الرئيسة"
-        title="المؤشرات الرئيسية لجهات إنفاذ القانون"
-        description="أبرز المؤشرات الرسمية للهيئة والنيابة ومحكمة جرائم الفساد، مع بطاقة تعريفية كاملة لكل مؤشر."
-      />
+      <div className="print:hidden">
+        <PageHeader
+          eyebrow="المؤشرات الرئيسة"
+          title="المؤشرات الرئيسية لجهات إنفاذ القانون"
+          description="أبرز المؤشرات الرسمية للهيئة والنيابة ومحكمة جرائم الفساد، مع بطاقة تعريفية كاملة لكل مؤشر."
+        />
 
-      <section className="mx-auto max-w-7xl space-y-10 px-4 py-12 lg:px-8">
-        {ENTITY_ORDER.map((e) => (
-          <div key={e}>
-            <div className="mb-5 flex items-center gap-3">
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <h2 className="text-2xl font-bold text-primary">{ENTITY_LABELS[e]}</h2>
-            </div>
-            <div className="grid gap-5 lg:grid-cols-2">
-              {byEntity[e].map((item) => (
-                <MainCard key={item.id} item={item} />
-              ))}
-            </div>
+        <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+              استعراض المؤشرات الرئيسية لجهات إنفاذ القانون مع البطاقة التعريفية الكاملة لكل مؤشر، وقابلة للتحميل بصيغة PDF.
+            </p>
+            <button
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"
+            >
+              <FileDown className="h-4 w-4" /> تحميل PDF
+            </button>
           </div>
-        ))}
-      </section>
+
+          <div className="space-y-10">
+            {ENTITY_ORDER.map((e) => (
+              <div key={e}>
+                <div className="mb-5 flex items-center gap-3">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
+                    <ShieldCheck className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-primary">{ENTITY_LABELS[e]}</h2>
+                </div>
+                <div className="grid gap-5 lg:grid-cols-2">
+                  {byEntity[e].map((item) => (
+                    <MainCard key={item.id} item={item} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <PrintDocument byEntity={byEntity} />
     </SiteLayout>
   );
 }

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
+import { SiteLayout } from "@/components/site/SiteLayout";
 import { Landmark, Scale, ShieldCheck, Target, Eye, Gavel, Users, BookOpen } from "lucide-react";
 
 export const Route = createFileRoute("/commission")({
@@ -19,11 +19,21 @@ export const Route = createFileRoute("/commission")({
 function Commission() {
   return (
     <SiteLayout>
-      <PageHeader
-        eyebrow="نبذة رسمية"
-        title="هيئة مكافحة الفساد الفلسطينية"
-        description="مؤسسة رسمية مستقلة أُنشئت بموجب قانون مكافحة الفساد الفلسطيني رقم (1) لسنة 2005 وتعديلاته، تتمتع بالشخصية الاعتبارية والأهلية القانونية الكاملة، وترتبط برئيس دولة فلسطين."
-      />
+      <section className="relative overflow-hidden bg-navy gradient-navy text-white">
+        <div className="pointer-events-none absolute inset-0 bg-dots opacity-50" />
+        <div className="pointer-events-none absolute -top-24 right-[-10%] h-64 w-[45%] rounded-full bg-white/10 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 py-16 lg:px-8 lg:py-20">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-semibold text-white/90">
+            <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            نبذة رسمية
+          </div>
+          <h1 className="text-balance text-3xl font-extrabold text-white md:text-5xl">هيئة مكافحة الفساد الفلسطينية</h1>
+          <p className="mt-4 max-w-3xl text-base leading-8 text-white/85 md:text-lg">
+            مؤسسة رسمية مستقلة أُنشئت بموجب قانون مكافحة الفساد الفلسطيني رقم (1) لسنة 2005 وتعديلاته، تتمتع بالشخصية
+            الاعتبارية والأهلية القانونية الكاملة، وترتبط برئيس دولة فلسطين.
+          </p>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid gap-6 md:grid-cols-3">
@@ -45,7 +55,7 @@ function Commission() {
             },
           ].map((c) => (
             <div key={c.t} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-accent text-accent-foreground">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-navy text-white">
                 <c.icon className="h-5 w-5" />
               </div>
               <h3 className="text-xl font-bold text-primary">{c.t}</h3>
@@ -74,7 +84,7 @@ function Commission() {
               { icon: Landmark, t: "الاستراتيجية الوطنية", d: "متابعة تنفيذ الاستراتيجية عبر القطاعية للنزاهة ومكافحة الفساد." },
             ].map((c) => (
               <div key={c.t} className="rounded-xl border border-border bg-card p-5 shadow-soft">
-                <c.icon className="h-6 w-6 text-accent" />
+                <c.icon className="h-6 w-6 text-navy" />
                 <h3 className="mt-3 text-base font-bold text-primary">{c.t}</h3>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">{c.d}</p>
               </div>

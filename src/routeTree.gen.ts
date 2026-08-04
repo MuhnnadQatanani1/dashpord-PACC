@@ -18,6 +18,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndicatorsRouteImport } from './routes/indicators'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as MainIndicatorsRouteImport } from './routes/main-indicators'
+import { Route as MainIndicatorsEffortsRouteImport } from './routes/main-indicators-efforts'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as MethodologyRouteImport } from './routes/methodology'
 import { Route as ReportsRouteImport } from './routes/reports'
@@ -71,6 +72,11 @@ const JourneyRoute = JourneyRouteImport.update({
 const MainIndicatorsRoute = MainIndicatorsRouteImport.update({
   id: '/main-indicators',
   path: '/main-indicators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MainIndicatorsEffortsRoute = MainIndicatorsEffortsRouteImport.update({
+  id: '/main-indicators-efforts',
+  path: '/main-indicators-efforts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MapRoute = MapRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
   '/main-indicators': typeof MainIndicatorsRoute
+  '/main-indicators-efforts': typeof MainIndicatorsEffortsRoute
   '/map': typeof MapRoute
   '/methodology': typeof MethodologyRoute
   '/reports': typeof ReportsRouteWithChildren
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
   '/main-indicators': typeof MainIndicatorsRoute
+  '/main-indicators-efforts': typeof MainIndicatorsEffortsRoute
   '/map': typeof MapRoute
   '/methodology': typeof MethodologyRoute
   '/reports': typeof ReportsRouteWithChildren
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
   '/main-indicators': typeof MainIndicatorsRoute
+  '/main-indicators-efforts': typeof MainIndicatorsEffortsRoute
   '/map': typeof MapRoute
   '/methodology': typeof MethodologyRoute
   '/reports': typeof ReportsRouteWithChildren
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/indicators'
     | '/journey'
     | '/main-indicators'
+    | '/main-indicators-efforts'
     | '/map'
     | '/methodology'
     | '/reports'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
     | '/indicators'
     | '/journey'
     | '/main-indicators'
+    | '/main-indicators-efforts'
     | '/map'
     | '/methodology'
     | '/reports'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/indicators'
     | '/journey'
     | '/main-indicators'
+    | '/main-indicators-efforts'
     | '/map'
     | '/methodology'
     | '/reports'
@@ -253,6 +265,7 @@ export interface RootRouteChildren {
   IndicatorsRoute: typeof IndicatorsRoute
   JourneyRoute: typeof JourneyRoute
   MainIndicatorsRoute: typeof MainIndicatorsRoute
+  MainIndicatorsEffortsRoute: typeof MainIndicatorsEffortsRoute
   MapRoute: typeof MapRoute
   MethodologyRoute: typeof MethodologyRoute
   ReportsRoute: typeof ReportsRouteWithChildren
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       path: '/main-indicators'
       fullPath: '/main-indicators'
       preLoaderRoute: typeof MainIndicatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/main-indicators-efforts': {
+      id: '/main-indicators-efforts'
+      path: '/main-indicators-efforts'
+      fullPath: '/main-indicators-efforts'
+      preLoaderRoute: typeof MainIndicatorsEffortsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/map': {
@@ -418,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndicatorsRoute: IndicatorsRoute,
   JourneyRoute: JourneyRoute,
   MainIndicatorsRoute: MainIndicatorsRoute,
+  MainIndicatorsEffortsRoute: MainIndicatorsEffortsRoute,
   MapRoute: MapRoute,
   MethodologyRoute: MethodologyRoute,
   ReportsRoute: ReportsRouteWithChildren,

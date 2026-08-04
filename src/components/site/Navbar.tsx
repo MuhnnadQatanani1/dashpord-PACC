@@ -16,7 +16,8 @@ const NAV: NavItem[] = [
       { to: "/commission", label: "عن الهيئة" },
       { to: "/about", label: "عن المرصد" },
       { to: "/concepts", label: "المفاهيم والمصطلحات" },
-      { to: "/main-indicators", label: "المؤشرات الرئيسة" },
+      { to: "/main-indicators", label: "مؤشرات جهات إنفاذ القانون" },
+      { to: "/main-indicators-efforts", label: "مؤشرات جهود مكافحة الفساد" },
     ],
   },
   {

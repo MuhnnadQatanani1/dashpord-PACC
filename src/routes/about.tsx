@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import { Eye, Target, ShieldCheck, Database, BookOpen, Layers, FileBarChart, Handshake, Megaphone } from "lucide-react";
+import { Eye, Target, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   component: About,
@@ -117,85 +117,48 @@ function About() {
       </section>
 
       {/* رحلة انشاء المرصد */}
-      <section className="bg-surface py-16">
+      <section className="bg-surface py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-            <Layers className="h-3.5 w-3.5" /> رحلة انشاء المرصد
+          <div className="mb-12 max-w-3xl">
+            <h2 className="text-3xl font-bold text-primary md:text-4xl">رحلة انشاء المرصد</h2>
+            <p className="mt-3 text-base font-bold leading-8 text-foreground">سبع مراحل رئيسية متتالية ومترابطة</p>
+            <p className="mt-2 max-w-3xl text-base leading-9 text-muted-foreground">
+              تم تقسيم رحلة المرصد إلى سبعة من المراحل الرئيسة والمتتالية والمرتبطة فيما بينها، والقابلة للتطوير
+              والتحسين استناداً على التجربة العملية والمستجدات، بالإضافة الى قابليتها للتطوير بما يتناسب مع التجارب
+              والمتطلبات الدولية.
+            </p>
           </div>
-          <h2 className="text-3xl font-bold text-primary md:text-4xl">سبع مراحل رئيسية متتالية ومترابطة</h2>
-          <p className="mt-3 max-w-3xl text-muted-foreground">
-            تم تقسيم رحلة المرصد إلى سبعة من المراحل الرئيسة والمتتالية والمرتبطة فيما بينها، والقابلة للتطوير
-            والتحسين استناداً على التجربة العملية والمستجدات، بالإضافة الى قابليتها للتطوير بما يتناسب مع التجارب
-            والمتطلبات الدولية.
-          </p>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {JOURNEY_STEPS.map((s, i) => (
-              <div key={s} className="relative rounded-2xl border border-border bg-card p-6 shadow-soft">
-                <div className="text-4xl font-black text-accent/25">{String(i + 1).padStart(2, "0")}</div>
-                <h3 className="mt-2 text-base font-bold text-foreground">{s}</h3>
-              </div>
-            ))}
+
+          <div className="relative max-w-3xl">
+            <div className="absolute bottom-8 right-[27px] top-8 w-0.5 bg-accent/30 md:right-[35px]" />
+            <ol className="space-y-8">
+              {JOURNEY_STEPS.map((s, i) => (
+                <li key={s} className="relative flex items-stretch gap-5 md:gap-7">
+                  <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full gradient-accent text-lg font-extrabold text-accent-foreground shadow-soft ring-4 ring-surface md:h-[70px] md:w-[70px] md:text-xl">
+                    {i + 1}
+                  </div>
+                  <div className="flex-1 rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated md:p-8">
+                    <div className="text-xs font-bold tracking-wide text-accent">المرحلة {i + 1}</div>
+                    <h3 className="mt-2 text-lg font-bold leading-8 text-foreground md:text-2xl">{s}</h3>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
 
-      {/* مصادر البيانات والشركاء */}
+      {/* مصادر البيانات */}
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              <Database className="h-3.5 w-3.5" /> مصادر البيانات والشركاء
-            </div>
-            <h2 className="text-3xl font-bold text-primary md:text-4xl">مصادر البيانات والشركاء</h2>
-            <ul className="mt-8 space-y-3">
-              {DATA_SOURCES.map((d) => (
-                <li key={d} className="flex gap-3 rounded-xl border border-border bg-card p-4 text-sm leading-8 text-foreground/85">
-                  <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                  <span>{d}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
-                <FileBarChart className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-primary">المخرجات الدورية</h3>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                نشرات وتقارير دورية، تقارير تحليلية متخصصة، وقاعدة بيانات وطنية للمؤشرات قابلة للتحليل وبناء السلاسل الزمنية.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
-                <Handshake className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-primary">الشركاء</h3>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                هيئة مكافحة الفساد، الجهات الحكومية وغير الحكومية، مؤسسات المجتمع المدني، والمؤسسات الدولية المعنية.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
-                <Megaphone className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-primary">النشر والتعميم</h3>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                نشر المؤشرات والتقارير عبر المنصة الوطنية وتعميمها وتبادل الخبرات مع الجهات المعنية محلياً ودولياً.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
-                <BookOpen className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-bold text-primary">البناء المحوسب</h3>
-              <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                بناء برنامج محوسب للمرصد يعتمد على قواعد بيانات وأنظمة معلومات حديثة قابلة للربط مع الجهات الشريكة.
-              </p>
-            </div>
-          </div>
-        </div>
+        <h2 className="text-3xl font-bold text-primary md:text-4xl">مصادر البيانات</h2>
+        <ul className="mt-8 max-w-4xl space-y-3">
+          {DATA_SOURCES.map((d) => (
+            <li key={d} className="flex gap-3 rounded-xl border border-border bg-card p-4 text-sm leading-8 text-foreground/85">
+              <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
       </section>
     </SiteLayout>
   );

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, Cell } from "recharts";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, Cell, LabelList } from "recharts";
 import { CHART_COLORS } from "@/components/site/Charts";
 import { dataSource } from "@/lib/mock-data";
 import { downloadExcel } from "@/lib/excel";
@@ -21,6 +21,7 @@ import {
   Layers,
   ShieldCheck,
   BookOpen,
+  BarChart3,
 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
@@ -37,22 +38,53 @@ const YEARS = ["2022", "2023", "2024", "2025"];
 const AXIS = { fontSize: 11 } as const;
 
 function IndicatorChart({ item }: { item: IndicatorDefinition }) {
-  if (item.chart === "bar-single") {
-    const rows = item.table.rows.filter((r) => typeof r[1] === "number").map((r) => ({ label: String(r[0]), value: r[1] as number }));
+  if (item.chart === "bar-years") {
+    const data = item.table.rows.map((r) => ({
+      label: String(r[0]),
+      value: typeof r[1] === "number" ? r[1] : 0,
+    }));
     return (
-      <ResponsiveContainer width="100%" height={Math.max(160, Math.min(420, rows.length * 36 + 60))}>
-        <BarChart data={rows} layout="vertical" margin={{ top: 4, right: 16, left: 8, bottom: 4 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
-          <XAxis type="number" tick={AXIS} />
-          <YAxis type="category" dataKey="label" tick={{ ...AXIS, fontSize: 10 }} width={170} orientation="right" />
+      <ResponsiveContainer width="100%" height={340}>
+        <BarChart data={data} margin={{ top: 28, right: 8, left: 0, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
+          <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 13 }} interval={0} />
+          <YAxis tick={AXIS} orientation="right" allowDecimals={false} />
           <Tooltip
             contentStyle={{ borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", fontSize: 12 }}
             cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
           />
-          <Bar dataKey="value" name="القيمة" radius={[0, 6, 6, 0]} animationDuration={700}>
-            {rows.map((_, i) => (
-              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+          <Bar dataKey="value" name="العدد" radius={[8, 8, 0, 0]} animationDuration={700} barSize={56}>
+            {data.map((d, i) => (
+              <Cell key={i} fill={d.value === 0 ? "var(--muted-foreground)" : CHART_COLORS[i % CHART_COLORS.length]} fillOpacity={d.value === 0 ? 0.35 : 1} />
             ))}
+            <LabelList dataKey="value" position="top" formatter={(v: number) => v} className="fill-foreground font-bold" />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    );
+  }
+
+  if (item.chart === "bar-single") {
+    const rows = item.table.rows
+      .filter((r) => typeof r[1] === "number")
+      .map((r) => ({ label: String(r[0]), value: r[1] as number }))
+      .sort((a, b) => b.value - a.value);
+    const fmt = (v: number) => v.toLocaleString("en-US");
+    return (
+      <ResponsiveContainer width="100%" height={Math.max(300, Math.min(600, rows.length * 46 + 120))}>
+        <BarChart data={rows} layout="vertical" margin={{ top: 4, right: 56, left: 8, bottom: 4 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
+          <XAxis type="number" tick={{ ...AXIS, fontSize: 11 }} tickFormatter={fmt} />
+          <YAxis type="category" dataKey="label" tick={{ ...AXIS, fontSize: 11 }} width={210} orientation="right" />
+          <Tooltip
+            contentStyle={{ borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", fontSize: 12 }}
+            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
+          />
+          <Bar dataKey="value" name="العدد" radius={[0, 6, 6, 0]} animationDuration={700} barSize={24}>
+            {rows.map((d, i) => (
+              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} fillOpacity={1 - i * 0.055} />
+            ))}
+            <LabelList dataKey="value" position="right" formatter={(v: number) => fmt(v)} className="fill-foreground font-bold" />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
@@ -68,18 +100,18 @@ function IndicatorChart({ item }: { item: IndicatorDefinition }) {
   }));
 
   return (
-    <ResponsiveContainer width="100%" height={Math.max(200, Math.min(360, data.length * 40 + 80))}>
-      <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 8 }}>
+    <ResponsiveContainer width="100%" height={Math.max(280, Math.min(520, data.length * 50 + 110))}>
+      <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-        <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 10 }} interval={0} angle={-30} textAnchor="end" height={70} />
+        <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 11 }} interval={0} angle={-28} textAnchor="end" height={78} />
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip
           contentStyle={{ borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", fontSize: 12 }}
           cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
         />
-        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 6 }} />
+        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
         {YEARS.map((y, i) => (
-          <Bar key={y} dataKey={y} name={y} fill={CHART_COLORS[i % CHART_COLORS.length]} radius={[5, 5, 0, 0]} animationDuration={700} />
+          <Bar key={y} dataKey={y} name={y} fill={CHART_COLORS[i % CHART_COLORS.length]} radius={[5, 5, 0, 0]} animationDuration={700} barSize={18} />
         ))}
       </BarChart>
     </ResponsiveContainer>
@@ -91,8 +123,9 @@ function IndicatorCard({ item }: { item: IndicatorDefinition }) {
   const [showTable, setShowTable] = useState(false);
 
   return (
-    <article className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
-      <div className="flex items-start justify-between gap-3">
+    <article className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
+      {/* عنوان المؤشر */}
+      <header className="flex items-start justify-between gap-3">
         <h3 className="text-[15px] font-bold leading-8 text-foreground">{item.title}</h3>
         <button
           onClick={() => setShowDef((v) => !v)}
@@ -100,29 +133,30 @@ function IndicatorCard({ item }: { item: IndicatorDefinition }) {
         >
           <BadgeInfo className="h-3.5 w-3.5" /> البطاقة التعريفية
         </button>
-      </div>
+      </header>
 
+      {/* البطاقة التعريفية */}
       {showDef && (
-        <dl className="mt-4 space-y-3 rounded-xl border border-border bg-surface p-4 text-sm leading-7">
+        <div className="mt-4 space-y-3 rounded-xl border border-border bg-surface p-4 text-sm leading-7">
           <div>
-            <dt className="font-bold text-primary">التعريف</dt>
-            <dd className="text-muted-foreground">{item.definition}</dd>
+            <p className="font-bold text-primary">التعريف</p>
+            <p className="text-muted-foreground">{item.definition}</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             <div>
-              <dt className="font-bold text-primary">مصدر البيانات</dt>
-              <dd className="text-muted-foreground">{item.source}</dd>
+              <p className="font-bold text-primary">مصدر البيانات</p>
+              <p className="text-muted-foreground">{item.source}</p>
             </div>
             <div>
-              <dt className="font-bold text-primary">طريقة الحساب</dt>
-              <dd className="text-muted-foreground">{item.calculation}</dd>
+              <p className="font-bold text-primary">طريقة الحساب</p>
+              <p className="text-muted-foreground">{item.calculation}</p>
             </div>
             <div>
-              <dt className="font-bold text-primary">الفترة الزمنية</dt>
-              <dd className="text-muted-foreground">{item.period}</dd>
+              <p className="font-bold text-primary">الفترة الزمنية</p>
+              <p className="text-muted-foreground">{item.period}</p>
             </div>
           </div>
-        </dl>
+        </div>
       )}
 
       {item.note && (
@@ -131,10 +165,20 @@ function IndicatorCard({ item }: { item: IndicatorDefinition }) {
         </p>
       )}
 
-      <div className="mt-5">
+      {/* الرسم البياني */}
+      <div className="mt-5 flex-1 rounded-xl border border-border bg-surface/60 p-4">
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
+            <BarChart3 className="h-4 w-4" /> الرسم البياني
+          </span>
+          <span className="rounded-md bg-card px-2 py-1 text-[11px] font-semibold text-muted-foreground ring-1 ring-border">
+            {item.period}
+          </span>
+        </div>
         <IndicatorChart item={item} />
       </div>
 
+      {/* الأزرار */}
       <div className="mt-5 flex flex-wrap gap-2">
         <button
           onClick={() => setShowTable((v) => !v)}
@@ -150,6 +194,7 @@ function IndicatorCard({ item }: { item: IndicatorDefinition }) {
         </button>
       </div>
 
+      {/* الجدول التفصيلي */}
       {showTable && (
         <div className="mt-4 overflow-x-auto rounded-xl border border-border">
           <table className="w-full min-w-[520px] border-collapse text-sm">
@@ -230,7 +275,7 @@ function Dashboard() {
           ))}
         </div>
 
-        <div className="mb-8 grid gap-4 lg:grid-cols-3">
+        <div className="mb-8 grid gap-6 md:grid-cols-2">
           {items.length === 0 && (
             <p className="text-muted-foreground">لا توجد مؤشرات متاحة لهذه الجهة.</p>
           )}

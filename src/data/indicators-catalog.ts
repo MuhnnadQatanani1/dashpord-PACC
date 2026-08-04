@@ -29,7 +29,7 @@ export interface IndicatorDefinition {
   calculation: string;
   period: string;
   table: IndicatorTable;
-  chart: "grouped-year" | "bar-single";
+  chart: "grouped-year" | "bar-single" | "bar-years";
   note?: string;
 }
 
@@ -59,7 +59,7 @@ export const interactiveIndicators: IndicatorDefinition[] = [
       columns: ["السنة", "العدد"],
       rows: [["2022", 1], ["2023", 1], ["2024", 0], ["2025", 0]],
     },
-    chart: "bar-single",
+    chart: "bar-years",
   },
   {
     id: "pacc-complaints-source",
