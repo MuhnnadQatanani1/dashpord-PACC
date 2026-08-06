@@ -278,6 +278,54 @@
   }
 }
 
+/* Animated gradient border around feature cards */
+@property --glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.glow-card {
+  position: relative;
+  isolation: isolate;
+}
+
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--glow-angle),
+    var(--glow-c1, oklch(0.72 0.15 155)),
+    var(--glow-c2, oklch(0.65 0.15 250)),
+    var(--glow-c3, oklch(0.62 0.17 295)),
+    var(--glow-c4, oklch(0.78 0.17 70)),
+    var(--glow-c1, oklch(0.72 0.15 155))
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: glow-spin 5s linear infinite;
+  pointer-events: none;
+}
+
+.glow-card:hover::before {
+  animation-duration: 2s;
+}
+
+@keyframes glow-spin {
+  to { --glow-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-card::before { animation: none; }
+}
+
+
 /* Hero mini-chart motion — subtle, single pass */
 .chart-line-draw {
   stroke-dasharray: 240;

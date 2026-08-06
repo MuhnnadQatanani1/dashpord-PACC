@@ -137,7 +137,7 @@ function Concepts() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {GLOSSARY.map((g) => (
-              <article key={g.term} className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
+              <article key={g.term} className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
                 <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
                   <g.icon className="h-5 w-5" />
                 </div>
@@ -158,7 +158,7 @@ function Concepts() {
             </div>
             <div className="grid gap-5 md:grid-cols-2">
               {LAW_ENFORCEMENT.map((l) => (
-                <article key={l.tag} className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
+                <article key={l.tag} className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
                   <div className="flex items-center gap-3">
                     <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
                       <l.icon className="h-5 w-5" />
@@ -182,7 +182,7 @@ function Concepts() {
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {CRITERIA.map((c) => (
-              <article key={c.term} className="rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
+              <article key={c.term} className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
                 <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-surface text-accent">
                   <c.icon className="h-5 w-5" />
                 </div>

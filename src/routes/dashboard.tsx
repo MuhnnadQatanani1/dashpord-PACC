@@ -39,6 +39,32 @@ export const Route = createFileRoute("/dashboard")({
 const YEARS = ["2022", "2023", "2024", "2025"];
 const AXIS = { fontSize: 11 } as const;
 
+type AxisTickProps = { x?: number; y?: number; payload?: { value?: string | number } };
+
+function WrappedTick({ x, y, payload }: AxisTickProps) {
+  const words = String(payload?.value ?? "").split(" ");
+  const lines: string[] = [];
+  let cur = "";
+  for (const w of words) {
+    if (cur && (cur + " " + w).length > 13) {
+      lines.push(cur);
+      cur = w;
+    } else {
+      cur = cur ? cur + " " + w : w;
+    }
+  }
+  if (cur) lines.push(cur);
+  return (
+    <text x={x} y={y} textAnchor="middle" fill="var(--axis-color)" fontSize={10} fontWeight={600}>
+      {lines.map((ln, i) => (
+        <tspan key={i} x={x} dy={i === 0 ? 8 : 12}>
+          {ln}
+        </tspan>
+      ))}
+    </text>
+  );
+}
+
 function IndicatorChart({ item }: { item: IndicatorDefinition }) {
   if (item.chart === "bar-years") {
     const data = item.table.rows.map((r) => ({
@@ -176,7 +202,7 @@ function IndicatorChart({ item }: { item: IndicatorDefinition }) {
     <ResponsiveContainer width="100%" height={Math.max(320, Math.min(560, data.length * 46 + 120))}>
       <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-        <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 11 }} interval={0} angle={-28} textAnchor="end" height={78} />
+        <XAxis dataKey="label" tick={<WrappedTick />} interval={0} tickMargin={8} height={90} />
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip
           contentStyle={{ borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", fontSize: 12 }}
@@ -343,7 +369,7 @@ function YearChart({ item, year }: { item: IndicatorDefinition; year: string }) 
     <ResponsiveContainer width="100%" height={Math.max(320, Math.min(560, rows.length * 46 + 120))}>
       <BarChart data={rows} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-        <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 11 }} interval={0} angle={-28} textAnchor="end" height={78} />
+        <XAxis dataKey="label" tick={<WrappedTick />} interval={0} tickMargin={8} height={90} />
         <YAxis tick={AXIS} orientation="right" allowDecimals={false} />
         <Tooltip
           contentStyle={{ borderRadius: 10, border: "1px solid var(--tooltip-border)", background: "var(--tooltip-bg)", fontSize: 12 }}

@@ -79,14 +79,14 @@ function About() {
       <section className="bg-surface py-16">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
+            <div className="glow-card rounded-2xl border border-border bg-card p-8 shadow-soft">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-accent text-accent-foreground">
                 <Eye className="h-5 w-5" />
               </div>
               <h3 className="text-xl font-bold text-primary">الرؤية</h3>
               <p className="mt-3 text-base leading-8 text-muted-foreground">{VISION}</p>
             </div>
-            <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
+            <div className="glow-card rounded-2xl border border-border bg-card p-8 shadow-soft">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-accent text-accent-foreground">
                 <Target className="h-5 w-5" />
               </div>
@@ -106,7 +106,7 @@ function About() {
         <p className="mb-8 max-w-4xl text-base leading-9 text-muted-foreground">{OBJECTIVES_INTRO}</p>
         <div className="grid gap-4 md:grid-cols-2">
           {OBJECTIVES.map((o, i) => (
-            <div key={i} className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft">
+            <div key={i} className="glow-card flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft">
               <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent ring-1 ring-inset ring-accent/20">
                 {i + 1}
               </div>
@@ -137,7 +137,7 @@ function About() {
                   <div className="relative z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full gradient-accent text-lg font-extrabold text-accent-foreground shadow-soft ring-4 ring-surface md:h-[70px] md:w-[70px] md:text-xl">
                     {i + 1}
                   </div>
-                  <div className="flex-1 rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated md:p-8">
+                  <div className="glow-card flex-1 rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated md:p-8">
                     <div className="text-xs font-bold tracking-wide text-accent">المرحلة {i + 1}</div>
                     <h3 className="mt-2 text-lg font-bold leading-8 text-foreground md:text-2xl">{s}</h3>
                   </div>
@@ -153,7 +153,7 @@ function About() {
         <h2 className="text-3xl font-bold text-primary md:text-4xl">مصادر البيانات</h2>
         <ul className="mt-8 max-w-4xl space-y-3">
           {DATA_SOURCES.map((d) => (
-            <li key={d} className="flex gap-3 rounded-xl border border-border bg-card p-4 text-sm leading-8 text-foreground/85">
+            <li key={d} className="glow-card flex gap-3 rounded-xl border border-border bg-card p-4 text-sm leading-8 text-foreground/85">
               <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
               <span>{d}</span>
             </li>

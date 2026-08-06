@@ -54,7 +54,7 @@ function Commission() {
               d: "الاستقلالية، الحياد، المهنية، السرية، النزاهة، والعمل بروح الفريق.",
             },
           ].map((c) => (
-            <div key={c.t} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+            <div key={c.t} className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft">
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-navy text-white">
                 <c.icon className="h-5 w-5" />
               </div>
@@ -83,7 +83,7 @@ function Commission() {
               { icon: Target, t: "التعاون الدولي", d: "تنفيذ اتفاقية الأمم المتحدة لمكافحة الفساد (UNCAC) وربط الشراكات الإقليمية." },
               { icon: Landmark, t: "الاستراتيجية الوطنية", d: "متابعة تنفيذ الاستراتيجية عبر القطاعية للنزاهة ومكافحة الفساد." },
             ].map((c) => (
-              <div key={c.t} className="rounded-xl border border-border bg-card p-5 shadow-soft">
+              <div key={c.t} className="glow-card rounded-xl border border-border bg-card p-5 shadow-soft">
                 <c.icon className="h-6 w-6 text-navy" />
                 <h3 className="mt-3 text-base font-bold text-primary">{c.t}</h3>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">{c.d}</p>
@@ -95,7 +95,7 @@ function Commission() {
 
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
+          <div className="glow-card rounded-2xl border border-border bg-card p-8 shadow-soft">
             <h3 className="text-2xl font-bold text-primary">الإطار القانوني</h3>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-foreground/85">
               <li>• قانون مكافحة الفساد الفلسطيني رقم (1) لسنة 2005 وتعديلاته.</li>
@@ -105,7 +105,7 @@ function Commission() {
               <li>• الاستراتيجية الوطنية عبر القطاعية لتعزيز النزاهة ومكافحة الفساد.</li>
             </ul>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-8 shadow-soft">
+          <div className="glow-card rounded-2xl border border-border bg-card p-8 shadow-soft">
             <h3 className="text-2xl font-bold text-primary">البنية المؤسسية</h3>
             <ul className="mt-4 space-y-3 text-sm leading-7 text-foreground/85">
               <li>• رئيس الهيئة يُعيَّن بمرسوم رئاسي بدرجة وزير.</li>

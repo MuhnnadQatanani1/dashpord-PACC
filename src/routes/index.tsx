@@ -85,11 +85,10 @@ function Home() {
     ] as string[],
     outputs: journey.slice(-4).map((m) => ({ title: m.title, desc: m.description })),
   };
-  const figures = kpis.map((k) => ({ id: k.id, label: k.label, value: k.value }));
   const dq = dataSource.getDataQuality();
   const heroStats = [
     { icon: CalendarCheck, label: "آخر تحديث", value: dq.lastUpdate },
-    { icon: LayoutGrid, label: "عدد المؤشرات", value: dq.indicators.toLocaleString("ar-EG") },
+    { icon: LayoutGrid, label: "عدد المؤشرات", value: "29" },
     { icon: CalendarRange, label: "الفترة الزمنية المغطاة", value: dq.coveragePeriod },
   ];
 
@@ -191,30 +190,6 @@ function Home() {
         </div>
       </section>
 
-      {/* KEY FIGURES — من التقرير الأول */}
-      <section className="bg-surface">
-        <div className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
-          <div className="mb-12 max-w-2xl">
-            <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">أرقام رئيسية</div>
-            <h2 className="text-3xl font-bold text-primary md:text-4xl">أبرز مؤشرات المرصد الوطني</h2>
-            <p className="mt-3 leading-8 text-muted-foreground">
-              أرقام رسمية موثّقة تعكس مسار الشكوى من لحظة استلامها حتى صدور الحكم القضائي.
-            </p>
-          </div>
-          <dl className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {figures.map((f: { id: string; label: string; value: number }) => (
-              <div key={f.id} className="border-t-2 border-primary/15 pt-6">
-                <dd className="text-4xl font-extrabold tracking-tight text-primary md:text-5xl">
-                  {f.value.toLocaleString("ar-EG")}
-                </dd>
-                <dt className="mt-2 text-sm font-semibold text-muted-foreground">{f.label}</dt>
-
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
       {/* KPI CARDS */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="mb-10 max-w-2xl">
@@ -265,7 +240,7 @@ function Home() {
               { icon: ShieldCheck, title: "دعم السياسات", desc: "توصيات ملزمة تدفع الحكومة لتعديل اللوائح وسدّ الثغرات." },
               { icon: BookOpen, title: "نشر المعرفة", desc: "تقارير وبيانات مفتوحة للباحثين والصحفيين والمجتمع المدني." },
             ].map((c) => (
-              <div key={c.title} className="group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated">
+              <div key={c.title} className="glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated">
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20 transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                   <c.icon className="h-5 w-5" />
                 </div>
@@ -297,7 +272,7 @@ function Home() {
               { n: "03", t: "التحليل الإحصائي", d: "معادلات موزونة (احتمالية × أثر) لقياس مستوى الخطر." },
               { n: "04", t: "التقارير والمؤشرات", d: "إصدار نشرات شهرية وربعية وسنوية للجمهور." },
             ].map((s, i) => (
-              <div key={s.n} className="relative rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <div key={s.n} className="glow-card relative rounded-2xl border border-border bg-card p-6 shadow-soft">
                 <div className="text-5xl font-black text-accent/25">{s.n}</div>
                 <h3 className="mt-2 text-lg font-bold text-foreground">{s.t}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{s.d}</p>
@@ -359,7 +334,7 @@ function Home() {
               <Link
                 key={c.to}
                 to={c.to}
-                className="focus-ring group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated"
+                className="focus-ring glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated"
               >
                 <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
                   <c.icon className="h-5 w-5" />
