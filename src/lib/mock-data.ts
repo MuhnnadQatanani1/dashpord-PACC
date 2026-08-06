@@ -691,7 +691,7 @@ export const dataQuality = {
   complaintsTotal: 2923, // sheet 28
   coveragePeriod: "2022 – 2025",
   lastUpdate: "يناير 2026",
-  indicators: 46,
+  indicators: 16,
   datasets: 14,
   sheets: 48,
   crimeTypes: 16,

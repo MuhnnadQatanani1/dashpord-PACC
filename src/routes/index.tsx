@@ -2,9 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { StatCard } from "@/components/site/StatCard";
 import { ChartCard } from "@/components/site/ChartCard";
-import { TimelineArea, SectorsPie } from "@/components/site/Charts";
+import { MultiLine, ShareDonut } from "@/components/site/Charts";
 import { HeroVisual } from "@/components/site/HeroVisual";
 import { dataSource } from "@/lib/mock-data";
+import { interactiveIndicators } from "@/data/indicators-catalog";
 import hqImage from "@/assets/pacc-headquarters.png.asset.json";
 import {
   BarChart3,
@@ -53,9 +54,28 @@ const KPI_ICONS = {
 
 function Home() {
   const kpis = dataSource.getKpis();
-  const timeline = dataSource.getTimeline();
-  const sectors = dataSource.getSectors();
   const journey = dataSource.getJourney();
+  const findInd = (id: string) => interactiveIndicators.find((i) => i.id === id)!;
+  const yearlyTotals = (id: string) => {
+    const t = findInd(id).table;
+    const last = t.rows[t.rows.length - 1];
+    return [0, 1, 2, 3].map((i) => (typeof last[i + 1] === "number" ? (last[i + 1] as number) : 0));
+  };
+  const YRS = ["2022", "2023", "2024", "2025"];
+  const incoming = yearlyTotals("pacc-complaints-source");
+  const completed = yearlyTotals("pacc-complaints-completed");
+  const flow = YRS.map((year, i) => ({ year, واردة: incoming[i], منجزة: completed[i] }));
+  const sourceRows = findInd("pacc-complaints-source").table.rows;
+  const sourcesDonut = sourceRows.slice(0, -1).map((r) => ({
+    name: String(r[0]),
+    value: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]),
+  }));
+  const topCrime = findInd("pacc-complaints-crime")
+    .table.rows.slice(0, -1)
+    .map((r) => ({ name: String(r[0]), total: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]) }))
+    .sort((a, b) => b.total - a.total)[0];
+  const totalIncoming = incoming.reduce((a, b) => a + b, 0);
+  const abuseShare = topCrime ? Math.round((topCrime.total / totalIncoming) * 100) : 0;
   const launch = {
     headline: "من قياس المدركات إلى قياس المؤشرات الفعلية للفساد",
     date: "التقرير العلني الأول — 31 يناير 2021",
@@ -300,7 +320,10 @@ function Home() {
               لوحة المؤشرات
             </div>
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">لمحة سريعة عن البيانات</h2>
-            <p className="mt-2 max-w-2xl text-muted-foreground">اتجاهات البلاغات والملفات التحقيقية عبر السنوات، وتوزيع القضايا القطاعي.</p>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              اتجاه الشكاوى الواردة مقابل المنجزة ومصادر تقديمها خلال الفترة 2022 – 2025. {topCrime?.name} تستأثر بنحو {abuseShare}%
+              من إجمالي الشكاوى الواردة.
+            </p>
           </div>
           <Link to="/dashboard" className="focus-ring inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90">
             الذهاب إلى اللوحة الكاملة <ArrowLeft className="h-4 w-4" />
@@ -309,12 +332,12 @@ function Home() {
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <ChartCard title="اتجاه البلاغات والملفات التحقيقية" subtitle="2020 – 2025">
-              <TimelineArea data={timeline} />
+            <ChartCard title="اتجاه الشكاوى الواردة والمنجزة" subtitle="2022 – 2025">
+              <MultiLine data={flow} keys={[{ key: "واردة", name: "الشكاوى الواردة" }, { key: "منجزة", name: "الشكاوى المنجزة" }]} height={360} />
             </ChartCard>
           </div>
-          <ChartCard title="التوزيع القطاعي" subtitle="أعلى القطاعات ملفات">
-            <SectorsPie data={sectors} />
+          <ChartCard title="مصادر تقديم الشكاوى" subtitle="الإجمالي 2022 – 2025">
+            <ShareDonut data={sourcesDonut} />
           </ChartCard>
         </div>
       </section>
