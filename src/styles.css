@@ -338,6 +338,40 @@
   .map-pane-fade .leaflet-overlay-pane { opacity: 1; animation: none; }
 }
 
+/* Governorate name labels on the map — black, red on hover */
+.gov-tooltip {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  opacity: 1;
+}
+.gov-tooltip .leaflet-tooltip-content {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+.gov-tooltip .leaflet-tooltip-arrow {
+  display: none;
+}
+.gov-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #111827;
+  text-align: center;
+  text-shadow: 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff;
+}
+.gov-name .gov-count {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+}
+.gov-name.is-hover {
+  color: #dc2626;
+}
+
 
 /* Hero mini-chart motion — subtle, single pass */
 .chart-line-draw {

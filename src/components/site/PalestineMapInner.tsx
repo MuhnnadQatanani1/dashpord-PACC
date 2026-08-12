@@ -13,18 +13,18 @@ function getStyle(_feature: GovernorateFeature | undefined, isHovered: boolean):
   if (isHovered) {
     return {
       fillColor: "#dc2626",
-      fillOpacity: 0.3,
+      fillOpacity: 0.28,
       weight: 3,
       color: "#dc2626",
       opacity: 1,
     };
   }
   return {
-    fillColor: "#334155",
-    fillOpacity: 0.03,
-    weight: 0,
-    color: "transparent",
-    opacity: 0,
+    fillColor: "#6b7280",
+    fillOpacity: 0.02,
+    weight: 1,
+    color: "#9ca3af",
+    opacity: 0.7,
   };
 }
 
@@ -76,22 +76,18 @@ export function PalestineMapInner({ compact = false }: PalestineMapProps) {
       const f = feature as unknown as GovernorateFeature;
       const name = f.properties.name_ar;
       const stat = governorateStats[name];
-      const content = `
-        <div style="text-align:center;font-weight:700;font-size:13px">${name}</div>
-        <div style="text-align:center;font-size:11px;color:#64748b">${f.properties.name_en}</div>
-        <div style="text-align:center;font-weight:700;font-size:12px;color:#dc2626;margin-top:4px">
-          ${stat ? stat.complaints.toLocaleString("ar-EG") : "—"} شكوى
+      const label = `
+        <div class="gov-name is-hover">
+          ${name}${stat ? `<span class="gov-count">${stat.complaints.toLocaleString("ar-EG")} شكوى</span>` : ""}
         </div>`;
 
       layer.on({
         mouseover: (e: LeafletMouseEvent) => {
           const target = e.target;
           target.setStyle(getStyle(f, true));
-          target.bindTooltip(content, {
-            direction: "top",
-            offset: [0, -10],
-            className: "rounded-lg",
-          }).openTooltip();
+          target
+            .bindTooltip(label, { direction: "center", className: "gov-tooltip", sticky: false })
+            .openTooltip();
           setHoveredName(name);
         },
         mouseout: (e: LeafletMouseEvent) => {
