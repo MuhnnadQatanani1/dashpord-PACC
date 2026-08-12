@@ -38,7 +38,7 @@ function MapPage() {
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 rounded-xl border border-border bg-surface p-6">
-            <div className="relative h-[500px] w-full overflow-hidden rounded-lg">
+            <div className="relative isolate h-[500px] w-full overflow-hidden rounded-lg">
               <PalestineMap />
             </div>
             <p className="mt-3 text-xs text-muted-foreground">

@@ -6,7 +6,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main>{children}</main>
+      <main className="pt-[85px]">{children}</main>
       <Footer />
     </div>
   );

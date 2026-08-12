@@ -325,6 +325,19 @@
   .glow-card::before { animation: none; }
 }
 
+/* Map data layer fades in after the base tiles are ready */
+.map-pane-fade .leaflet-overlay-pane {
+  opacity: 0;
+  animation: map-pane-in 0.9s ease 0.2s both;
+}
+@keyframes map-pane-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-pane-fade .leaflet-overlay-pane { opacity: 1; animation: none; }
+}
+
 
 /* Hero mini-chart motion — subtle, single pass */
 .chart-line-draw {
