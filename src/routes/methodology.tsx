@@ -1,31 +1,36 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { Database, LineChart, RefreshCw, Lock, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/methodology")({
   component: Methodology,
-  head: () => ({
-    meta: [
-      { title: "المنهجية | المرصد الوطني لمؤشرات الفساد" },
-      { name: "description", content: "منهجية جمع البيانات وحساب المؤشرات وضمانات السرية وحماية المبلغين." },
-    ],
-  }),
+  head: () => {
+    const dict = dictionaries[getLocale()];
+    return {
+      meta: [
+        { title: dict["meta.methodTitle"] },
+        { name: "description", content: dict["meta.methodDesc"] },
+      ],
+    };
+  },
 });
 
 function Methodology() {
+  const { t } = useLocale();
   const items = [
-    { icon: Database, t: "مصادر البيانات", d: "سجل الوارد الرقمي للهيئة، بيانات الإحالة لنيابة مكافحة الفساد، قلم محكمة جرائم الفساد، ومنظومة إقرارات الذمة المالية." },
-    { icon: LineChart, t: "منهجية المؤشرات", d: "معادلة موزونة: (احتمالية الوقوع × الأثر) لكل قطاع لحساب مستوى الخطر الفعلي." },
-    { icon: RefreshCw, t: "وتيرة التحديث", d: "تحديث شهري للنشرات، ربعي للتقارير التحليلية، وسنوي للتقرير الشامل." },
-    { icon: Lock, t: "خصوصية البيانات", d: "جميع البيانات المنشورة مجمّعة وإحصائية ولا تتضمن أي معلومات شخصية." },
-    { icon: ShieldCheck, t: "حماية المبلغين", d: "التزام تام بأعلى معايير السرية بموجب القانون الفلسطيني وحماية هوية الشهود والمصادر." },
+    { icon: Database, t: t("method.item1T"), d: t("method.item1D") },
+    { icon: LineChart, t: t("method.item2T"), d: t("method.item2D") },
+    { icon: RefreshCw, t: t("method.item3T"), d: t("method.item3D") },
+    { icon: Lock, t: t("method.item4T"), d: t("method.item4D") },
+    { icon: ShieldCheck, t: t("method.item5T"), d: t("method.item5D") },
   ];
   return (
     <SiteLayout>
       <PageHeader
-        eyebrow="المنهجية"
-        title="كيف يبني المرصد مؤشراته؟"
-        description="شفافية كاملة في المصادر، وطرق الحساب، ووتيرة التحديث، وضمانات الحماية."
+        eyebrow={t("method.eyebrow")}
+        title={t("method.title")}
+        description={t("method.desc")}
       />
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
         <div className="grid gap-4 md:grid-cols-2">
@@ -41,18 +46,16 @@ function Methodology() {
         </div>
 
         <div className="mt-10 rounded-2xl border border-border bg-surface p-8">
-          <h3 className="text-xl font-bold text-primary">قائمة المقياس الموحد</h3>
-          <p className="mt-3 text-sm leading-7 text-muted-foreground">
-            طوّرت الهيئة بالتعاون مع بعثة البنك الدولي «قائمة المقياس الموحد» المعتمدة على ركيزتين:
-          </p>
+          <h3 className="text-xl font-bold text-primary">{t("method.scaleTitle")}</h3>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">{t("method.scaleIntro")}</p>
           <ul className="mt-4 grid gap-3 md:grid-cols-2">
             <li className="rounded-lg border border-border bg-card p-4">
-              <div className="text-sm font-bold text-accent">مقياس إنفاذ القانون</div>
-              <div className="mt-1 text-sm text-muted-foreground">أداء الهيئة والنيابة والمحاكم في ملاحقة الفساد.</div>
+              <div className="text-sm font-bold text-accent">{t("method.scale1T")}</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("method.scale1D")}</div>
             </li>
             <li className="rounded-lg border border-border bg-card p-4">
-              <div className="text-sm font-bold text-accent">مقياس تعزيز النزاهة والشفافية</div>
-              <div className="mt-1 text-sm text-muted-foreground">جهود الوقاية والمشاركة المجتمعية لكل قطاع.</div>
+              <div className="text-sm font-bold text-accent">{t("method.scale2T")}</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t("method.scale2D")}</div>
             </li>
           </ul>
         </div>

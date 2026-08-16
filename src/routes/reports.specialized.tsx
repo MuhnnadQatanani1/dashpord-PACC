@@ -1,31 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Microscope, Inbox } from "lucide-react";
+import { Microscope } from "lucide-react";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
+import { getReports } from "@/lib/reports.functions";
+import { ReportList } from "@/components/reports/ReportList";
+
+const CATEGORIES = ["specialized"] as const;
 
 export const Route = createFileRoute("/reports/specialized")({
   component: SpecializedReport,
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData({
+      queryKey: ["reports", CATEGORIES.join(",")],
+      queryFn: () => getReports({ data: { categories: [...CATEGORIES] } }),
+    });
+  },
+  head: () => {
+    const dict = dictionaries[getLocale()];
+    return {
+      meta: [
+        { title: dict["meta.specializedTitle"] },
+        { name: "description", content: dict["meta.specializedDesc"] },
+      ],
+    };
+  },
 });
 
 function SpecializedReport() {
+  const { t } = useLocale();
   return (
     <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <div className="mb-8 max-w-3xl">
         <div className="flex items-center gap-2">
           <Microscope className="h-5 w-5 text-accent" />
-          <h2 className="text-xl font-bold text-primary">التقارير المتخصصة</h2>
+          <h2 className="text-xl font-bold text-primary">{t("reports.specialized")}</h2>
         </div>
         <p className="mt-2 text-sm leading-7 text-muted-foreground">
-          دراسات وتقارير متخصصة حول جوانب محددة من منظومة النزاهة والحوكمة ومكافحة الفساد.
+          {t("reports.descSpecialized")}
         </p>
       </div>
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
-          <Inbox className="h-8 w-8 text-accent" />
-        </div>
-        <h3 className="mt-4 text-lg font-bold text-primary">لم يتم إضافته حتى الآن</h3>
-        <p className="mt-2 max-w-md text-sm leading-7 text-muted-foreground">
-          سيتم إضافة التقارير المتخصصة في هذه الصفحة لاحقاً.
-        </p>
-      </div>
+      <ReportList categories={[...CATEGORIES]} />
     </section>
   );
 }

@@ -1,31 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { BookOpen, Inbox } from "lucide-react";
+import { BookOpen } from "lucide-react";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
+import { getReports } from "@/lib/reports.functions";
+import { ReportList } from "@/components/reports/ReportList";
+
+const CATEGORIES = ["annual", "quarterly"] as const;
 
 export const Route = createFileRoute("/reports/annual")({
   component: AnnualReport,
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData({
+      queryKey: ["reports", CATEGORIES.join(",")],
+      queryFn: () => getReports({ data: { categories: [...CATEGORIES] } }),
+    });
+  },
+  head: () => {
+    const dict = dictionaries[getLocale()];
+    return {
+      meta: [
+        { title: dict["meta.annualTitle"] },
+        { name: "description", content: dict["meta.annualDesc"] },
+      ],
+    };
+  },
 });
 
 function AnnualReport() {
+  const { t } = useLocale();
   return (
     <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <div className="mb-8 max-w-3xl">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-accent" />
-          <h2 className="text-xl font-bold text-primary">التقارير السنوية</h2>
+          <h2 className="text-xl font-bold text-primary">{t("reports.annual")}</h2>
         </div>
-        <p className="mt-2 text-sm leading-7 text-muted-foreground">
-          التقارير السنوية والدورية حول مؤشرات النزاهة ومكافحة الفساد لدى الجهات الخاضعة وجهات إنفاذ القانون.
-        </p>
+        <p className="mt-2 text-sm leading-7 text-muted-foreground">{t("reports.descAnnual")}</p>
       </div>
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
-          <Inbox className="h-8 w-8 text-accent" />
-        </div>
-        <h3 className="mt-4 text-lg font-bold text-primary">لم يتم إضافته حتى الآن</h3>
-        <p className="mt-2 max-w-md text-sm leading-7 text-muted-foreground">
-          سيتم إضافة التقارير السنوية في هذه الصفحة لاحقاً.
-        </p>
-      </div>
+      <ReportList categories={[...CATEGORIES]} />
     </section>
   );
 }

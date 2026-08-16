@@ -6,16 +6,20 @@ import {
   getSpotlightByEntity,
   type IndicatorEntity,
 } from "@/data/indicators-catalog";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { Lightbulb, Info } from "lucide-react";
 
 export const Route = createFileRoute("/indicators")({
   component: Indicators,
-  head: () => ({
-    meta: [
-      { title: "أرقام تحت الضوء | المرصد الوطني" },
-      { name: "description", content: "أرقام ونسب مستخلصة من البيانات الرسمية لهيئة مكافحة الفساد والنيابة ومحكمة جرائم الفساد 2022-2025." },
-    ],
-  }),
+  head: () => {
+    const dict = dictionaries[getLocale()];
+    return {
+      meta: [
+        { title: dict["meta.indicatorsTitle"] },
+        { name: "description", content: dict["meta.indicatorsDesc"] },
+      ],
+    };
+  },
 });
 
 const ENTITY_ICON_COLOR: Record<IndicatorEntity, string> = {
@@ -25,12 +29,13 @@ const ENTITY_ICON_COLOR: Record<IndicatorEntity, string> = {
 };
 
 function Indicators() {
+  const { t, d, locale } = useLocale();
   return (
     <SiteLayout>
       <PageHeader
-        eyebrow="أرقام تحت الضوء"
-        title="أرقام ونسب تحت الضوء"
-        description="نسب مستخلصة من الملف الإحصائي الرسمي للفترة 2022-2025، تبرز أنماطاً لافتة في شكاوى الفساد والملفات التحقيقية والأحكام القضائية."
+        eyebrow={t("indicators.eyebrow")}
+        title={t("indicators.title")}
+        description={t("indicators.desc")}
       />
 
       <section className="mx-auto max-w-7xl space-y-10 px-4 py-12 lg:px-8">
@@ -42,7 +47,7 @@ function Indicators() {
                 <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
                   <Lightbulb className="h-5 w-5" />
                 </div>
-                <h2 className="text-2xl font-bold text-primary">{ENTITY_LABELS[e]}</h2>
+                <h2 className="text-2xl font-bold text-primary">{d(ENTITY_LABELS[e])}</h2>
               </div>
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((i) => (
@@ -51,13 +56,15 @@ function Indicators() {
                     className={`rounded-2xl border border-border bg-card p-6 shadow-soft transition-transform hover:-translate-y-1 ${ENTITY_ICON_COLOR[e]}`}
                   >
                     <div className="text-5xl font-extrabold tracking-tight text-primary">
-                      {i.value.toLocaleString("ar-EG")}
-                      <span className="text-2xl">٪</span>
+                      {i.value.toLocaleString(locale === "en" ? "en-US" : "ar-EG")}
+                      <span className="text-2xl">{locale === "en" ? "%" : "٪"}</span>
                     </div>
-                    <h3 className="mt-3 min-h-[2.5rem] text-sm font-bold leading-6 text-foreground">{i.label}</h3>
+                    <h3 className="mt-3 min-h-[2.5rem] text-sm font-bold leading-6 text-foreground">
+                      {d(i.label)}
+                    </h3>
                     {i.note && (
                       <p className="mt-2 flex items-start gap-1.5 text-xs leading-5 text-muted-foreground">
-                        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {i.note}
+                        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {d(i.note)}
                       </p>
                     )}
                   </article>

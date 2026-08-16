@@ -6,6 +6,7 @@ import type { PalestineMapProps, GovernorateFeature } from "@/types/map";
 import type { PathOptions, LeafletMouseEvent } from "leaflet";
 import geoData from "@/data/palestine-governorates.json";
 import { governorateStats } from "@/data/governorate-stats";
+import { useLocale } from "@/i18n";
 
 const PALESTINE_CENTER: [number, number] = [31.9, 35.2];
 
@@ -64,21 +65,25 @@ function TilesReady({ onReady }: { onReady: () => void }) {
 }
 
 export function PalestineMapInner({ compact = false }: PalestineMapProps) {
+  const { locale, t, pick } = useLocale();
   const [hoveredName, setHoveredName] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const handleReady = useCallback(() => setReady(true), []);
   const geoRef = useRef<L.GeoJSON | null>(null);
 
-  const features = (geoData as GeoJSON.FeatureCollection).features as unknown as GovernorateFeature[];
+  const features = (geoData as GeoJSON.FeatureCollection)
+    .features as unknown as GovernorateFeature[];
 
   const onEachFeature = useCallback(
     (feature: GeoJSON.Feature, layer: L.GeoJSON) => {
       const f = feature as unknown as GovernorateFeature;
       const name = f.properties.name_ar;
+      const displayName = locale === "ar" ? name : f.properties.name_en;
       const stat = governorateStats[name];
+      const unit = locale === "ar" ? "شكوى" : "complaints";
       const label = `
         <div class="gov-name is-hover">
-          ${name}${stat ? `<span class="gov-count">${stat.complaints.toLocaleString("ar-EG")} شكوى</span>` : ""}
+          ${displayName}${stat ? `<span class="gov-count">${stat.complaints.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")} ${unit}</span>` : ""}
         </div>`;
 
       layer.on({
@@ -102,7 +107,7 @@ export function PalestineMapInner({ compact = false }: PalestineMapProps) {
         },
       });
     },
-    [],
+    [locale],
   );
 
   const geoStyle = useCallback(
@@ -137,6 +142,7 @@ export function PalestineMapInner({ compact = false }: PalestineMapProps) {
         <TilesReady onReady={handleReady} />
 
         <GeoJSON
+          key={locale}
           ref={geoRef}
           data={geoData as GeoJSON.FeatureCollection}
           style={geoStyle}
@@ -153,22 +159,28 @@ export function PalestineMapInner({ compact = false }: PalestineMapProps) {
       >
         <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          جارٍ تحميل الخريطة…
+          {t("map.loading")}
         </div>
       </div>
 
       {hoveredFeature && !compact && (
         <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] rounded-xl border border-border bg-popover px-4 py-3 shadow-lg">
           <div className="text-sm font-bold text-foreground">
-            {hoveredFeature.properties.name_ar}
+            {locale === "ar"
+              ? hoveredFeature.properties.name_ar
+              : hoveredFeature.properties.name_en}
           </div>
           <div className="text-xs text-muted-foreground">
-            {hoveredFeature.properties.name_en}
+            {locale === "ar"
+              ? hoveredFeature.properties.name_en
+              : hoveredFeature.properties.name_ar}
           </div>
           <div className="mt-1 text-sm font-bold text-accent">
             {(() => {
               const s = governorateStats[hoveredFeature.properties.name_ar];
-              return s ? `${s.complaints.toLocaleString("ar-EG")} شكوى` : "لا توجد بيانات";
+              return s
+                ? `${s.complaints.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")} ${locale === "ar" ? "شكوى" : "complaints"}`
+                : pick("لا توجد بيانات", "No data available");
             })()}
           </div>
         </div>

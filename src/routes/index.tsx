@@ -6,6 +6,7 @@ import { MultiLine, ShareDonut } from "@/components/site/Charts";
 import { HeroVisual } from "@/components/site/HeroVisual";
 import { dataSource } from "@/lib/mock-data";
 import { interactiveIndicators } from "@/data/indicators-catalog";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
 import hqImage from "@/assets/pacc-headquarters.png.asset.json";
 import {
   BarChart3,
@@ -29,20 +30,22 @@ import {
 
 export const Route = createFileRoute("/")({
   component: Home,
-  head: () => ({
-    meta: [
-      { title: "المرصد الوطني لمؤشرات الفساد | هيئة مكافحة الفساد الفلسطينية" },
-      {
-        name: "description",
-        content:
-          "منصة وطنية فلسطينية لرصد وتحليل ونشر مؤشرات النزاهة والشفافية ومكافحة الفساد، بما يدعم صناعة القرار ويعزز الوصول إلى البيانات الرسمية.",
-      },
-      { property: "og:title", content: "المرصد الوطني لمؤشرات الفساد | هيئة مكافحة الفساد الفلسطينية" },
-      { property: "og:description", content: "منصة وطنية فلسطينية لرصد وتحليل ونشر مؤشرات النزاهة والشفافية ومكافحة الفساد، بما يدعم صناعة القرار ويعزز الوصول إلى البيانات الرسمية." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => {
+    const dict = dictionaries[getLocale()];
+    return {
+      meta: [
+        { title: dict["meta.homeTitle"] },
+        {
+          name: "description",
+          content: dict["meta.homeDesc"],
+        },
+        { property: "og:title", content: dict["meta.homeTitle"] },
+        { property: "og:description", content: dict["meta.homeDesc"] },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
 });
 
 const KPI_ICONS = {
@@ -53,6 +56,7 @@ const KPI_ICONS = {
 } as const;
 
 function Home() {
+  const { t, d, pick } = useLocale();
   const kpis = dataSource.getKpis();
   const journey = dataSource.getJourney();
   const findInd = (id: string) => interactiveIndicators.find((i) => i.id === id)!;
@@ -67,29 +71,29 @@ function Home() {
   const flow = YRS.map((year, i) => ({ year, واردة: incoming[i], منجزة: completed[i] }));
   const sourceRows = findInd("pacc-complaints-source").table.rows;
   const sourcesDonut = sourceRows.slice(0, -1).map((r) => ({
-    name: String(r[0]),
+    name: d(String(r[0])),
     value: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]),
   }));
   const topCrime = findInd("pacc-complaints-crime")
     .table.rows.slice(0, -1)
-    .map((r) => ({ name: String(r[0]), total: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]) }))
+    .map((r) => ({
+      name: d(String(r[0])),
+      total: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]),
+    }))
     .sort((a, b) => b.total - a.total)[0];
   const totalIncoming = incoming.reduce((a, b) => a + b, 0);
   const abuseShare = topCrime ? Math.round((topCrime.total / totalIncoming) * 100) : 0;
   const launch = {
-    headline: "من قياس المدركات إلى قياس المؤشرات الفعلية للفساد",
-    date: "التقرير العلني الأول — 31 يناير 2021",
-    paragraphs: [
-      "انطلق المرصد الوطني لمؤشرات الفساد ليكون المرجع الرسمي الفلسطيني في رصد وتحليل بيانات النزاهة ومكافحة الفساد، اعتماداً على السجلات الرسمية للهيئة والنيابة ومحكمة جرائم الفساد بدلاً من استطلاعات المدركات.",
-      "تغطي البيانات المنشورة في هذه المنصة الفترة 2022 – 2025 وتشمل الشكاوى والبلاغات، الملفات التحقيقية، الإحالات للنائب العام، الأحكام القضائية، إقرارات الذمة المالية، وطلبات الحماية.",
-    ] as string[],
-    outputs: journey.slice(-4).map((m) => ({ title: m.title, desc: m.description })),
+    headline: t("home.launchHeadline"),
+    date: t("home.launchDate"),
+    paragraphs: [t("home.launchP1"), t("home.launchP2")] as string[],
+    outputs: journey.slice(-4).map((m) => ({ title: d(m.title), desc: d(m.description) })),
   };
   const dq = dataSource.getDataQuality();
   const heroStats = [
-    { icon: CalendarCheck, label: "آخر تحديث", value: dq.lastUpdate },
-    { icon: LayoutGrid, label: "عدد المؤشرات", value: "29" },
-    { icon: CalendarRange, label: "الفترة الزمنية المغطاة", value: dq.coveragePeriod },
+    { icon: CalendarCheck, label: t("home.heroStatUpdated"), value: d(dq.lastUpdate) },
+    { icon: LayoutGrid, label: t("home.heroStatIndicators"), value: "29" },
+    { icon: CalendarRange, label: t("home.heroStatCoverage"), value: dq.coveragePeriod },
   ];
 
   return (
@@ -98,7 +102,10 @@ function Home() {
       <section className="relative isolate overflow-hidden">
         <img
           src={hqImage.url}
-          alt="مقر هيئة مكافحة الفساد الفلسطينية"
+          alt={pick(
+            "مقر هيئة مكافحة الفساد الفلسطينية",
+            "Palestinian Anti-Corruption Commission headquarters",
+          )}
           className="absolute inset-0 h-full w-full object-cover"
           loading="eager"
         />
@@ -109,13 +116,13 @@ function Home() {
           <div className="reveal">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white/85">
               <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
-              هيئة مكافحة الفساد الفلسطينية
+              {t("home.heroBadge")}
             </div>
             <h1 className="text-balance text-4xl font-extrabold leading-[1.15] md:text-5xl lg:text-[3.4rem]">
-              المرصد الوطني لمؤشرات الفساد
+              {t("home.heroTitle")}
             </h1>
             <p className="mt-6 max-w-xl text-base leading-9 text-white/80 md:text-lg">
-              منصة وطنية لرصد وتحليل مؤشرات النزاهة والشفافية ومكافحة الفساد اعتماداً على البيانات الرسمية.
+              {t("home.heroDesc")}
             </p>
 
             <div className="mt-10">
@@ -123,13 +130,16 @@ function Home() {
                 to="/dashboard"
                 className="focus-ring inline-flex items-center gap-3 rounded-xl gradient-accent px-10 py-5 text-base font-extrabold text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5 hover:opacity-95"
               >
-                استكشف المرصد <ArrowLeft className="h-5 w-5" />
+                {t("home.heroCta")} <ArrowLeft className="h-5 w-5" />
               </Link>
             </div>
 
             <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
               {heroStats.map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+                <div
+                  key={s.label}
+                  className="rounded-xl border border-white/15 bg-white/10 p-4 backdrop-blur"
+                >
                   <div className="flex items-center gap-2 text-white/75">
                     <s.icon className="h-4 w-4 text-accent" />
                     <span className="text-[11px] font-semibold">{s.label}</span>
@@ -140,7 +150,10 @@ function Home() {
             </div>
           </div>
 
-          <div className="reveal flex justify-center text-white/85 lg:justify-end" style={{ animationDelay: "140ms" }}>
+          <div
+            className="reveal flex justify-center text-white/85 lg:justify-end"
+            style={{ animationDelay: "140ms" }}
+          >
             <HeroVisual />
           </div>
         </div>
@@ -152,7 +165,7 @@ function Home() {
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <div className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                بداية المرصد الوطني
+                {t("home.launchEyebrow")}
               </div>
               <h2 className="text-balance text-3xl font-bold leading-tight text-primary md:text-4xl">
                 {launch.headline}
@@ -165,7 +178,10 @@ function Home() {
 
             <div className="lg:col-span-7">
               {launch.paragraphs.map((p: string) => (
-                <p key={p.slice(0, 24)} className="mb-5 text-base leading-9 text-muted-foreground md:text-[1.0625rem]">
+                <p
+                  key={p.slice(0, 24)}
+                  className="mb-5 text-base leading-9 text-muted-foreground md:text-[1.0625rem]"
+                >
                   {p}
                 </p>
               ))}
@@ -183,7 +199,7 @@ function Home() {
                 to="/concepts"
                 className="focus-ring mt-10 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
               >
-                <BookOpen className="h-4 w-4" /> المفاهيم والمصطلحات
+                <BookOpen className="h-4 w-4" /> {t("nav.concepts")}
               </Link>
             </div>
           </div>
@@ -193,15 +209,17 @@ function Home() {
       {/* KPI CARDS */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="mb-10 max-w-2xl">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">المؤشرات التراكمية</div>
-          <h2 className="text-3xl font-bold text-primary md:text-4xl">أرقام تعكس أداء منظومة النزاهة</h2>
-          <p className="mt-3 leading-8 text-muted-foreground">إجماليات الأعوام 2022 – 2025 وفق البيانات الرسمية للهيئة.</p>
+          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+            {t("home.kpiEyebrow")}
+          </div>
+          <h2 className="text-3xl font-bold text-primary md:text-4xl">{t("home.kpiTitle")}</h2>
+          <p className="mt-3 leading-8 text-muted-foreground">{t("home.kpiDesc")}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {kpis.map((k) => (
             <StatCard
               key={k.id}
-              label={k.label}
+              label={d(k.label)}
               value={k.value}
               trend={k.trend}
               icon={KPI_ICONS[k.id as keyof typeof KPI_ICONS]}
@@ -210,37 +228,51 @@ function Home() {
         </div>
       </section>
 
-
       {/* ABOUT SNAPSHOT */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:py-24 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="mb-3 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              عن المرصد
+              {t("home.aboutBadge")}
             </div>
             <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-              من مرحلة الانطباعات إلى الأرقام الحقيقية
+              {t("home.aboutTitle")}
             </h2>
             <p className="mt-4 text-base leading-8 text-muted-foreground">
-              أطلقت هيئة مكافحة الفساد الفلسطينية المرصد كأداة ريادية للانتقال من قياس <em>مدركات الفساد</em>
-              المبنية على الانطباعات، إلى <em>مؤشرات فعلية</em> مبنية على وثائق وملفات وأرقام قضائية دقيقة.
+              {t("home.aboutDescA")} <em>{t("home.aboutPerc")}</em>
+              {t("home.aboutDescB")} <em>{t("home.aboutInd")}</em> {t("home.aboutDescC")}
             </p>
             <Link
               to="/about"
               className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline"
             >
-              اقرأ المزيد <ChevronsLeft className="h-4 w-4" />
+              {t("home.aboutMore")} <ChevronsLeft className="h-4 w-4" />
             </Link>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:col-span-3">
             {[
-              { icon: Database, title: "جمع البيانات", desc: "تجميع الإحصاءات الشهرية والربعية للبلاغات والملفات التحقيقية." },
-              { icon: BarChart3, title: "تحليل المؤشرات", desc: "معادلات إحصائية موزونة تربط الاحتمالية بالأثر لقياس الخطورة." },
-              { icon: ShieldCheck, title: "دعم السياسات", desc: "توصيات ملزمة تدفع الحكومة لتعديل اللوائح وسدّ الثغرات." },
-              { icon: BookOpen, title: "نشر المعرفة", desc: "تقارير وبيانات مفتوحة للباحثين والصحفيين والمجتمع المدني." },
+              { icon: Database, title: t("home.cardDataTitle"), desc: t("home.cardDataDesc") },
+              {
+                icon: BarChart3,
+                title: t("home.cardAnalyzeTitle"),
+                desc: t("home.cardAnalyzeDesc"),
+              },
+              {
+                icon: ShieldCheck,
+                title: t("home.cardPolicyTitle"),
+                desc: t("home.cardPolicyDesc"),
+              },
+              {
+                icon: BookOpen,
+                title: t("home.cardKnowledgeTitle"),
+                desc: t("home.cardKnowledgeDesc"),
+              },
             ].map((c) => (
-              <div key={c.title} className="glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated">
+              <div
+                key={c.title}
+                className="glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated"
+              >
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20 transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
                   <c.icon className="h-5 w-5" />
                 </div>
@@ -257,22 +289,23 @@ function Home() {
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
           <div className="mb-12 text-center">
             <div className="mb-3 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              كيف يعمل المرصد
+              {t("home.howBadge")}
             </div>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">دورة حياة البيانات في المرصد</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-              من لحظة استقبال البلاغ حتى صدور الحكم القضائي، تُوثَّق كل مرحلة رقمياً وتُدرج في المؤشرات.
-            </p>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t("home.howTitle")}</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{t("home.howDesc")}</p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-4">
             {[
-              { n: "01", t: "جمع البيانات", d: "تسجيل البلاغات والشكاوى فور استلامها عبر التطبيق والموقع والحضور." },
-              { n: "02", t: "تصنيف البيانات", d: "فرز آلي حسب القطاع، المحافظة، ونوع الجريمة." },
-              { n: "03", t: "التحليل الإحصائي", d: "معادلات موزونة (احتمالية × أثر) لقياس مستوى الخطر." },
-              { n: "04", t: "التقارير والمؤشرات", d: "إصدار نشرات شهرية وربعية وسنوية للجمهور." },
+              { n: "01", t: t("home.step1Title"), d: t("home.step1Desc") },
+              { n: "02", t: t("home.step2Title"), d: t("home.step2Desc") },
+              { n: "03", t: t("home.step3Title"), d: t("home.step3Desc") },
+              { n: "04", t: t("home.step4Title"), d: t("home.step4Desc") },
             ].map((s, i) => (
-              <div key={s.n} className="glow-card relative rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <div
+                key={s.n}
+                className="glow-card relative rounded-2xl border border-border bg-card p-6 shadow-soft"
+              >
                 <div className="text-5xl font-black text-accent/25">{s.n}</div>
                 <h3 className="mt-2 text-lg font-bold text-foreground">{s.t}</h3>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{s.d}</p>
@@ -292,26 +325,37 @@ function Home() {
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <div className="mb-2 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              لوحة المؤشرات
+              {t("home.dashBadge")}
             </div>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">لمحة سريعة عن البيانات</h2>
+            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
+              {t("home.dashTitle")}
+            </h2>
             <p className="mt-2 max-w-2xl text-muted-foreground">
-              اتجاه الشكاوى الواردة مقابل المنجزة ومصادر تقديمها خلال الفترة 2022 – 2025. {topCrime?.name} تستأثر بنحو {abuseShare}%
-              من إجمالي الشكاوى الواردة.
+              {t("home.dashDesc", { crime: topCrime?.name ?? "", share: abuseShare })}
             </p>
           </div>
-          <Link to="/dashboard" className="focus-ring inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90">
-            الذهاب إلى اللوحة الكاملة <ArrowLeft className="h-4 w-4" />
+          <Link
+            to="/dashboard"
+            className="focus-ring inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
+          >
+            {t("home.dashCta")} <ArrowLeft className="h-4 w-4" />
           </Link>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <ChartCard title="اتجاه الشكاوى الواردة والمنجزة" subtitle="2022 – 2025">
-              <MultiLine data={flow} keys={[{ key: "واردة", name: "الشكاوى الواردة" }, { key: "منجزة", name: "الشكاوى المنجزة" }]} height={360} />
+            <ChartCard title={t("home.chartFlowTitle")} subtitle={t("home.chartFlowSubtitle")}>
+              <MultiLine
+                data={flow}
+                keys={[
+                  { key: "واردة", name: t("home.seriesIncoming") },
+                  { key: "منجزة", name: t("home.seriesCompleted") },
+                ]}
+                height={360}
+              />
             </ChartCard>
           </div>
-          <ChartCard title="مصادر تقديم الشكاوى" subtitle="الإجمالي 2022 – 2025">
+          <ChartCard title={t("home.chartSourcesTitle")} subtitle={t("home.chartSourcesSubtitle")}>
             <ShareDonut data={sourcesDonut} />
           </ChartCard>
         </div>
@@ -320,16 +364,53 @@ function Home() {
       {/* QUICK NAV CARDS */}
       <section className="bg-surface py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 className="mb-10 text-center text-3xl font-bold text-foreground md:text-4xl">استكشف المنصة</h2>
+          <h2 className="mb-10 text-center text-3xl font-bold text-foreground md:text-4xl">
+            {t("home.exploreTitle")}
+          </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { to: "/commission", icon: ShieldCheck, title: "عن الهيئة", desc: "نبذة رسمية عن هيئة مكافحة الفساد." },
-              { to: "/about", icon: Layers, title: "عن المرصد", desc: "الرؤية والرسالة والأهداف ورحلة الإنشاء." },
-              { to: "/concepts", icon: BookOpen, title: "المفاهيم والمصطلحات", desc: "قائمة المؤشرات والبطاقات التعريفية." },
-              { to: "/dashboard", icon: BarChart3, title: "لوحة البيانات التفاعلية", desc: "KPIs ورسوم بيانية تفاعلية." },
-              { to: "/indicators", icon: Activity, title: "أرقام تحت الضوء", desc: "أبرز النسب والمؤشرات الرقمية." },
-              { to: "/map", icon: MapPin, title: "التحليل الجغرافي", desc: "بيانات المحافظات الفلسطينية." },
-              { to: "/stories", icon: Database, title: "قصص البيانات", desc: "قراءات موجّهة لأبرز النتائج." },
+              {
+                to: "/commission",
+                icon: ShieldCheck,
+                title: t("home.explore1Title"),
+                desc: t("home.explore1Desc"),
+              },
+              {
+                to: "/about",
+                icon: Layers,
+                title: t("home.explore2Title"),
+                desc: t("home.explore2Desc"),
+              },
+              {
+                to: "/concepts",
+                icon: BookOpen,
+                title: t("home.explore3Title"),
+                desc: t("home.explore3Desc"),
+              },
+              {
+                to: "/dashboard",
+                icon: BarChart3,
+                title: t("home.explore4Title"),
+                desc: t("home.explore4Desc"),
+              },
+              {
+                to: "/indicators",
+                icon: Activity,
+                title: t("home.explore5Title"),
+                desc: t("home.explore5Desc"),
+              },
+              {
+                to: "/map",
+                icon: MapPin,
+                title: t("home.explore6Title"),
+                desc: t("home.explore6Desc"),
+              },
+              {
+                to: "/stories",
+                icon: Database,
+                title: t("home.explore7Title"),
+                desc: t("home.explore7Desc"),
+              },
             ].map((c) => (
               <Link
                 key={c.to}
@@ -342,7 +423,8 @@ function Home() {
                 <h3 className="mt-4 text-lg font-bold text-foreground">{c.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{c.desc}</p>
                 <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                  فتح <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  {t("home.exploreOpen")}{" "}
+                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                 </div>
               </Link>
             ))}
@@ -357,22 +439,33 @@ function Home() {
           <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
             <div>
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
-                <ShieldAlert className="h-3.5 w-3.5" /> سرية · قانونية · محمية
+                <ShieldAlert className="h-3.5 w-3.5" /> {t("home.ctaBadge")}
               </div>
-              <h2 className="text-3xl font-extrabold md:text-4xl">هل لديك بلاغ عن فساد؟</h2>
-              <p className="mt-3 text-base leading-8 text-white/85">
-                البيانات المنشورة إحصائية ومجمّعة. هويّتك محمية بموجب القانون وضمن أعلى معايير السرية.
-              </p>
+              <h2 className="text-3xl font-extrabold md:text-4xl">{t("home.ctaTitle")}</h2>
+              <p className="mt-3 text-base leading-8 text-white/85">{t("home.ctaDesc")}</p>
             </div>
             <div className="flex flex-wrap justify-start gap-3 md:justify-end">
-              <a href="https://www.pacc.ps/complaints/create" target="_blank" rel="noopener noreferrer" className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary shadow-soft hover:-translate-y-0.5 transition-transform">
-                تقديم بلاغ
+              <a
+                href="https://www.pacc.ps/complaints/create"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary shadow-soft hover:-translate-y-0.5 transition-transform"
+              >
+                {t("nav.report")}
               </a>
-              <a href="https://www.pacc.ps/WitnessProtection" target="_blank" rel="noopener noreferrer" className="rounded-lg bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90">
-                طلب حماية
+              <a
+                href="https://www.pacc.ps/WitnessProtection"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90"
+              >
+                {t("home.ctaProtection")}
               </a>
-              <Link to="/contact" className="rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20">
-                التواصل مع الهيئة
+              <Link
+                to="/contact"
+                className="rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20"
+              >
+                {t("home.ctaContact")}
               </Link>
             </div>
           </div>

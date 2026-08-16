@@ -6,7 +6,9 @@ export function SiteLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main className="pt-[85px]">{children}</main>
+      <main id="main-content" tabIndex={-1} className="pt-[85px]">
+        {children}
+      </main>
       <Footer />
     </div>
   );
@@ -34,7 +36,9 @@ export function PageHeader({
         )}
         <h1 className="text-balance text-3xl font-extrabold text-primary md:text-5xl">{title}</h1>
         {description && (
-          <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">{description}</p>
+          <p className="mt-4 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg">
+            {description}
+          </p>
         )}
       </div>
     </section>

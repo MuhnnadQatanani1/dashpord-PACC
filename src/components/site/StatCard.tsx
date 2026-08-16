@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useLocale } from "@/i18n";
 
 interface Props {
   label: string;
@@ -28,17 +29,23 @@ function useCountUp(target: number, duration = 1400) {
 }
 
 export function StatCard({ label, value, trend, suffix, icon: Icon }: Props) {
+  const { locale } = useLocale();
   const n = useCountUp(value);
   const positive = (trend ?? 0) >= 0;
+  const fmt = (v: number) => v.toLocaleString(locale === "ar" ? "ar-EG" : "en-US");
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated">
       <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-accent/8 blur-2xl transition-transform group-hover:scale-125" />
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</div>
+          <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {label}
+          </div>
           <div className="mt-3 text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
-            {n.toLocaleString("ar-EG")}
-            {suffix && <span className="ms-1 text-sm font-semibold text-muted-foreground">{suffix}</span>}
+            {fmt(n)}
+            {suffix && (
+              <span className="ms-1 text-sm font-semibold text-muted-foreground">{suffix}</span>
+            )}
           </div>
           {typeof trend === "number" && (
             <div

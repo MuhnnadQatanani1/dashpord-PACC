@@ -1,4 +1,20 @@
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, PieChart, Pie, Cell, Legend, AreaChart, Area } from "recharts";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  AreaChart,
+  Area,
+} from "recharts";
 import type { TimePoint, SectorSlice, CrimeSlice, YearSeries } from "@/lib/mock-data";
 
 /**
@@ -48,11 +64,24 @@ export function CrimesBar({ data }: { data: CrimeSlice[] }) {
   const sorted = [...data].sort((a, b) => b.cases - a.cases);
   return (
     <ResponsiveContainer width="100%" height={420}>
-      <BarChart data={sorted} layout="vertical" margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
+      <BarChart
+        data={sorted}
+        layout="vertical"
+        margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+      >
         <CartesianGrid strokeDasharray="3 3" stroke={GRID} horizontal={false} />
         <XAxis type="number" tick={AXIS} />
-        <YAxis type="category" dataKey="crime" tick={{ ...AXIS, fontSize: 11 }} width={190} orientation="right" />
-        <Tooltip contentStyle={TOOLTIP} cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }} />
+        <YAxis
+          type="category"
+          dataKey="crime"
+          tick={{ ...AXIS, fontSize: 11 }}
+          width={190}
+          orientation="right"
+        />
+        <Tooltip
+          contentStyle={TOOLTIP}
+          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
+        />
         <Bar dataKey="cases" name="القضايا" radius={[0, 8, 8, 0]} animationDuration={900}>
           {sorted.map((_, i) => (
             <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
@@ -82,8 +111,24 @@ export function TimelineArea({ data }: { data: TimePoint[] }) {
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip contentStyle={TOOLTIP} />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-        <Area type="monotone" dataKey="complaints" name="الشكاوى والبلاغات" stroke={CHART_COLORS[0]} fill="url(#gCmp)" strokeWidth={2.5} animationDuration={900} />
-        <Area type="monotone" dataKey="investigations" name="الملفات التحقيقية" stroke={CHART_COLORS[1]} fill="url(#gInv)" strokeWidth={2.5} animationDuration={900} />
+        <Area
+          type="monotone"
+          dataKey="complaints"
+          name="الشكاوى والبلاغات"
+          stroke={CHART_COLORS[0]}
+          fill="url(#gCmp)"
+          strokeWidth={2.5}
+          animationDuration={900}
+        />
+        <Area
+          type="monotone"
+          dataKey="investigations"
+          name="الملفات التحقيقية"
+          stroke={CHART_COLORS[1]}
+          fill="url(#gInv)"
+          strokeWidth={2.5}
+          animationDuration={900}
+        />
       </AreaChart>
     </ResponsiveContainer>
   );
@@ -98,8 +143,24 @@ export function VerdictsLine({ data }: { data: TimePoint[] }) {
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip contentStyle={TOOLTIP} />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
-        <Line type="monotone" dataKey="referrals" name="محالة للنائب العام" stroke={CHART_COLORS[5]} strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 5 }} />
-        <Line type="monotone" dataKey="verdicts" name="القضايا المفصولة بحكم" stroke={CHART_COLORS[1]} strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+        <Line
+          type="monotone"
+          dataKey="referrals"
+          name="محالة للنائب العام"
+          stroke={CHART_COLORS[5]}
+          strokeWidth={2.5}
+          dot={{ r: 3 }}
+          activeDot={{ r: 5 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="verdicts"
+          name="القضايا المفصولة بحكم"
+          stroke={CHART_COLORS[1]}
+          strokeWidth={2.5}
+          dot={{ r: 3 }}
+          activeDot={{ r: 5 }}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
@@ -112,7 +173,10 @@ export function SectorsBar({ data }: { data: SectorSlice[] }) {
         <CartesianGrid strokeDasharray="3 3" stroke={GRID} horizontal={false} />
         <XAxis type="number" tick={AXIS} />
         <YAxis type="category" dataKey="sector" tick={AXIS} width={150} orientation="right" />
-        <Tooltip contentStyle={TOOLTIP} cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }} />
+        <Tooltip
+          contentStyle={TOOLTIP}
+          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
+        />
         <Bar dataKey="cases" name="الملفات" radius={[0, 8, 8, 0]} animationDuration={900}>
           {data.map((_, i) => (
             <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
@@ -127,7 +191,16 @@ export function SectorsPie({ data }: { data: SectorSlice[] }) {
   return (
     <ResponsiveContainer width="100%" height={340}>
       <PieChart>
-        <Pie data={data} dataKey="cases" nameKey="sector" innerRadius={65} outerRadius={115} paddingAngle={2} stroke="var(--color-card)" strokeWidth={2}>
+        <Pie
+          data={data}
+          dataKey="cases"
+          nameKey="sector"
+          innerRadius={65}
+          outerRadius={115}
+          paddingAngle={2}
+          stroke="var(--color-card)"
+          strokeWidth={2}
+        >
           {data.map((_, i) => (
             <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
           ))}
@@ -144,7 +217,16 @@ export function ShareDonut({ data }: { data: { name: string; value: number }[] }
   return (
     <ResponsiveContainer width="100%" height={340}>
       <PieChart>
-        <Pie data={data} dataKey="value" nameKey="name" innerRadius={72} outerRadius={115} paddingAngle={3} stroke="var(--color-card)" strokeWidth={2}>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          innerRadius={72}
+          outerRadius={115}
+          paddingAngle={3}
+          stroke="var(--color-card)"
+          strokeWidth={2}
+        >
           {data.map((_, i) => (
             <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
           ))}
@@ -157,22 +239,66 @@ export function ShareDonut({ data }: { data: { name: string; value: number }[] }
 }
 
 /** Grouped bars: one bar per year, one group per category. */
-export function YearGroupedBar({ data, height = 380, horizontal = false }: { data: YearSeries[]; height?: number; horizontal?: boolean }) {
+export function YearGroupedBar({
+  data,
+  height = 380,
+  horizontal = false,
+}: {
+  data: YearSeries[];
+  height?: number;
+  horizontal?: boolean;
+}) {
   const rows = toRows(data);
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={rows} layout={horizontal ? "vertical" : "horizontal"} margin={{ top: 10, right: 20, left: 10, bottom: horizontal ? 10 : 60 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke={GRID} horizontal={!horizontal} vertical={horizontal} />
-        {horizontal ? <XAxis type="number" tick={AXIS} /> : <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 10 }} interval={0} angle={-25} textAnchor="end" height={70} />}
+      <BarChart
+        data={rows}
+        layout={horizontal ? "vertical" : "horizontal"}
+        margin={{ top: 10, right: 20, left: 10, bottom: horizontal ? 10 : 60 }}
+      >
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke={GRID}
+          horizontal={!horizontal}
+          vertical={horizontal}
+        />
         {horizontal ? (
-          <YAxis type="category" dataKey="label" tick={{ ...AXIS, fontSize: 11 }} width={200} orientation="right" />
+          <XAxis type="number" tick={AXIS} />
+        ) : (
+          <XAxis
+            dataKey="label"
+            tick={{ ...AXIS, fontSize: 10 }}
+            interval={0}
+            angle={-25}
+            textAnchor="end"
+            height={70}
+          />
+        )}
+        {horizontal ? (
+          <YAxis
+            type="category"
+            dataKey="label"
+            tick={{ ...AXIS, fontSize: 11 }}
+            width={200}
+            orientation="right"
+          />
         ) : (
           <YAxis tick={AXIS} orientation="right" />
         )}
-        <Tooltip contentStyle={TOOLTIP} cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }} />
+        <Tooltip
+          contentStyle={TOOLTIP}
+          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
+        />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {YEAR_LABELS.map((y, i) => (
-          <Bar key={y} dataKey={y} name={y} fill={CHART_COLORS[i]} radius={horizontal ? [0, 6, 6, 0] : [6, 6, 0, 0]} animationDuration={800} />
+          <Bar
+            key={y}
+            dataKey={y}
+            name={y}
+            fill={CHART_COLORS[i]}
+            radius={horizontal ? [0, 6, 6, 0] : [6, 6, 0, 0]}
+            animationDuration={800}
+          />
         ))}
       </BarChart>
     </ResponsiveContainer>
@@ -195,10 +321,20 @@ export function MultiBar({
         <CartesianGrid strokeDasharray="3 3" stroke={GRID} vertical={false} />
         <XAxis dataKey="year" tick={AXIS} reversed />
         <YAxis tick={AXIS} orientation="right" />
-        <Tooltip contentStyle={TOOLTIP} cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }} />
+        <Tooltip
+          contentStyle={TOOLTIP}
+          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
+        />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {keys.map((k, i) => (
-          <Bar key={k.key} dataKey={k.key} name={k.name} fill={CHART_COLORS[i % CHART_COLORS.length]} radius={[6, 6, 0, 0]} animationDuration={800} />
+          <Bar
+            key={k.key}
+            dataKey={k.key}
+            name={k.name}
+            fill={CHART_COLORS[i % CHART_COLORS.length]}
+            radius={[6, 6, 0, 0]}
+            animationDuration={800}
+          />
         ))}
       </BarChart>
     </ResponsiveContainer>
@@ -224,7 +360,16 @@ export function MultiLine({
         <Tooltip contentStyle={TOOLTIP} />
         <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {keys.map((k, i) => (
-          <Line key={k.key} type="monotone" dataKey={k.key} name={k.name} stroke={CHART_COLORS[i % CHART_COLORS.length]} strokeWidth={2.5} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+          <Line
+            key={k.key}
+            type="monotone"
+            dataKey={k.key}
+            name={k.name}
+            stroke={CHART_COLORS[i % CHART_COLORS.length]}
+            strokeWidth={2.5}
+            dot={{ r: 3 }}
+            activeDot={{ r: 5 }}
+          />
         ))}
       </LineChart>
     </ResponsiveContainer>

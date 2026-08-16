@@ -26,6 +26,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as ReportsAnnualRouteImport } from './routes/reports.annual'
 import { Route as ReportsInternationalRouteImport } from './routes/reports.international'
+import { Route as ReportsManageRouteImport } from './routes/reports.manage'
 import { Route as ReportsSpecializedRouteImport } from './routes/reports.specialized'
 import { Route as ReportsSurveysRouteImport } from './routes/reports.surveys'
 
@@ -114,6 +115,11 @@ const ReportsInternationalRoute = ReportsInternationalRouteImport.update({
   path: '/international',
   getParentRoute: () => ReportsRoute,
 } as any)
+const ReportsManageRoute = ReportsManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => ReportsRoute,
+} as any)
 const ReportsSpecializedRoute = ReportsSpecializedRouteImport.update({
   id: '/specialized',
   path: '/specialized',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/stories': typeof StoriesRoute
   '/reports/annual': typeof ReportsAnnualRoute
   '/reports/international': typeof ReportsInternationalRoute
+  '/reports/manage': typeof ReportsManageRoute
   '/reports/specialized': typeof ReportsSpecializedRoute
   '/reports/surveys': typeof ReportsSurveysRoute
 }
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/stories': typeof StoriesRoute
   '/reports/annual': typeof ReportsAnnualRoute
   '/reports/international': typeof ReportsInternationalRoute
+  '/reports/manage': typeof ReportsManageRoute
   '/reports/specialized': typeof ReportsSpecializedRoute
   '/reports/surveys': typeof ReportsSurveysRoute
 }
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/stories': typeof StoriesRoute
   '/reports/annual': typeof ReportsAnnualRoute
   '/reports/international': typeof ReportsInternationalRoute
+  '/reports/manage': typeof ReportsManageRoute
   '/reports/specialized': typeof ReportsSpecializedRoute
   '/reports/surveys': typeof ReportsSurveysRoute
 }
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/stories'
     | '/reports/annual'
     | '/reports/international'
+    | '/reports/manage'
     | '/reports/specialized'
     | '/reports/surveys'
   fileRoutesByTo: FileRoutesByTo
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/stories'
     | '/reports/annual'
     | '/reports/international'
+    | '/reports/manage'
     | '/reports/specialized'
     | '/reports/surveys'
   id:
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/stories'
     | '/reports/annual'
     | '/reports/international'
+    | '/reports/manage'
     | '/reports/specialized'
     | '/reports/surveys'
   fileRoutesById: FileRoutesById
@@ -394,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsInternationalRouteImport
       parentRoute: typeof ReportsRoute
     }
+    '/reports/manage': {
+      id: '/reports/manage'
+      path: '/manage'
+      fullPath: '/reports/manage'
+      preLoaderRoute: typeof ReportsManageRouteImport
+      parentRoute: typeof ReportsRoute
+    }
     '/reports/specialized': {
       id: '/reports/specialized'
       path: '/specialized'
@@ -414,6 +433,7 @@ declare module '@tanstack/react-router' {
 interface ReportsRouteChildren {
   ReportsAnnualRoute: typeof ReportsAnnualRoute
   ReportsInternationalRoute: typeof ReportsInternationalRoute
+  ReportsManageRoute: typeof ReportsManageRoute
   ReportsSpecializedRoute: typeof ReportsSpecializedRoute
   ReportsSurveysRoute: typeof ReportsSurveysRoute
 }
@@ -421,6 +441,7 @@ interface ReportsRouteChildren {
 const ReportsRouteChildren: ReportsRouteChildren = {
   ReportsAnnualRoute: ReportsAnnualRoute,
   ReportsInternationalRoute: ReportsInternationalRoute,
+  ReportsManageRoute: ReportsManageRoute,
   ReportsSpecializedRoute: ReportsSpecializedRoute,
   ReportsSurveysRoute: ReportsSurveysRoute,
 }

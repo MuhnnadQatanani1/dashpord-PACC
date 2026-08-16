@@ -536,3 +536,138 @@
     display: block !important;
   }
 }
+
+/* ---------------------------------------------------------------
+ * Accessibility widget overrides — driven by data-aa-* attributes
+ * set on <html> by the accessibility store.
+ * ------------------------------------------------------------- */
+
+/* High contrast */
+html[data-aa-contrast] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --primary-glow: #333333;
+  --secondary: #e6e6e6;
+  --secondary-foreground: #000000;
+  --muted: #eeeeee;
+  --muted-foreground: #000000;
+  --accent: #0051c7;
+  --accent-foreground: #ffffff;
+  --accent-soft: #dbe7ff;
+  --success: #00692f;
+  --success-foreground: #ffffff;
+  --destructive: #c00000;
+  --destructive-foreground: #ffffff;
+  --border: #000000;
+  --input: #000000;
+  --ring: #0051c7;
+  --surface: #ffffff;
+  --surface-muted: #f2f2f2;
+  --navy: #000000;
+  --navy-soft: #e6e6e6;
+}
+html[data-aa-contrast] .dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #000000;
+  --card-foreground: #ffffff;
+  --popover: #000000;
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --primary-glow: #cccccc;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ffffff;
+  --muted: #111111;
+  --muted-foreground: #ffffff;
+  --accent: #3f7dff;
+  --accent-foreground: #000000;
+  --accent-soft: #0d1f40;
+  --success: #33d17a;
+  --success-foreground: #000000;
+  --destructive: #ff4d4d;
+  --destructive-foreground: #000000;
+  --border: #ffffff;
+  --input: #ffffff;
+  --ring: #3f7dff;
+  --surface: #000000;
+  --surface-muted: #141414;
+  --navy: #ffffff;
+  --navy-soft: #141414;
+}
+html[data-aa-contrast] .bg-dots {
+  background-image: none;
+}
+html[data-aa-contrast] body {
+  text-shadow: none;
+}
+
+/* Font size */
+html[data-aa-fontsize="lg"] {
+  font-size: 112.5%;
+}
+html[data-aa-fontsize="xl"] {
+  font-size: 125%;
+}
+
+/* Reading spacing */
+html[data-aa-spacing] p,
+html[data-aa-spacing] li,
+html[data-aa-spacing] blockquote,
+html[data-aa-spacing] td,
+html[data-aa-spacing] th {
+  line-height: 2.1 !important;
+  word-spacing: 0.12em;
+  letter-spacing: 0.02em;
+}
+
+/* Underlined links */
+html[data-aa-links] a {
+  text-decoration: underline !important;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+
+/* Hide images (alt text still read by screen readers) */
+html[data-aa-images] img {
+  visibility: hidden !important;
+}
+
+/* Pause motion */
+html[data-aa-motion] *,
+html[data-aa-motion] *::before,
+html[data-aa-motion] *::after {
+  animation-duration: 0.001s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001s !important;
+  scroll-behavior: auto !important;
+}
+
+/* TTS read-aloud active segment highlight */
+.reading-active {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 55%,
+    oklch(0.85 0.15 75 / 0.55) 55%,
+    oklch(0.85 0.15 75 / 0.55) 100%
+  ) !important;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0 2px oklch(0.85 0.15 75 / 0.55);
+}
+.dark .reading-active {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 55%,
+    oklch(0.72 0.15 75 / 0.6) 55%,
+    oklch(0.72 0.15 75 / 0.6) 100%
+  ) !important;
+  box-shadow: 0 0 0 2px oklch(0.72 0.15 75 / 0.6);
+}

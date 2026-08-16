@@ -16,9 +16,11 @@ export function downloadExcel(
   filename: string,
   sheetName: string,
   columns: string[],
-  rows: (string | number)[][]
+  rows: (string | number)[][],
 ): void {
-  const sheetNameSafe = esc(sheetName).replace(/[\\/*?:[\]]/g, "_").slice(0, 31);
+  const sheetNameSafe = esc(sheetName)
+    .replace(/[\\/*?:[\]]/g, "_")
+    .slice(0, 31);
 
   const body = [columns, ...rows]
     .map(
@@ -28,7 +30,7 @@ export function downloadExcel(
             const type = typeof cell === "number" && Number.isFinite(cell) ? "Number" : "String";
             return `<Cell><Data ss:Type="${type}">${esc(cell)}</Data></Cell>`;
           })
-          .join("")}</Row>`
+          .join("")}</Row>`,
     )
     .join("");
 

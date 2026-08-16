@@ -14,7 +14,7 @@ export interface DatasetItem {
 }
 
 export const getDatasets = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await (supabase as any)
+  const { data, error } = await supabase
     .from("datasets")
     .select("*")
     .order("rows", { ascending: false });
