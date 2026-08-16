@@ -14,18 +14,17 @@ export interface DataStory {
 
 const YEARS = ["2022", "2023", "2024", "2025"];
 
-const findInd = (id: string) => {
-  const item = interactiveIndicators.find((i) => i.id === id);
-  if (!item) throw new Error(`Indicator not found: ${id}`);
-  return item;
-};
+const findInd = (id: string) => interactiveIndicators.find((i) => i.id === id) ?? null;
 
 function seriesOf(id: string, label?: string) {
-  const t = findInd(id).table;
+  const item = findInd(id);
+  if (!item) return [];
+  const t = item.table;
   const row = label ? t.rows.find((r) => String(r[0]) === label) : t.rows[t.rows.length - 1];
+  if (!row) return [];
   return YEARS.map((y, i) => ({
     label: y,
-    value: typeof row?.[i + 1] === "number" ? (row[i + 1] as number) : 0,
+    value: typeof row[i + 1] === "number" ? (row[i + 1] as number) : 0,
   }));
 }
 
@@ -118,5 +117,5 @@ export const getStories = createServerFn({ method: "GET" }).handler(async () => 
     },
   ];
 
-  return stories;
+  return stories.filter((s) => s.series.length > 0);
 });
