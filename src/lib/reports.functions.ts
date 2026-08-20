@@ -425,6 +425,7 @@ export const getReports = createServerFn({ method: "GET" })
         updated_at: r.updated_at instanceof Date ? r.updated_at.toISOString() : String(r.updated_at ?? ""),
       })) as ReportItem[];
     } catch (e) {
+      const errMsg = e instanceof Error ? e.message : String(e);
       console.warn("[reports] SQL Server unavailable, serving demo data:", e);
       return categories?.length
         ? MOCK_REPORTS.filter((r) => categories.includes(r.category))
