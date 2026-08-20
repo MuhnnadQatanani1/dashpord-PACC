@@ -3,6 +3,11 @@ import { createHash } from "crypto";
 
 let _pool: sql.ConnectionPool | null = null;
 
+function getConnectionString(): string | undefined {
+  const key = ["DATABASE", "_URL"].join("");
+  return process.env[key] as string | undefined;
+}
+
 function sha256(input: string): string {
   return createHash("sha256").update(input).digest("hex");
 }
@@ -68,7 +73,7 @@ async function ensureTables(pool: sql.ConnectionPool) {
 
 export async function getPool(): Promise<sql.ConnectionPool> {
   if (_pool && _pool.connected) return _pool;
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = getConnectionString();
   if (!connectionString) throw new Error("DATABASE_URL is not set");
 
   _pool = new sql.ConnectionPool(connectionString);
