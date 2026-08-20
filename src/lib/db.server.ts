@@ -1,8 +1,6 @@
 import sql from "mssql";
 import { createHash } from "crypto";
 
-const connectionString = process.env.DATABASE_URL;
-
 let _pool: sql.ConnectionPool | null = null;
 
 function sha256(input: string): string {
@@ -70,6 +68,7 @@ async function ensureTables(pool: sql.ConnectionPool) {
 
 export async function getPool(): Promise<sql.ConnectionPool> {
   if (_pool && _pool.connected) return _pool;
+  const connectionString = process.env.DATABASE_URL;
   if (!connectionString) throw new Error("DATABASE_URL is not set");
 
   _pool = new sql.ConnectionPool(connectionString);
