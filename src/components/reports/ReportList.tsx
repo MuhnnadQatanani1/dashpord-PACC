@@ -4,8 +4,12 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Inbox, Trash2 } from "lucide-react";
 import { useLocale } from "@/i18n";
 import { useAuth } from "@/lib/use-auth";
-import { getReports, type ReportCategory, type ReportItem } from "@/lib/reports.functions";
-import { supabase } from "@/integrations/supabase/client";
+import {
+  getReports,
+  deleteReport,
+  type ReportCategory,
+  type ReportItem,
+} from "@/lib/reports.functions";
 import { ReportCard } from "./ReportCard";
 import { ReportForm } from "./ReportForm";
 
@@ -39,6 +43,7 @@ export function ReportList({ categories }: { categories: ReportCategory[] }) {
   const fetchReports = useServerFn(getReports);
   const [editing, setEditing] = useState<ReportItem | null>(null);
   const [deleting, setDeleting] = useState<ReportItem | null>(null);
+  const svcDelete = useServerFn(deleteReport);
 
   const { data: reports } = useSuspenseQuery({
     queryKey: ["reports", categories.join(",")],
@@ -47,10 +52,8 @@ export function ReportList({ categories }: { categories: ReportCategory[] }) {
 
   async function handleDelete() {
     if (!deleting) return;
-    const { error } = await supabase.from("reports").delete().eq("id", deleting.id);
-    if (!error) {
-      await queryClient.invalidateQueries({ queryKey: ["reports"] });
-    }
+    await svcDelete({ data: { id: deleting.id } });
+    await queryClient.invalidateQueries({ queryKey: ["reports"] });
     setDeleting(null);
   }
 

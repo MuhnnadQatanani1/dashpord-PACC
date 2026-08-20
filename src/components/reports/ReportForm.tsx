@@ -3,11 +3,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { CheckCircle2, AlertCircle, Loader2, Upload } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useLocale } from "@/i18n";
 import type { Dict } from "@/i18n/ar";
-import { REPORT_CATEGORIES, type ReportCategory, type ReportItem } from "@/lib/reports.functions";
+import {
+  REPORT_CATEGORIES,
+  type ReportCategory,
+  type ReportItem,
+  createReport,
+  updateReport,
+} from "@/lib/reports.functions";
 import { cn } from "@/lib/utils";
 
 import {
@@ -18,12 +24,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-function uuid(): string {
-  return typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : Math.random().toString(36).slice(2) + Date.now().toString(36);
-}
 
 const CAT_OPTION: Record<ReportCategory, keyof Dict> = {
   annual: "reports.annual",
@@ -46,6 +46,9 @@ export function ReportForm({
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
+  const svcCreate = useServerFn(createReport);
+  const svcUpdate = useServerFn(updateReport);
+
   const schema = z.object({
     title_ar: z.string().min(1, t("form.titleRequired")),
     title_en: z.string(),
@@ -55,6 +58,7 @@ export function ReportForm({
     publish_date: z.string().min(1, t("form.dateRequired")),
     pages: z.coerce.number().int().min(0),
     size_mb: z.coerce.number().min(0),
+    added_by: z.string(),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -70,6 +74,7 @@ export function ReportForm({
       publish_date: initial?.publish_date ?? new Date().toISOString().slice(0, 10),
       pages: initial?.pages ?? 0,
       size_mb: initial?.size_mb ?? 0,
+      added_by: initial?.added_by ?? "",
     },
   });
 
@@ -79,15 +84,15 @@ export function ReportForm({
     try {
       let file_url = initial?.file_url ?? null;
       let original_filename = initial?.original_filename ?? null;
+      let file_data_b64: string | undefined;
+      let file_mime: string | undefined;
 
       if (file) {
-        const path = `reports/${uuid()}-${file.name}`;
-        const { error: upErr } = await supabase.storage.from("reports").upload(path, file, {
-          upsert: true,
-        });
-        if (upErr) throw upErr;
-        const { data: pub } = supabase.storage.from("reports").getPublicUrl(path);
-        file_url = pub.publicUrl;
+        const buf = await file.arrayBuffer();
+        file_data_b64 = btoa(
+          new Uint8Array(buf).reduce((s, b) => s + String.fromCharCode(b), ""),
+        );
+        file_mime = file.type || "application/octet-stream";
         original_filename = file.name;
       }
 
@@ -102,12 +107,16 @@ export function ReportForm({
         size_mb: values.size_mb,
         file_url,
         original_filename,
+        added_by: values.added_by || null,
+        file_data_b64,
+        file_mime,
       };
 
-      const { error } = initial
-        ? await supabase.from("reports").update(payload).eq("id", initial.id)
-        : await supabase.from("reports").insert(payload);
-      if (error) throw error;
+      if (initial) {
+        await svcUpdate({ data: { ...payload, id: initial.id } });
+      } else {
+        await svcCreate({ data: payload });
+      }
 
       setMessage({ type: "success", text: t("form.saved") });
       await queryClient.invalidateQueries({ queryKey: ["reports"] });
@@ -248,10 +257,23 @@ export function ReportForm({
           />
         </div>
 
-        <FormItem>
-          <FormLabel>{t("form.file")}</FormLabel>
-          <FormControl>
-            <div className="flex flex-col gap-2">
+        <FormField
+          control={form.control}
+          name="added_by"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("form.addedBy")}</FormLabel>
+              <FormControl>
+                <input {...field} className={inputCls} placeholder={t("form.addedByPlaceholder")} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-foreground">{t("form.file")}</label>
+          <div className="flex flex-col gap-2">
               <label className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-surface px-3 py-3 text-sm text-muted-foreground hover:bg-secondary">
                 <Upload className="h-4 w-4" />
                 {file ? file.name : initial?.original_filename || t("form.file")}
@@ -266,8 +288,7 @@ export function ReportForm({
                 <p className="text-xs text-muted-foreground">{t("form.fileNote")}</p>
               )}
             </div>
-          </FormControl>
-        </FormItem>
+        </div>
 
         {message && (
           <p

@@ -5,8 +5,8 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { Plus, LogOut, Trash2, Loader2 } from "lucide-react";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { useAuth } from "@/lib/use-auth";
-import { supabase } from "@/integrations/supabase/client";
-import { getReports, type ReportItem } from "@/lib/reports.functions";
+import { adminLogin } from "@/lib/auth.functions";
+import { getReports, deleteReport, type ReportItem } from "@/lib/reports.functions";
 import { ReportCard } from "@/components/reports/ReportCard";
 import { ReportForm } from "@/components/reports/ReportForm";
 
@@ -40,12 +40,13 @@ export const Route = createFileRoute("/reports/manage")({
   },
 });
 
-function SignInCard() {
+function SignInCard({ onSignIn }: { onSignIn: (name: string | null) => void }) {
   const { t } = useLocale();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const login = useServerFn(adminLogin);
 
   const inputCls =
     "focus-ring w-full rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground";
@@ -55,8 +56,12 @@ function SignInCard() {
     setBusy(true);
     setError(null);
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) setError(t("auth.error"));
+      const user = await login({ data: { email, password } });
+      if (user) {
+        onSignIn(user.display_name);
+      } else {
+        setError(t("auth.error"));
+      }
     } catch {
       setError(t("auth.dbError"));
     }
@@ -106,7 +111,7 @@ function SignInCard() {
 
 function ManageReports() {
   const { t } = useLocale();
-  const { session, loading, signOut } = useAuth();
+  const { session, loading, signIn, signOut } = useAuth();
   const queryClient = useQueryClient();
   const fetchReports = useServerFn(getReports);
   const { data: reports } = useSuspenseQuery({
@@ -117,13 +122,12 @@ function ManageReports() {
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState<ReportItem | null>(null);
   const [deleting, setDeleting] = useState<ReportItem | null>(null);
+  const svcDelete = useServerFn(deleteReport);
 
   async function handleDelete() {
     if (!deleting) return;
-    const { error } = await supabase.from("reports").delete().eq("id", deleting.id);
-    if (!error) {
-      await queryClient.invalidateQueries({ queryKey: ["reports"] });
-    }
+    await svcDelete({ data: { id: deleting.id } });
+    await queryClient.invalidateQueries({ queryKey: ["reports"] });
     setDeleting(null);
   }
 
@@ -139,7 +143,7 @@ function ManageReports() {
     return (
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
         <h2 className="mb-4 text-xl font-bold text-primary">{t("auth.manageTitle")}</h2>
-        <SignInCard />
+        <SignInCard onSignIn={(name) => signIn({ email: "admin", display_name: name })} />
       </section>
     );
   }
