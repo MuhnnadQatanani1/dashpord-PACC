@@ -14,15 +14,21 @@ export interface DatasetItem {
 }
 
 export const getDatasets = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await supabase
-    .from("datasets")
-    .select("*")
-    .order("rows", { ascending: false });
+  if (!supabase) return [];
+  try {
+    const { data, error } = await supabase
+      .from("datasets")
+      .select("*")
+      .order("rows", { ascending: false });
 
-  if (error) {
-    console.error("Failed to fetch datasets:", error);
-    throw new Error(error.message);
+    if (error) {
+      console.error("Failed to fetch datasets:", error);
+      throw new Error(error.message);
+    }
+
+    return (data as DatasetItem[]) ?? [];
+  } catch (e) {
+    console.warn("[datasets] Supabase unavailable, serving empty data:", e);
+    return [];
   }
-
-  return (data as DatasetItem[]) ?? [];
 });
