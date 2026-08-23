@@ -60,6 +60,11 @@ export function ReadAloud() {
                 <p className="text-xs text-muted-foreground">
                   {read.state === "playing" ? t("tts.reading") : ""}
                 </p>
+                <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs leading-6 text-muted-foreground">
+                  <span className="font-bold text-foreground">{t("tts.voice")}:</span>{" "}
+                  {read.voiceName ?? t("tts.voiceAuto")}
+                  <p className="mt-1">{t("tts.arabicHint")}</p>
+                </div>
 
                 <div className="flex items-center justify-center gap-2">
                   {read.state === "playing" ? (

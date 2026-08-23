@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Menu, X, ChevronDown, ShieldAlert, Languages } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, ChevronDown, ShieldAlert, Languages, Search } from "lucide-react";
+import { useMemo, useState, type KeyboardEvent } from "react";
 
 import { ThemeToggle } from "./ThemeToggle";
 import { useLocale } from "@/i18n";
@@ -18,13 +18,13 @@ const NAV: NavItem[] = [
       { to: "/commission", label: "nav.commission" },
       { to: "/about", label: "nav.observatory" },
       { to: "/concepts", label: "nav.concepts" },
-      { to: "/main-indicators", label: "nav.enforcement" },
-      { to: "/main-indicators-efforts", label: "nav.efforts" },
     ],
   },
   {
     label: "nav.data",
     children: [
+      { to: "/main-indicators", label: "nav.enforcement" },
+      { to: "/main-indicators-efforts", label: "nav.efforts" },
       { to: "/dashboard", label: "nav.dashboard" },
       { to: "/indicators", label: "nav.spotlight" },
       { to: "/map", label: "nav.map" },
@@ -44,6 +44,142 @@ const NAV: NavItem[] = [
 
 function isGroup(item: NavItem): item is NavGroup {
   return "children" in item;
+}
+
+const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
+  { to: "/", label: "nav.home", keywords: "الرئيسية home المرصد الوطني مؤشرات الفساد" },
+  {
+    to: "/commission",
+    label: "nav.commission",
+    keywords: "هيئة مكافحة الفساد الفلسطينية commission pacc اختصاصات",
+  },
+  {
+    to: "/about",
+    label: "nav.observatory",
+    keywords: "عن المرصد observatory رؤية رسالة منهجية",
+  },
+  {
+    to: "/concepts",
+    label: "nav.concepts",
+    keywords: "المفاهيم المصطلحات concepts terms نزاهة حوكمة فساد",
+  },
+  {
+    to: "/main-indicators",
+    label: "nav.enforcement",
+    keywords: "انفاذ إنفاذ القانون law enforcement شكاوى تحقيق محاكم نيابة",
+  },
+  {
+    to: "/main-indicators-efforts",
+    label: "nav.efforts",
+    keywords: "جهود مكافحة الفساد anti corruption efforts توعية وقاية تعاون",
+  },
+  {
+    to: "/dashboard",
+    label: "nav.dashboard",
+    keywords: "لوحة البيانات التفاعلية dashboard charts filters مؤشرات",
+  },
+  {
+    to: "/indicators",
+    label: "nav.spotlight",
+    keywords: "أرقام تحت الضوء figures focus statistics مؤشرات",
+  },
+  { to: "/map", label: "nav.map", keywords: "خريطة تحليل جغرافي map governorates محافظات" },
+  { to: "/stories", label: "nav.stories", keywords: "قصص البيانات data stories trends اتجاهات" },
+  { to: "/reports/annual", label: "nav.annual", keywords: "تقارير سنوية دورية annual reports" },
+  {
+    to: "/reports/specialized",
+    label: "nav.specialized",
+    keywords: "تقارير متخصصة specialized reports دراسات",
+  },
+  { to: "/reports/surveys", label: "nav.surveys", keywords: "استطلاعات رأي surveys opinion polls" },
+  {
+    to: "/reports/international",
+    label: "nav.international",
+    keywords: "إضاءات دولية international uncac مؤشرات عالمية",
+  },
+];
+
+function normalizeSearch(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[إأآا]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .replace(/[\u064B-\u065F\u0670]/g, "")
+    .trim();
+}
+
+function SiteSearch({ id, onNavigate }: { id: string; onNavigate?: () => void }) {
+  const [query, setQuery] = useState("");
+  const [focused, setFocused] = useState(false);
+  const { t } = useLocale();
+
+  const results = useMemo(() => {
+    const q = normalizeSearch(query);
+    if (q.length < 2) return [];
+    return SEARCH_ITEMS.filter((item) =>
+      normalizeSearch(`${t(item.label)} ${item.keywords}`).includes(q),
+    ).slice(0, 6);
+  }, [query, t]);
+
+  const goToFirst = () => {
+    const first = results[0];
+    if (!first) return;
+    window.location.href = first.to;
+    onNavigate?.();
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      goToFirst();
+    }
+    if (event.key === "Escape") {
+      setFocused(false);
+      setQuery("");
+    }
+  };
+
+  return (
+    <div className="relative w-full xl:w-60">
+      <label className="sr-only" htmlFor={id}>
+        {t("search.label")}
+      </label>
+      <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <input
+        id={id}
+        type="search"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => window.setTimeout(() => setFocused(false), 140)}
+        onKeyDown={onKeyDown}
+        placeholder={t("search.placeholder")}
+        autoComplete="off"
+        className="focus-ring h-10 w-full rounded-lg border border-border bg-card pe-3 ps-9 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground hover:bg-secondary/60"
+      />
+      {focused && query.trim().length >= 2 && (
+        <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-popover shadow-elevated">
+          {results.length > 0 ? (
+            results.map((item) => (
+              <a
+                key={item.to}
+                href={item.to}
+                onClick={onNavigate}
+                className="block px-3 py-2 text-sm font-medium text-foreground/85 hover:bg-secondary hover:text-primary"
+              >
+                {t(item.label)}
+              </a>
+            ))
+          ) : (
+            <div className="px-3 py-2 text-sm text-muted-foreground">{t("search.noResults")}</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export function Navbar() {
@@ -94,6 +230,9 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden lg:block">
+            <SiteSearch id="site-search-desktop" />
+          </div>
           <button
             onClick={toggle}
             aria-label={t("nav.switchLang")}
@@ -125,6 +264,9 @@ export function Navbar() {
       {open && (
         <div className="xl:hidden border-t border-border bg-background">
           <nav className="mx-auto grid max-w-7xl gap-1 px-4 py-3">
+            <div className="mb-2 lg:hidden">
+              <SiteSearch id="site-search-mobile" onNavigate={() => setOpen(false)} />
+            </div>
             {NAV.flatMap((n) => (isGroup(n) ? n.children : [n])).map((c) => (
               <Link
                 key={c.to}

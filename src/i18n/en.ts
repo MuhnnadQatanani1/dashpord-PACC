@@ -43,6 +43,10 @@ export const en: Dict = {
   "nav.switchLang": "Switch to Arabic",
   "nav.langLabel": "عربي",
 
+  "search.label": "Search the site",
+  "search.placeholder": "Search the site...",
+  "search.noResults": "No matching results",
+
   "footer.quickLinks": "Quick Links",
   "footer.aboutText":
     "A national platform for monitoring and analyzing corruption, integrity, and governance indicators based on accurate official statistical data, supporting decision-makers and strengthening transparency and accountability in Palestine.",
@@ -162,6 +166,10 @@ export const en: Dict = {
   "tts.noContent": "No readable content on this page.",
   "tts.error": "Could not start listening. Try again.",
   "tts.open": "Listen to page content",
+  "tts.voice": "Voice",
+  "tts.voiceAuto": "Automatic browser selection",
+  "tts.arabicHint":
+    "For the best Arabic pronunciation, use a browser with an Arabic voice such as Microsoft Hamed, Salma, or Google Arabic.",
 
   "meta.homeTitle":
     "National Observatory for Corruption Indicators | Palestinian Anti-Corruption Commission",

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Accessibility,
   X,
   Contrast,
   Type,
@@ -11,6 +10,7 @@ import {
   ImageOff,
   PauseCircle,
   RotateCcw,
+  SlidersHorizontal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/i18n";
@@ -82,7 +82,7 @@ export function AccessibilityWidget() {
         aria-expanded={open}
         className="focus-ring fixed bottom-4 start-4 z-[70] flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-elevated transition-transform hover:scale-105"
       >
-        <Accessibility className="h-6 w-6" />
+        <SlidersHorizontal className="h-6 w-6" />
       </button>
 
       {open && (
@@ -93,7 +93,7 @@ export function AccessibilityWidget() {
         >
           <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-3">
             <div className="flex items-center gap-2">
-              <Accessibility className="h-5 w-5 text-accent" />
+              <SlidersHorizontal className="h-5 w-5 text-accent" />
               <h3 className="text-sm font-bold text-primary">{t("a11y.title")}</h3>
             </div>
             <button
