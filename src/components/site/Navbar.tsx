@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Menu, X, ChevronDown, ShieldAlert, Languages, Search } from "lucide-react";
-import { useMemo, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { createPortal } from "react-dom";
 
 import { ThemeToggle } from "./ThemeToggle";
 import { useLocale } from "@/i18n";
@@ -21,10 +22,15 @@ const NAV: NavItem[] = [
     ],
   },
   {
-    label: "nav.data",
+    label: "nav.indicators",
     children: [
       { to: "/main-indicators", label: "nav.enforcement" },
       { to: "/main-indicators-efforts", label: "nav.efforts" },
+    ],
+  },
+  {
+    label: "nav.data",
+    children: [
       { to: "/dashboard", label: "nav.dashboard" },
       { to: "/indicators", label: "nav.spotlight" },
       { to: "/map", label: "nav.map" },
@@ -66,12 +72,12 @@ const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
   {
     to: "/main-indicators",
     label: "nav.enforcement",
-    keywords: "انفاذ إنفاذ القانون law enforcement شكاوى تحقيق محاكم نيابة",
+    keywords: "مؤشرات إنفاذ القانون law enforcement شكاوى تحقيق محاكم نيابة المؤشرات الرئيسية",
   },
   {
     to: "/main-indicators-efforts",
     label: "nav.efforts",
-    keywords: "جهود مكافحة الفساد anti corruption efforts توعية وقاية تعاون",
+    keywords: "جهود مكافحة الفساد anti corruption efforts توعية وقاية تعاون المؤشرات الرئيسية",
   },
   {
     to: "/dashboard",
@@ -182,11 +188,83 @@ function SiteSearch({ id, onNavigate }: { id: string; onNavigate?: () => void })
   );
 }
 
+function DropdownGroup({ item }: { item: NavGroup }) {
+  const [open, setOpen] = useState(false);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const { t } = useLocale();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [pos, setPos] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 100);
+  }, [cancelClose]);
+
+  useEffect(() => () => cancelClose(), [cancelClose]);
+
+  const show = useCallback(() => {
+    cancelClose();
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+    }
+    setOpen(true);
+  }, [cancelClose]);
+
+  return (
+    <div
+      className="relative pb-2"
+      onMouseEnter={show}
+      onMouseLeave={scheduleClose}
+    >
+      <button
+        ref={btnRef}
+        className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary hover:bg-secondary"
+      >
+        {t(item.label)} <ChevronDown className="h-3.5 w-3.5" />
+      </button>
+      {mounted && createPortal(
+        <div
+          onMouseEnter={cancelClose}
+          onMouseLeave={scheduleClose}
+          className={`fixed z-[10000] min-w-[220px] rounded-xl border border-border bg-popover p-1 shadow-elevated ${
+            open ? "visible opacity-100" : "invisible opacity-0"
+          }`}
+          style={{ top: pos.top, right: pos.right }}
+        >
+          {item.children.map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              activeProps={{ className: "text-primary bg-secondary" }}
+              className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-primary"
+              onClick={() => setOpen(false)}
+            >
+              {t(c.label)}
+            </Link>
+          ))}
+        </div>,
+        document.body,
+      )}
+    </div>
+  );
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const { t, toggle } = useLocale();
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border/70 bg-background/90 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
         <Link to="/" className="focus-ring flex items-center gap-2 rounded-md">
           <img
@@ -199,23 +277,7 @@ export function Navbar() {
         <nav className="hidden xl:flex items-center gap-1">
           {NAV.map((n) =>
             isGroup(n) ? (
-              <div key={String(n.label)} className="group relative">
-                <button className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary hover:bg-secondary">
-                  {t(n.label)} <ChevronDown className="h-3.5 w-3.5" />
-                </button>
-                <div className="invisible absolute right-0 top-full z-50 mt-1 min-w-[220px] rounded-xl border border-border bg-popover p-1 opacity-0 shadow-elevated transition-all group-hover:visible group-hover:opacity-100">
-                  {n.children.map((c) => (
-                    <Link
-                      key={c.to}
-                      to={c.to}
-                      activeProps={{ className: "text-primary bg-secondary" }}
-                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-primary"
-                    >
-                      {t(c.label)}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              <DropdownGroup key={String(n.label)} item={n} />
             ) : (
               <Link
                 key={n.to}
