@@ -1,21 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import { frameworkCriteria, lawEnforcementBand } from "@/lib/observatory-framework";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import {
+  BookOpenText,
   FileDown,
+  Fingerprint,
   Gavel,
   Handshake,
-  Zap,
-  Eye,
+  Landmark,
   Scale,
   ScrollText,
-  BookOpenText,
-  Users,
+  ShieldCheck,
   Sparkles,
-  Fingerprint,
+  Users,
+  type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/concepts")({
   component: Concepts,
@@ -30,50 +29,421 @@ export const Route = createFileRoute("/concepts")({
   },
 });
 
-function Glossary() {
-  const { t } = useLocale();
-  return [
-    {
-      icon: Scale,
-      term: t("concepts.g1Term"),
-      def: t("concepts.g1Def"),
-    },
-    {
-      icon: BookOpenText,
-      term: t("concepts.g2Term"),
-      def: t("concepts.g2Def"),
-    },
-    {
-      icon: Users,
-      term: t("concepts.g3Term"),
-      def: t("concepts.g3Def"),
-    },
-    {
-      icon: Fingerprint,
-      term: t("concepts.g4Term"),
-      def: t("concepts.g4Def"),
-    },
-    {
-      icon: Sparkles,
-      term: t("concepts.g5Term"),
-      def: t("concepts.g5Def"),
-    },
-    {
-      icon: Handshake,
-      term: t("concepts.g6Term"),
-      def: t("concepts.g6Def"),
-    },
-  ];
+type Concept = {
+  id: string;
+  term: string;
+  definition: string;
+};
+
+type ConceptCategory = {
+  id: string;
+  title: string;
+  concepts: Concept[];
+};
+
+const CONCEPT_CATEGORIES: ConceptCategory[] = [
+  {
+    id: "general",
+    title: "أولاً: مفاهيم ومصطلحات عامة",
+    concepts: [
+      {
+        id: "complaint",
+        term: "الشكوی",
+        definition:
+          "المعلومات المقدمة إلى هيئة مكافحة الفساد أو اية جهة اخرى بأية طريقة متاحة من قبل شخص معلوم، متضرر من ارتكاب جريمة فساد.",
+      },
+      {
+        id: "report",
+        term: "البلاغ",
+        definition:
+          "المعلومات المقدمة إلى هيئة مكافحة الفساد او اية جهة اخري بأية طريقة متاحة من قبل شخص مجهول، أو معلوم غير متضرر من ارثكاب جريمة فساد",
+      },
+      {
+        id: "investigation-file",
+        term: "الملف التحقيقي",
+        definition:
+          "هو الملف الذي يضم شكوى أو عدة شكاوى أو بلاغات محالة من الإدارة العامة للشكاوى والبلاغات والتحري للإدارة العامة للتحقيق بقرار من رئيس الهيئة لوجود ادعاءات بمخالفات أو تجاوزات قد ترقى للاشتباه بارتكاب جريمة فساد وذلك باستكمال اعمال التحقيق الأولي.",
+      },
+      {
+        id: "decision",
+        term: "القرار",
+        definition:
+          "جميع القرارات الصادرة عن رئيس الهيئة والتي قد تشمل قرار برد الشكوى أو البلاغ أو حفظه أو إحالته إلى النائب العام.",
+      },
+      {
+        id: "reject-complaint",
+        term: "رد الشكوى/ البلاغ لعدم الاختصاص",
+        definition:
+          "صدور قرار عن رئيس هيئة مكافحة الفساد بعدم اختصاص الهيئة في نظر الشكوى أو البلاغ المقدم لها.",
+      },
+      {
+        id: "transfer-complaint",
+        term: "تحويل الشكوى إلى جهات أخرى",
+        definition:
+          "صدور قرار عن رئيس هيئة مكافحة الفساد بعدم اختصاص الهيئة في نظر الشكوى أو البلاغ المقدم لها، مع تضمن الشكوى أو البلاغ مخالفات إدارية/ جرائم أخرى تقع ضمن اختصاص الجهات الأخرى المختصة.",
+      },
+      {
+        id: "archive-complaint",
+        term: "حفظ الشكوى",
+        definition:
+          "صدور قرار من رئيس هيئة مكافحة الفساد بحفظ الشكوى؛ وذلك بعد انتهاء إجراءات البحث و التحري والاستدلال وفق اختصاص الهيئة بعد عدم ثبوت وجود شبهات فساد في الشكوى أو البلاغ المقدم للهيئة.",
+      },
+      {
+        id: "refer-complaint",
+        term: "إحالة الشكوى",
+        definition:
+          "صدور قرار من رئيس هيئة مكافحة الفساد بإحالة ملف الشكوى أو البلاغ إلى النائب العام، بعد ثبوت وجود شبهات فساد قوية في الشكوى أو البلاغ المقدم للهيئة بعد انتهاء إجراءات التحري والاستدلال.",
+      },
+      {
+        id: "complainant-reporter",
+        term: "المشتكي/المبلغ",
+        definition:
+          "الشخص الذي يقوم بتقديم شكوى / بلاغ إلى هيئة مكافحة الفساد، أو إلى جهات أخرى، عن أي مخالفات مرتكبة تتضمن شبهات فساد.",
+      },
+      {
+        id: "reported-against",
+        term: "المشتكى عليه/ المبلغ ضده",
+        definition: "الشخص الذي يرد ضده شكوى/ بلاغ تتعلق بوجود شبهات فساد مشتبه بارتكابها.",
+      },
+    ],
+  },
+  {
+    id: "corruption-crimes",
+    title: "ثانياً - تعريف جرائم الفساد",
+    concepts: [
+      {
+        id: "neglect-duties",
+        term: "التهاون في أداء الواجبات الوظيفية",
+        definition:
+          "هو أحد صور الفساد المجزّم بالقانون، والمتمثل بتهاون الموظف بلا سبب مشروع في القيام بواجبات وظيفته وتنفيذ أوامر أمره المستند فيها إلى الأحكام القانونية وإذا لحق ضرر بمصالح الدولة من جراء هذا الإجراء تشدد العقوبة.",
+      },
+      {
+        id: "bribery",
+        term: "الرشوة",
+        definition:
+          "هي أحد صور القساد المجرم بالقانون، المتمثل بقيام كل موظف عمومي وكل شخص ندب إلى خدمة عامة سواء بالانتخاب أو بالتعبين، وكل امرئ كلف بمهمة رسمية، طلب أو قبل لنفسه أو لغيره هدية أو وعداً أو أية منفعة أخرى؛ ليقوم بعمل حق بحكم وظيفته، أو ليعمل عملاً غير حق، أو ليمتنع عن عمل كان يجب أن يقوم به بحكم وظيفته، وتشمل الرشوة من عرض على شخص من الأشخاص الوارد ذكرهم أعلاه هدية أو منفعة أخرى أو وعده بها ليعمل عملاً غير حق أو ليمتنع عن عمل کان یجب أن يقوم به.",
+      },
+      {
+        id: "embezzlement",
+        term: "الاختلاس",
+        definition:
+          "هو أحد صور الفساد المجرم بالفانون، المتمثل بقيام الموظف عمومي بإدخال في ذمته ما وكل إليه بحكم الوظيفة، أو بموجب تكليف من رئيسه امر إدارته أو جبايته أو حفظه من نقود وأشياء أخرى للدولة أو لأحد الناس.",
+      },
+      {
+        id: "abuse-of-authority",
+        term: "إساءة استعمال السلطة",
+        definition:
+          "وهو أحد صور الفساد المجرم بالقانون المتمثل بقيام الموظف أو عدم قيامه بفعل ما، لدى الاطلاع بوظائفه، بغرض الحصول على مزية غير مستحقة لصالحه أو لصالح شخص أو كيان آخر، مما يشكل انتهاكاً للقوانين.",
+      },
+      {
+        id: "forgery",
+        term: "التزوير والتزييف",
+        definition:
+          "هو أحد صور الفساد المجرم بالقانون، المتمثل بتحريف مفتعل للحقيقة في الوقائع والبيانات التي يراد إثباتها بصك، أو مخطوط يحتج بهما، نجم أو يمكن أن ينجم عنه ضرر مادي أو معنوي أو اجتماعي.",
+      },
+      {
+        id: "favoritism",
+        term: "الواسطة والمحسوبية والمحاباة",
+        definition:
+          "هي أحد صور الفساد المجرم بالقانون، المتمثل بقيام الموظف بعمل من أعمال وظيفته، أو امتناعه عن القيام بعمل من أعمال وظيقته أو إخلاله بواجباته نتيجة لرجاء أو توصية أو لاعتبارات غير مهنية، كالإنتماء الحزبي أو العائلي أو الديني أو الجهوي.",
+      },
+      {
+        id: "position-investment",
+        term: "استثمار الوظيفة",
+        definition:
+          "هو أحد صور الفساد المجرم بالقانون، المتمثل بقيام من وكل إليه بيع أو شراء أو إدارة أموال منقولة أو غير منقولة لحساب الدولة أو لحساب إدارة عامة، فاقترف غشاً في أحد هذه الأعمال أو خالف الأحكام التي تسري عليها إما لجر مغنم ذاتي أو مراعاة لفريق أو إضراراً بالفريق الآخر أو إضراراً بالإدارة العامة.",
+      },
+      {
+        id: "breach-of-trust",
+        term: "إساءة الائتمان",
+        definition:
+          "هو أحد صور الفساد المجرم بالقانون، المتمثل كل من سلم إليه على سبيل الأمانة أو الوكالة ولأجل الإبراز والإعادة أو لأجل الاستعمال على صور معينة أو لأجل الحفظ أو لإجراء عمل - بأجر أو دون أجر - ما كان لغيره من أموال ونفود وأشياء وأي سند يتضمن تعهداً أو إبراء وبالجملة كل من وجد في يده شيء من هذا القبيل فكتمه أو بدله أو تصرف به تصرف المالك أو استهلكه أو أقدم على أي فعل يعد تعدياً أو امتنع عن تسليمه لمن يلزم تسليمه إليه.",
+      },
+      {
+        id: "illicit-gain",
+        term: "الكسب غير المشروع",
+        definition:
+          "هو أحد صور الفساد المجرم بالقانون، المتمثل بحصول أحد الخاضعين لأحكام هذا القرار للمال لنفسه أو لغيره بسبب استغلال الوظيفة أو الصفة، ويعتبر كسباً غير مشروع كل زيادة في الثروة تطراً بعد تولي الخدمة أو قيام الصفة على الخاضع لهذا القرار بقانون أو على زوجه أو على أولاده القصر، متى كانت لا تتناسب مع مواردهم، وعجز عن إثيات مصدر مشروع لها.",
+      },
+      {
+        id: "conflict-disclosure",
+        term: "عدم الإعلان أو الإفصاح عن تضارب المصالح",
+        definition:
+          "وهو أحد صور الفساد المجرم بالقانون المتمثل بعدم الإعلان أو الإقصاح عن استثمارات أو ممتلكات أو منافع تؤدي إلى تضارب في المصالح إذا كانت القوانين والأنظمة تستوجب ذلك، ويكون من شأنها تحقيق منفعة شخصية مباشرة أو غير مباشرة للممتنع عن إعلانها.",
+      },
+      {
+        id: "money-laundering",
+        term: "غسل الأموال الناتجة عن جرائم فساد",
+        definition:
+          "هو أحد صور الفساد المجرم بالقانون، المتمثل بالعملية التي تعمل على إخفاء مصادر الأموال غير المشروع (المتأثية عن جرائم فساد) ومحاولة إظهارها وكأنها متأثية من مصادر مشروعة.",
+      },
+      {
+        id: "trading-in-influence",
+        term: "المتاجرة بالنفوذ",
+        definition:
+          "هو أحد صور الفساد المجرمة بالقانون، المتمثل بقيام الموظف أو أي شخص آخر، بشکل مباشر آو غير مباشر، بالتماس أو قبول أي مزية غير مستحقة لصالحه أو لصالح شخص آخر، لكي يستغل ذلك الموظف أو الشخص نفوذه الفعلي أو المفترض بهدف الحصول من إدارة أو سلطة عمومية على مزية غير مستحقة.",
+      },
+      {
+        id: "obstruction-of-justice",
+        term: "إعاقة سير العدالة",
+        definition:
+          "هو أحد صور الفساد المجرمة بالقانون، المتمثل باستخدام القوة البدنية أو التهديد أو الترهيب أو الوعد بمزية غير مستحقة أو عرضها أو منحها للتحريض على الإدلاء بشهادة زور أو للتدخل في الإدلاء بالشهادة أو تقديم الأدلة في إجراءات تتعلق بارتكاب أفعال مجزمة وفق أحكام هذا القرار بقانون، أو استخدام القوة البدنية أو التهديد أو الترهيب لعرظة سير التحريات الجارية بشأن الأفعال المجرمة وفق لأحكام هذا القرار.",
+      },
+    ],
+  },
+  {
+    id: "witness-protection",
+    title: "ثالثاً: المفاهيم والمصطلحات المتعلقة بحماية الشهود والمبلغين",
+    concepts: [
+      {
+        id: "protection-applicant",
+        term: "طالب الحماية",
+        definition:
+          "هو المبلغ، أو المخير، أو الشاهد، أو الخبير، الذي يتقدم بطلب حماية وفقاً لأحكام نظام حماية الشهود والمخبرين والخبراء رقم 7 لسنة 2019م.",
+      },
+      {
+        id: "protection",
+        term: "الحماية",
+        definition:
+          "تتمثل في الحماية الوظيفية والقانونية والشخصية الممنوحة من وحدة الحماية عند استيفاء شروطها بناء على قرار رئيس الهيئة بالموافقة على منحها وفق مقتضى الحال. وتعرف الحماية الوظيفية بأنها الإجراءات المتخذة بهدف ضمان عدم وقوع أي ضرر لطالب الحماية على المستوى الوظيفي او العمل نتيجة إبلاغه عن واقعة الفساد. وتعرف الحماية الشخصية بانها الإجراءات المتخذه بهدف عدم تعرض طالب الحماية لأي ضرر معنوي او جسدي أو مالي. بينما تتمثل الحماية القانونية بالإجراءات المتخذة بهدف ضمان عدم ملاحقة طالب الحماية جزائياً نتيجة إبلاغه او شهادته عن واقعة فساد.",
+      },
+    ],
+  },
+  {
+    id: "financial-disclosure",
+    title: "رابعاً: المفاهيم والمصطلحات المتعلقة بإقرارات الذمة المالية",
+    concepts: [
+      {
+        id: "financial-disclosure",
+        term: "إقرار الذمة المالية",
+        definition:
+          "نموذج يتم تعبئته من قبل المكلف يتضمن ما له وفق أحكام القانون ولزوجه وأولاده القصر داخل فلسطين وخارجها من أموال نقدية او عفارية أو منقولة أو عينية أو أسهم وحصص في الشركات أو سندات، ويدخل في ذلك ما لهم من حقوق وما عليهم من ديون من قبل الغير، كما تشمل كافة الوكالات والتقويضات ذات الأثر المالي الصادرة منه للغير أو من الغير لصالحه، ومجموع ما له من حقوق الانتفاع، وأية مصادر أخرى للدخل.",
+      },
+      {
+        id: "first-financial-disclosure",
+        term: "إقرار الذمة المالية الأول",
+        definition:
+          "وهو الاقرار المقدم خلال ستين يوماً من تاريخ توليه المسؤولية أو من تاريخ تكليفه من قبل الهيئة بتعبئة الإقرار.",
+      },
+      {
+        id: "periodic-financial-disclosure",
+        term: "إقرار الذمة المالية الدوري",
+        definition:
+          "وهو الاقرار المقدم خلال ستين يوماً من نهاية فترة كل إقرار والبالغة خمسة سنوات.",
+      },
+      {
+        id: "final-financial-disclosure",
+        term: "|قرار الذمة المالية النهائي",
+        definition:
+          "وهو الاقرار المقدم خلال ستين يوماً من تاريخ انتهاء خضوعه لأحكام قانون مكافحة الفساد رقم 1 لسنة 2005 وتعديلاته.",
+      },
+      {
+        id: "obligated-persons",
+        term: "المكلفين",
+        definition:
+          "أي شخص طبيعي يخضع لتعبئة إقرار الذمة المالية وفق أحكام قانون مكافحة الفساد رقم 1 لسنة 2005 وتعديلاته .",
+      },
+      {
+        id: "president-advisors",
+        term: "مستشارو رئيس الدولة",
+        definition: "وهم الاشخاص الطبيعيون المكلفون بتقديم الخدمات الاستشارية لرئيس الدولة",
+      },
+      {
+        id: "governor",
+        term: "المحافظ",
+        definition:
+          "هو ممثل رئيس السلطة الوطنية الفلسطينية ورئيس الإدارة العامة وأعلى سلطة في محافظته ويشرف على تنفيذ السياسة العامة للسلطة وعلى مرافق الخدمات والإنتاج في نطاق محافظته.",
+      },
+      {
+        id: "expert",
+        term: "الخبير",
+        definition:
+          "وهو صاحب الخبرة بالمجال العلمي والعملي في نطاق الاختصاص المطلوب او التخصصات النادرة الذي يتم التعاقد معه سواء الخبير المحلي أم الأجنبي لفترة زمنية محددة للعمل في الدائرة الحكومية.",
+      },
+      {
+        id: "arbitrator",
+        term: "المحكم",
+        definition: "وهو الشخص الطبيعي الذي يتولى مهمة التحكيم",
+      },
+      {
+        id: "judicial-guard",
+        term: "الحارس القضائي",
+        definition:
+          "وهو الشخص الطبيعي المعين من المحكمة لغايات حراسة الاموال والممتلكات في حال وجود نزاع قانوني",
+      },
+      {
+        id: "creditor-agent",
+        term: "وكيل الدائن",
+        definition:
+          "وهو مأمور التفليسة أو السنديك وهو الشخص الذي تعينه المحكمة من كتاب الضبط أو غيرهم من أجل تمثيل كافة المصالح المتعلقة بالتفليسة",
+      },
+      {
+        id: "liquidator",
+        term: "المصفي",
+        definition: "الحارس القضائي لدى قيامه بأعمال المصفي",
+      },
+      {
+        id: "public-employees",
+        term: "الموظفون العامون",
+        definition:
+          "وهم المعينون بقرار من جهة مختصة لشغل وظيفة مدرجة في نظام تشكيلات الوظائف المدنية على موازنة إحدى الدوائر الحكومية ممن يحملون درجة مدير فأعلى وهم من يملكون صلاحيات مالية أو حق التوقيع وأعضاء لجان العطاءات والمشتريات والمبيعات والجرد والاتلاف والايجارات والكوتا والعاملون في منح التراخيص والامتيازات والفاحصون والمراقبون وأمناء المستودعات والعاملون في الشؤون المالية",
+      },
+      {
+        id: "legal-advisors",
+        term: "المستشارون القانونيون",
+        definition: "وهم الاشخاص الطبيعيون المسؤولون عن تقديم خدمات قانونية استشارية",
+      },
+      {
+        id: "security-leaders",
+        term: "رؤساء الاجهزة الامنية والعسكرية ومنتسبوها",
+        definition:
+          "وهم الاشخاص الطبيعيون ممن يتولون رئاسة القطاعات الامنية والعسكرية مثل المدير العام للشرطة الفلسطينية والدفاع المدني والأمن الوقائي ورئيس المخابرات العامة الفلسطينية بالاضافة الى المنتسبين العاملين في هذه القطاعات ممن يحملون رتبة مقدم فأعلى وهم من الضباط  أي من يحملون رتبة ملازم حتى رتبة فريق (ملازم، ملازم أول، نقيب، رائد، مقدم، عميد، لواء، فريق).",
+      },
+      {
+        id: "ambassador",
+        term: "السفير",
+        definition: "وهو رئيس البعثة الدبلوماسية",
+      },
+      {
+        id: "consul",
+        term: "القنصل",
+        definition:
+          "وهم الموظفين العاملين في القنصليات العامة او المكلفين بالتمثيل القنصلي في البعثات وهم قنصل عام وقنصل.",
+      },
+      {
+        id: "diplomatic-attache",
+        term: "الملحق بالعمل الدبلوماسي",
+        definition:
+          "وهو الملحق الفني؛ التجاري والثقافي وغيره المعين من وزير الشؤون الخارجية في إحدى البعثات وينطبق عليه أحكام قانون السلك الدبلوماسي رقم 13 لسنة 2005",
+      },
+      {
+        id: "civil-institutions-members",
+        term: "رؤساء وأعضاء المؤسسات والهيئات المدنية",
+        definition: "وهم الاشخاص الطبيعيون من رؤساء وأعضاء المؤسسات والهيئات المدنية",
+      },
+      {
+        id: "associations-councils",
+        term: "رؤساء وأعضاء مجالس الجمعيات",
+        definition: "وهم الأشخاص الطبيعيين من رؤساء وأعضاء مجالس إدارة الجمعيات الخيرية والتعاونية",
+      },
+      {
+        id: "local-bodies-councils",
+        term: "رؤساء وأعضاء مجالس الهيئات المحلية",
+        definition: "وهم الأشخاص الطبيعيين من رؤساء وأعضاء مجالس الهيئات المحلية",
+      },
+      {
+        id: "company-boards",
+        term: "رؤساء وأعضاء مجالس إدارة الشركات",
+        definition:
+          "وهم الأشخاص الطبيعيين من رؤساء وأعضاء مجالس الإدارة في المؤسسات العامة للدولة والشركات التي تساهم فيها الدولة.",
+      },
+    ],
+  },
+  {
+    id: "sectors",
+    title: "خامساً: تعريف القطاعات",
+    concepts: [
+      {
+        id: "sovereign-funds",
+        term: "الصناديق السيادية",
+        definition:
+          "الصناديق المملوكة من قبل الدولة، وتتكون من أصول مثل الأراضي أو الأسهم أو السندات أو أجهزة استثمارية أخرى، أي يمكن القول أنها كيانات تدير فوائض الدولة من أجل الاستثمار. أية سلطة أو هيئة أو مؤسسة عامة في فلسطين تتمتع بالشخصية الاعتبارية وتدخل موازنتها ضمن الموازنة العامة للسلطة الوطنیة.",
+      },
+      {
+        id: "ministries",
+        term: "الوزارات",
+        definition:
+          "أية سلطة أو هيئة أو مؤسسة عامة في فلسطين تتمتع بالشخصية الاعتبارية وتدخل موازنتها ضمن الموازنة العامة للسلطة الوطنية.",
+      },
+      {
+        id: "non-ministerial-institutions",
+        term: "مؤسسات غير وزارية",
+        definition:
+          "أية وزارة أو سلطة أو هيئة أو مؤسسة عامة تتمتع بالشخصية الاعتبارية وذات استقلال مالي وإداري ولا تدخل موازنتها ضمن الموازنة العامة للسلطة الوطنية.",
+      },
+      {
+        id: "associations",
+        term: "الجمعيات",
+        definition:
+          "وتشمل الجمعيات الخيرية/ هيئات أهلية والتي تعرف بأنها شخصية معنوية مستقلة ننشأ بموجب انفاق بين عدد لا يقل عن سبعة أشخاص لتحقيق أهداف مشروعة تهم الصالح العام دون استهداف جني الربح المالي بهدف اقتسامه بين الأعضاء أو لتحقيق منفعة شخصية. والجمعيات تعاونية وتشكل أية جمعية مؤلفة مما لا يقل عن سبعة أشخاص غايتهم النهوض بشؤونهم الاقتصادية والاجتماعية وفقاً لمبادئ التعاون.",
+      },
+      {
+        id: "local-bodies",
+        term: "الهيئات المحلية",
+        definition: "وحدة الحكم المحلي في نطاق جغرافي وإداري معين.",
+      },
+      {
+        id: "unions-syndicates",
+        term: "الاتحادات والنقابات",
+        definition:
+          "يعرف الاتحاد بأنه الجسم القانوني الممثل لأحد الفروع الصناعية أو التجارية أو المهنية، والنقابة بأي تنظيم مهني يشكل وفقاً لقانون النقابات.",
+      },
+      {
+        id: "clubs",
+        term: "الأندیة",
+        definition:
+          "ويعرف بأنه الهيئة الرياضية المسجلة من قبل الوزارة والتي من أهدافها ممارسة رياضة معينة أو أكثر وتمارس بشكل فعلي.",
+      },
+      {
+        id: "civil-sector",
+        term: "القطاع المدني",
+        definition:
+          "الخدمة في المؤسسات الوزارية وغير الوزارية وفقاً لأحكام قانون الخدمة المدنية والقوانين ذات العلاقة.",
+      },
+      {
+        id: "security-forces",
+        term: "الأجهزة والمؤسسات الأمنية/ قوى الأمن",
+        definition:
+          "الخدمة في أية قوة من قوى الأمن وفقا لأحكام قانون الخدمة في قوى الأمن الفلسطينية.",
+      },
+      {
+        id: "corruption-crimes-prosecution",
+        term: "نيابة جرائم الفساد",
+        definition: "النيابة العامة المتخصصة بالنظر في جرائم الفساد.",
+      },
+      {
+        id: "corruption-crimes-court",
+        term: "محكمة جرائم الفساد",
+        definition: "هيئة المحكمة المختصة بالنظر في جرائم الفساد.",
+      },
+    ],
+  },
+];
+
+const CARD_ICONS: LucideIcon[] = [
+  Scale,
+  BookOpenText,
+  Users,
+  ShieldCheck,
+  Handshake,
+  Fingerprint,
+  Sparkles,
+  ScrollText,
+  Gavel,
+  Landmark,
+];
+
+function ConceptCard({ concept, index }: { concept: Concept; index: number }) {
+  const Icon = CARD_ICONS[index % CARD_ICONS.length];
+  return (
+    <article className="group h-full rounded-[22px] border border-border bg-card shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-lg">
+      <div className="flex h-full min-h-[260px] flex-col rounded-[22px] bg-card p-7 text-right sm:p-8">
+        <div className="mb-6 flex justify-end">
+          <span className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-soft transition-transform duration-200 group-hover:scale-105">
+            <Icon className="h-6 w-6" aria-hidden="true" />
+          </span>
+        </div>
+        <h3 className="text-xl font-bold leading-8 text-foreground">{concept.term}</h3>
+        <p className="mt-4 whitespace-pre-line text-base leading-8 text-muted-foreground">
+          {concept.definition}
+        </p>
+      </div>
+    </article>
+  );
 }
 
-const CRITERIA_ICONS: LucideIcon[] = [Gavel, Handshake, Zap, Eye, Scale];
-const BAND_ICONS: LucideIcon[] = [ScrollText, Scale];
-
-function PrintDocument() {
-  const { t, d } = useLocale();
-  const glossary = Glossary();
-  const criteria = frameworkCriteria.map((c, i) => ({ ...c, icon: CRITERIA_ICONS[i] }));
-  const lawEnforcement = lawEnforcementBand.map((b, i) => ({ ...b, icon: BAND_ICONS[i] }));
+function PrintDocument({ categories }: { categories: ConceptCategory[] }) {
+  const { t } = useLocale();
   return (
     <div className="print-doc hidden print:block">
       <header className="print-doc__header">
@@ -82,59 +452,28 @@ function PrintDocument() {
         <p className="print-doc__intro">{t("concepts.printIntro")}</p>
       </header>
 
-      <section className="print-doc__section">
-        <h2>{t("concepts.printS1")}</h2>
-        <table>
-          <tbody>
-            {glossary.map((g) => (
-              <tr key={g.term}>
-                <th scope="row">{g.term}</th>
-                <td>{g.def}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-
-      <section className="print-doc__section">
-        <h2>{t("concepts.printS2")}</h2>
-        <table>
-          <tbody>
-            {lawEnforcement.map((l) => (
-              <tr key={l.tag}>
-                <th scope="row">{d(l.tag)}</th>
-                <td>
-                  <div className="print-doc__bitle">{d(l.title)}</div>
-                  <div className="print-doc__def">{d(l.def)}</div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-
-      <section className="print-doc__section">
-        <h2>{t("concepts.printS3")}</h2>
-        <table>
-          <tbody>
-            {criteria.map((c) => (
-              <tr key={c.term}>
-                <th scope="row">{d(c.term)}</th>
-                <td>{d(c.def)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+      {categories.map((category) => (
+        <section key={category.id} className="print-doc__section">
+          <h2>{category.title}</h2>
+          <table>
+            <tbody>
+              {category.concepts.map((concept) => (
+                <tr key={concept.id}>
+                  <th scope="row">{concept.term}</th>
+                  <td>{concept.definition}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      ))}
     </div>
   );
 }
 
 function Concepts() {
-  const { t, d } = useLocale();
-  const glossary = Glossary();
-  const criteria = frameworkCriteria.map((c, i) => ({ ...c, icon: CRITERIA_ICONS[i] }));
-  const lawEnforcement = lawEnforcementBand.map((b, i) => ({ ...b, icon: BAND_ICONS[i] }));
+  const { t } = useLocale();
+
   return (
     <SiteLayout>
       <div className="print:hidden">
@@ -144,14 +483,8 @@ function Concepts() {
           description={t("concepts.desc")}
         />
 
-        <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div className="max-w-3xl">
-              <h2 className="text-2xl font-bold text-primary md:text-3xl">
-                {t("concepts.glossaryTitle")}
-              </h2>
-              <p className="mt-2 leading-8 text-muted-foreground">{t("concepts.glossaryDesc")}</p>
-            </div>
+        <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8" dir="rtl">
+          <div className="mb-10 flex justify-start">
             <button
               onClick={() => window.print()}
               className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"
@@ -159,77 +492,38 @@ function Concepts() {
               <FileDown className="h-4 w-4" /> {t("concepts.downloadPdf")}
             </button>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {glossary.map((g) => (
-              <article
-                key={g.term}
-                className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated"
-              >
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
-                  <g.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-4 text-lg font-bold text-primary">{g.term}</h3>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">{g.def}</p>
-              </article>
-            ))}
-          </div>
-        </section>
 
-        <section className="bg-surface py-16">
-          <div className="mx-auto max-w-7xl px-4 lg:px-8">
-            <div className="mb-8 max-w-3xl">
-              <h2 className="text-2xl font-bold text-primary md:text-3xl">
-                {t("concepts.enforceTitle")}
-              </h2>
-              <p className="mt-2 leading-8 text-muted-foreground">{t("concepts.enforceDesc")}</p>
-            </div>
-            <div className="grid gap-5 md:grid-cols-2">
-              {lawEnforcement.map((l) => (
-                <article
-                  key={l.tag}
-                  className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface text-accent">
-                      <l.icon className="h-5 w-5" />
-                    </div>
-                    <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-                      {d(l.tag)}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold text-primary">{d(l.title)}</h3>
-                  <p className="mt-2 text-sm leading-7 text-muted-foreground">{d(l.def)}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
-          <div className="mb-8 max-w-3xl">
-            <h2 className="text-2xl font-bold text-primary md:text-3xl">
-              {t("concepts.criteriaTitle")}
-            </h2>
-            <p className="mt-2 leading-8 text-muted-foreground">{t("concepts.criteriaDesc")}</p>
-          </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {criteria.map((c) => (
-              <article
-                key={c.term}
-                className="glow-card rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated"
+          <div className="space-y-16">
+            {CONCEPT_CATEGORIES.map((category, categoryIndex) => (
+              <section
+                key={category.id}
+                className={categoryIndex > 0 ? "border-t border-border/70 pt-12" : ""}
               >
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-surface text-accent">
-                  <c.icon className="h-5 w-5" />
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold leading-10 text-foreground md:text-4xl">
+                    {category.title}
+                  </h2>
+                  <p className="mt-2 text-sm font-semibold text-muted-foreground">
+                    {t("concepts.categoryCount", { count: category.concepts.length })}
+                  </p>
                 </div>
-                <h3 className="mt-4 text-lg font-bold text-primary">{d(c.term)}</h3>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">{d(c.def)}</p>
-              </article>
+
+                <div className="grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {category.concepts.map((concept, conceptIndex) => (
+                    <ConceptCard
+                      key={concept.id}
+                      concept={concept}
+                      index={categoryIndex * 10 + conceptIndex}
+                    />
+                  ))}
+                </div>
+              </section>
             ))}
           </div>
         </section>
       </div>
 
-      <PrintDocument />
+      <PrintDocument categories={CONCEPT_CATEGORIES} />
     </SiteLayout>
   );
 }

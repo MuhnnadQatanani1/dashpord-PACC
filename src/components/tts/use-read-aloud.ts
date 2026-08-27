@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/i18n";
 
 export type ReadState = "idle" | "playing" | "paused" | "unsupported";
+export type ReadAloudError = "tts.unavailable" | "tts.noContent" | "tts.error";
 
 export interface ReadAloudApi {
   supported: boolean;
@@ -12,97 +13,15 @@ export interface ReadAloudApi {
   play: () => void;
   pause: () => void;
   stop: () => void;
-  error: string | null;
+  error: ReadAloudError | null;
 }
 
 function isSupported(): boolean {
-  return (
-    typeof window !== "undefined" &&
-    "speechSynthesis" in window &&
-    "SpeechSynthesisUtterance" in window
-  );
-}
-
-const AR_PREFERRED_VOICES = [
-  "microsoft hamed",
-  "microsoft salma",
-  "microsoft zariyah",
-  "microsoft fatima",
-  "microsoft amina",
-  "google العربية",
-  "google عربي",
-  "majed",
-  "maged",
-  "hoda",
-  "mona",
-  "naayf",
-  "salma",
-  "zariyah",
-  "hamed",
-  "khalid",
-  "nadia",
-  "tariq",
-];
-
-const AR_LANG_PRIORITY = ["ar-PS", "ar-SA", "ar-EG", "ar-AE", "ar-JO", "ar-LB", "ar"];
-const EN_LANG_PRIORITY = ["en-US", "en-GB", "en-AU", "en"];
-
-const EN_PREFERRED_VOICES = [
-  "natural",
-  "google us english",
-  "aria",
-  "jenny",
-  "sonia",
-  "zoira",
-  "libby",
-  "samantha",
-];
-
-function voiceScore(v: SpeechSynthesisVoice, langPrefix: "ar" | "en"): number {
-  const name = v.name.toLowerCase();
-  const lang = v.lang.toLowerCase();
-  if (!lang.startsWith(langPrefix)) return -1;
-
-  let score = 0;
-  if (name.includes("natural")) score += 60;
-  if (name.includes("google")) score += 40;
-  if (name.includes("online")) score += 15;
-  if (name.includes("premium")) score += 20;
-  if (v.localService) score += 4;
-
-  const langPriority = langPrefix === "ar" ? AR_LANG_PRIORITY : EN_LANG_PRIORITY;
-  const localeIdx = langPriority.findIndex((l) => lang === l.toLowerCase());
-  if (localeIdx !== -1) score += 30 - localeIdx * 3;
-
-  const preferred = langPrefix === "ar" ? AR_PREFERRED_VOICES : EN_PREFERRED_VOICES;
-  const idx = preferred.findIndex((p) => name.includes(p));
-  if (idx !== -1) score += 80 - idx * 3;
-
-  return score;
-}
-
-function pickBestVoice(
-  synth: SpeechSynthesis,
-  langPrefix: "ar" | "en",
-): SpeechSynthesisVoice | null {
-  let best: SpeechSynthesisVoice | null = null;
-  let bestScore = -1;
-  for (const v of synth.getVoices()) {
-    const s = voiceScore(v, langPrefix);
-    if (s > bestScore) {
-      bestScore = s;
-      best = v;
-    }
-  }
-  return best;
+  return typeof window !== "undefined" && "Audio" in window;
 }
 
 function defaultRate(locale: "ar" | "en") {
   return locale === "ar" ? 0.86 : 1;
-}
-
-function fallbackLang(locale: "ar" | "en") {
-  return locale === "ar" ? "ar-SA" : "en-US";
 }
 
 function normalizeArabicForSpeech(text: string) {
@@ -155,46 +74,32 @@ function splitForSpeech(text: string) {
   return chunks;
 }
 
-function waitForVoices(synth: SpeechSynthesis): Promise<SpeechSynthesisVoice[]> {
-  const voices = synth.getVoices();
-  if (voices.length > 0) return Promise.resolve(voices);
-
-  return new Promise((resolve) => {
-    let settled = false;
-    const finish = () => {
-      if (settled) return;
-      settled = true;
-      synth.removeEventListener?.("voiceschanged", finish);
-      if ("onvoiceschanged" in synth && synth.onvoiceschanged === finish) {
-        synth.onvoiceschanged = null;
-      }
-      resolve(synth.getVoices());
-    };
-
-    synth.addEventListener?.("voiceschanged", finish, { once: true });
-    synth.onvoiceschanged = finish;
-    window.setTimeout(finish, 900);
-  });
-}
-
 export function useReadAloud(): ReadAloudApi {
   const { locale } = useLocale();
   const [state, setState] = useState<ReadState>(isSupported() ? "idle" : "unsupported");
   const [rate, setRateState] = useState(defaultRate(locale));
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ReadAloudError | null>(null);
   const [voiceName, setVoiceName] = useState<string | null>(null);
 
   const segmentsRef = useRef<{ text: string; el: HTMLElement }[]>([]);
   const indexRef = useRef(0);
   const rateRef = useRef(defaultRate(locale));
-  const keepAliveRef = useRef<number | null>(null);
-  const segmentTimerRef = useRef<number | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = useRef<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const clearTimers = useCallback(() => {
-    if (keepAliveRef.current !== null) window.clearInterval(keepAliveRef.current);
-    if (segmentTimerRef.current !== null) window.clearTimeout(segmentTimerRef.current);
-    keepAliveRef.current = null;
-    segmentTimerRef.current = null;
+  const cleanupAudio = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = "";
+      audioRef.current = null;
+    }
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
   }, []);
 
   const collect = useCallback(() => {
@@ -219,12 +124,30 @@ export function useReadAloud(): ReadAloudApi {
     for (const s of segmentsRef.current) s.el.classList.remove("reading-active");
   }, []);
 
+  const requestAudio = useCallback(
+    async (text: string) => {
+      const controller = new AbortController();
+      abortRef.current = controller;
+      const response = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text, locale, rate: rateRef.current }),
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      return URL.createObjectURL(await response.blob());
+    },
+    [locale],
+  );
+
   const speakSegment = useCallback(
     async (i: number) => {
       if (!isSupported()) return;
-      const synth = window.speechSynthesis;
-      clearTimers();
-      synth.cancel();
+      cleanupAudio();
       clearHighlight();
 
       if (i >= segmentsRef.current.length) {
@@ -238,49 +161,32 @@ export function useReadAloud(): ReadAloudApi {
       el.classList.add("reading-active");
       el.scrollIntoView({ block: "center", behavior: "auto" });
 
-      await waitForVoices(synth);
-      const utterance = new SpeechSynthesisUtterance(text);
-      const langPrefix = locale === "ar" ? "ar" : "en";
-      const voice = pickBestVoice(synth, langPrefix);
-      if (voice) {
-        utterance.voice = voice;
-        utterance.lang = voice.lang;
-        setVoiceName(`${voice.name} (${voice.lang})`);
-      } else {
-        utterance.lang = fallbackLang(locale);
-        setVoiceName(null);
-      }
-      utterance.rate = rateRef.current;
-      utterance.pitch = locale === "ar" ? 0.96 : 1;
-      utterance.volume = 1;
-
-      utterance.onstart = () => setState("playing");
-      utterance.onend = () => {
-        clearTimers();
-        void speakSegment(i + 1);
-      };
-      utterance.onerror = (e) => {
-        if (e.error === "canceled" || e.error === "interrupted") return;
-        clearTimers();
+      try {
+        const audioUrl = await requestAudio(text);
+        audioUrlRef.current = audioUrl;
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
+        audio.onplay = () => setState("playing");
+        audio.onended = () => {
+          cleanupAudio();
+          void speakSegment(i + 1);
+        };
+        audio.onerror = () => {
+          cleanupAudio();
+          setError("tts.error");
+          setState("idle");
+          clearHighlight();
+        };
+        await audio.play();
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        cleanupAudio();
         setError("tts.error");
         setState("idle");
         clearHighlight();
-      };
-
-      synth.speak(utterance);
-      window.setTimeout(() => synth.resume(), 0);
-      keepAliveRef.current = window.setInterval(() => {
-        if (!synth.speaking || synth.paused) synth.resume();
-      }, 5000);
-      segmentTimerRef.current = window.setTimeout(
-        () => {
-          if (synth.speaking) return;
-          void speakSegment(i + 1);
-        },
-        Math.max(4000, text.length * 95),
-      );
+      }
     },
-    [locale, clearHighlight, clearTimers],
+    [cleanupAudio, clearHighlight, requestAudio],
   );
 
   const play = useCallback(() => {
@@ -289,9 +195,8 @@ export function useReadAloud(): ReadAloudApi {
       setError("tts.unavailable");
       return;
     }
-    const synth = window.speechSynthesis;
     if (state === "paused") {
-      synth.resume();
+      void audioRef.current?.play();
       setState("playing");
       return;
     }
@@ -307,19 +212,18 @@ export function useReadAloud(): ReadAloudApi {
   }, [state, collect, speakSegment]);
 
   const pause = useCallback(() => {
-    if (isSupported()) {
-      window.speechSynthesis.pause();
+    if (isSupported() && audioRef.current) {
+      audioRef.current.pause();
       setState("paused");
     }
   }, []);
 
   const stop = useCallback(() => {
-    clearTimers();
-    if (isSupported()) window.speechSynthesis.cancel();
+    cleanupAudio();
     clearHighlight();
     setState("idle");
     setError(null);
-  }, [clearHighlight, clearTimers]);
+  }, [cleanupAudio, clearHighlight]);
 
   const setRate = useCallback((r: number) => {
     const clamped = Math.min(1.4, Math.max(0.65, r));
@@ -328,21 +232,8 @@ export function useReadAloud(): ReadAloudApi {
   }, []);
 
   useEffect(() => {
-    if (!isSupported()) return;
-    const synth = window.speechSynthesis;
-    void waitForVoices(synth);
-    const onVoicesChanged = () => {
-      synth.getVoices();
-    };
-    synth.addEventListener?.("voiceschanged", onVoicesChanged);
-    synth.onvoiceschanged = onVoicesChanged;
-    return () => {
-      clearTimers();
-      synth.removeEventListener?.("voiceschanged", onVoicesChanged);
-      if (synth.onvoiceschanged === onVoicesChanged) synth.onvoiceschanged = null;
-      synth.cancel();
-    };
-  }, [clearTimers]);
+    return () => cleanupAudio();
+  }, [cleanupAudio]);
 
   useEffect(() => {
     const nextRate = defaultRate(locale);
@@ -350,11 +241,20 @@ export function useReadAloud(): ReadAloudApi {
     setRateState(nextRate);
     segmentsRef.current = [];
     indexRef.current = 0;
-    setVoiceName(null);
-    clearTimers();
-    if (isSupported()) window.speechSynthesis.cancel();
+    setVoiceName(locale === "ar" ? "Python TTS (Arabic)" : "Python TTS (English)");
+    cleanupAudio();
     setState(isSupported() ? "idle" : "unsupported");
-  }, [locale, clearTimers]);
+  }, [locale, cleanupAudio]);
 
-  return { supported: isSupported(), state, rate, voiceName, setRate, play, pause, stop, error };
+  return {
+    supported: isSupported(),
+    state,
+    rate,
+    voiceName: voiceName ?? (locale === "ar" ? "Python TTS (Arabic)" : "Python TTS (English)"),
+    setRate,
+    play,
+    pause,
+    stop,
+    error,
+  };
 }

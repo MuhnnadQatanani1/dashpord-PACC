@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import { getLocale, useLocale, dictionaries, type Dict } from "@/i18n";
-import { FileDown, Gavel, Scale } from "lucide-react";
+import { getLocale, useLocale, dictionaries } from "@/i18n";
+import { ChevronDown, FileDown, Gavel, Hash, Scale } from "lucide-react";
 
 export const Route = createFileRoute("/main-indicators")({
   component: MainIndicators,
@@ -34,15 +35,15 @@ type EffortBand = {
   rows: IndicatorRow[];
 };
 
-const COLUMNS: { key: keyof IndicatorRow; tKey: keyof Dict; narrow?: boolean }[] = [
-  { key: "num", tKey: "mainInd.colNum", narrow: true },
-  { key: "title", tKey: "mainInd.colIndicator" },
-  { key: "definition", tKey: "mainInd.colDefinition" },
-  { key: "measurement", tKey: "mainInd.colMeasurement" },
-  { key: "unit", tKey: "mainInd.colUnit", narrow: true },
-  { key: "coverage", tKey: "mainInd.colCoverage" },
-  { key: "detail", tKey: "mainInd.colDetail" },
-  { key: "source", tKey: "mainInd.colSource", narrow: true },
+const DETAIL_FIELDS: {
+  key: Exclude<keyof IndicatorRow, "num" | "title" | "definition">;
+  label: string;
+}[] = [
+  { key: "measurement", label: "طريقة القياس" },
+  { key: "unit", label: "وحدة القياس" },
+  { key: "coverage", label: "التغطية الجغرافية" },
+  { key: "detail", label: "مستوى التفصيل" },
+  { key: "source", label: "مصدر البيانات والدورية" },
 ];
 
 const EFFORT_BANDS: EffortBand[] = [
@@ -381,58 +382,110 @@ const EFFORT_BANDS: EffortBand[] = [
   },
 ];
 
-function EffortTable({ band }: { band: EffortBand }) {
+function IndicatorAccordionItem({
+  bandId,
+  indicator,
+  isOpen,
+  onToggle,
+}: {
+  bandId: string;
+  indicator: IndicatorRow;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   const { t, d } = useLocale();
+  const buttonId = `indicator-${bandId}-${indicator.num}-trigger`;
+  const panelId = `indicator-${bandId}-${indicator.num}-panel`;
+
   return (
-    <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-soft">
-      <table className="w-full min-w-[1100px] border-collapse text-right">
-        <thead>
-          <tr className="bg-surface">
-            {COLUMNS.map((c) => (
-              <th
-                key={c.key}
-                className={`border-b border-border px-3 py-3 text-sm font-bold text-primary ${c.narrow ? "whitespace-nowrap" : ""}`}
-              >
-                {t(c.tKey)}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {band.rows.map((row) => (
-            <tr key={row.num} className="align-top transition-colors hover:bg-surface/60">
-              <td className="border-b border-border/60 px-3 py-3 text-center text-sm font-bold text-primary">
-                {row.num}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 text-[13px] font-semibold leading-6 text-foreground">
-                {d(row.title)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 text-[13px] leading-6 text-foreground/85">
-                {d(row.definition)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 text-[13px] leading-6 text-foreground/85">
-                {d(row.measurement)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 whitespace-nowrap text-[13px] leading-6 text-foreground/85">
-                {d(row.unit)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 text-[13px] leading-6 text-foreground/85">
-                {d(row.coverage)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 text-[13px] leading-6 text-foreground/85">
-                {d(row.detail)}
-              </td>
-              <td className="border-b border-border/60 px-3 py-3 whitespace-nowrap text-[13px] leading-6 text-foreground/85">
-                {d(row.source)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <article
+      className={`overflow-hidden rounded-xl border bg-card shadow-soft transition-all duration-200 ${
+        isOpen
+          ? "border-primary/25 shadow-lg"
+          : "border-border hover:border-primary/25 hover:shadow-md"
+      }`}
+    >
+      <button
+        id={buttonId}
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={onToggle}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onToggle();
+          }
+        }}
+        className="group flex w-full cursor-pointer items-center justify-between gap-4 p-4 text-start transition-colors hover:bg-surface/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/45 sm:p-5"
+      >
+        <span className="flex min-w-0 flex-1 items-center gap-3">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
+            <Hash className="h-3.5 w-3.5" />
+            {t("mainInd.cardNumber", { num: indicator.num })}
+          </span>
+          <span className="min-w-0 flex-1 text-base font-bold leading-7 text-foreground transition-colors group-hover:text-primary sm:text-lg sm:leading-8">
+            {d(indicator.title)}
+          </span>
+        </span>
+        <ChevronDown
+          className={`h-5 w-5 shrink-0 text-primary transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          aria-hidden="true"
+        />
+      </button>
+
+      <div
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        aria-hidden={!isOpen}
+        className={`grid transition-[grid-template-rows] duration-200 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="border-t border-border bg-surface/40 p-4 text-right sm:p-5">
+            <div className="space-y-5">
+              <section>
+                <h3 className="mb-2 text-sm font-bold text-primary">المؤشر</h3>
+                <p className="whitespace-pre-line text-base font-bold leading-8 text-foreground">
+                  {d(indicator.title)}
+                </p>
+              </section>
+
+              <section className="rounded-lg border border-primary/15 bg-primary/5 p-4">
+                <h3 className="mb-2 text-sm font-bold text-primary">التعريف</h3>
+                <p className="whitespace-pre-line text-base leading-8 text-foreground">
+                  {d(indicator.definition)}
+                </p>
+              </section>
+
+              <section>
+                <h3 className="mb-2 text-sm font-bold text-primary">طريقة القياس</h3>
+                <p className="whitespace-pre-line text-sm leading-7 text-foreground/85">
+                  {d(indicator.measurement)}
+                </p>
+              </section>
+
+              <section className="grid gap-3 md:grid-cols-2">
+                {DETAIL_FIELDS.filter((field) => field.key !== "measurement").map((field) => (
+                  <div key={field.key} className="rounded-lg border border-border bg-card p-4">
+                    <h3 className="mb-2 text-sm font-bold text-primary">{field.label}</h3>
+                    <p className="whitespace-pre-line text-sm leading-7 text-foreground/85">
+                      {d(indicator[field.key])}
+                    </p>
+                  </div>
+                ))}
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
-
 function PrintDocument() {
   const { t, d } = useLocale();
   return (
@@ -484,6 +537,7 @@ function PrintDocument() {
 
 function MainIndicators() {
   const { t, d } = useLocale();
+  const [openIndicators, setOpenIndicators] = useState<Record<string, string | null>>({});
   const total = EFFORT_BANDS.reduce((acc, b) => acc + b.rows.length, 0);
 
   return (
@@ -517,16 +571,36 @@ function MainIndicators() {
                     <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <div>
-                      <span className="mb-1 inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
-                        {d(band.label)}
-                      </span>
+                    <div className="max-w-5xl">
+                      <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
+                          {d(band.label)}
+                        </span>
+                        <span className="inline-flex items-center rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-bold text-muted-foreground">
+                          {t("mainInd.groupCount", { count: band.rows.length })}
+                        </span>
+                      </div>
                       <h2 className="text-xl font-bold leading-8 text-primary md:text-2xl">
                         {d(band.title)}
                       </h2>
                     </div>
                   </div>
-                  <EffortTable band={band} />
+                  <div className="space-y-3">
+                    {band.rows.map((indicator) => (
+                      <IndicatorAccordionItem
+                        key={indicator.num}
+                        bandId={band.id}
+                        indicator={indicator}
+                        isOpen={openIndicators[band.id] === indicator.num}
+                        onToggle={() =>
+                          setOpenIndicators((current) => ({
+                            ...current,
+                            [band.id]: current[band.id] === indicator.num ? null : indicator.num,
+                          }))
+                        }
+                      />
+                    ))}
+                  </div>
                 </div>
               );
             })}

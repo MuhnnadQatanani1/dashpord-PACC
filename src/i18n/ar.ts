@@ -164,9 +164,9 @@ export const ar = {
   "tts.error": "تعذر الاستماع. حاول مرة أخرى.",
   "tts.open": "الاستماع إلى محتوى الصفحة",
   "tts.voice": "الصوت",
-  "tts.voiceAuto": "اختيار تلقائي حسب المتصفح",
+  "tts.voiceAuto": "صوت الخادم",
   "tts.arabicHint":
-    "لأفضل نطق عربي، استخدم متصفحاً يحتوي على صوت عربي مثل Microsoft Hamed أو Salma أو Google العربية.",
+    "يتم توليد الصوت على الخادم باستخدام مكتبة بايثون، لذلك لا يعتمد على أصوات المتصفح.",
 
   "meta.homeTitle": "المرصد الوطني لمؤشرات الفساد | هيئة مكافحة الفساد الفلسطينية",
   "meta.homeDesc":
@@ -434,6 +434,9 @@ export const ar = {
   "concepts.glossaryDesc":
     "تعريفات موجزة للكلمات والمصطلحات الأكثر تداولاً ضمن بيانات وتقارير المرصد.",
   "concepts.downloadPdf": "تحميل PDF",
+  "concepts.categoryLabel": "القسم {number}",
+  "concepts.categoryCount": "{count} مفاهيم",
+  "concepts.noResults": "لا توجد نتائج مطابقة",
   "concepts.enforceTitle": "إنفاذ القانون",
   "concepts.enforceDesc":
     "أبرز مظاهر منظومة إنفاذ القانون في مكافحة الفساد، مقسّمة على بندين رئيسيين.",
@@ -544,6 +547,9 @@ export const ar = {
   "mainInd.intro":
     "استعراض الإطار الرسمي لمؤشرات إنفاذ القانون ببنديه المعتمدين، مع التعريف وطريقة القياس ومصدر البيانات والدورية لكل مؤشر، وقابلة للتحميل بصيغة PDF.",
   "mainInd.downloadPdf": "تحميل PDF",
+  "mainInd.groupCount": "{count} مؤشر",
+  "mainInd.cardNumber": "رقم {num}",
+  "mainInd.viewDetails": "عرض التفاصيل",
   "mainInd.printOrg": "المرصد الوطني لمؤشرات النزاهة والحوكمة ومكافحة الفساد",
   "mainInd.printTitle": "مؤشرات إنفاذ القانون",
   "mainInd.printIntro":
