@@ -1,46 +1,29 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState, type ReactElement } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
+import { YEARS } from "@/components/site/EnforcementCharts";
 import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  Legend,
-  Cell,
-  LabelList,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-} from "recharts";
-import { CHART_COLORS } from "@/components/site/Charts";
-import { dataSource } from "@/lib/mock-data";
-import { downloadExcel } from "@/lib/excel";
-import {
-  ENTITY_LABELS,
-  ENTITY_ORDER,
-  getInteractiveByEntity,
-  type IndicatorDefinition,
-  type IndicatorEntity,
-} from "@/data/indicators-catalog";
-import { getLocale, useLocale, dictionaries } from "@/i18n";
-import {
-  BadgeInfo,
-  Table2,
-  FileSpreadsheet,
-  Calendar,
-  Database,
-  Layers,
-  ShieldCheck,
-  BookOpen,
-  BarChart3,
-  TrendingUp,
-  TrendingDown,
-} from "lucide-react";
+  LegislationsChart,
+  ComplaintsBySourceChart,
+  ComplaintsBySourcePeriodChart,
+  ComplaintsBySectorChart,
+  ComplaintsByReceiptMethodChart,
+  ComplaintsByReceiptMethodPeriodChart,
+  InvestigationFilesChart,
+  CompletedComplaintsChart,
+  FilesReferredBySourceChart,
+  CourtByCrimeChart,
+  FilesCompletedByProcedureChart,
+  DefendantsByGenderChart,
+  CourtVerdictsChart,
+  ConvictedCountChart,
+} from "@/components/site/EnforcementCharts";
+import { DataTable } from "@/components/site/DataTable";
+import { getDashboardSummary } from "@/lib/enforcement-kpis";
+import { dashboardData, type SubTable } from "@/data/dashboardData";
+import { getLocale, dictionaries, useLocale } from "@/i18n";
+import type { Dict } from "@/i18n/ar";
+import { Filter, Info, Lightbulb, Table2 } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard")({
   component: Dashboard,
@@ -55,768 +38,387 @@ export const Route = createFileRoute("/dashboard")({
   },
 });
 
-const YEARS = ["2022", "2023", "2024", "2025"];
-const AXIS = { fontSize: 11 } as const;
+type YearFilter = Set<number>;
 
-type AxisTickProps = { x?: number; y?: number; payload?: { value?: string | number } };
+const ALL_YEARS = new Set<number>(YEARS) as YearFilter;
 
-function WrappedTick({ x, y, payload }: AxisTickProps) {
-  const words = String(payload?.value ?? "").split(" ");
-  const lines: string[] = [];
-  let cur = "";
-  for (const w of words) {
-    if (cur && (cur + " " + w).length > 13) {
-      lines.push(cur);
-      cur = w;
+interface IndicatorDef {
+  id: number;
+  title: string;
+  titleKey: keyof Dict;
+  subtitle: string;
+  kpi?: string;
+  dataKey: string;
+  Chart: (p: { selected: YearFilter }) => ReactElement;
+  table: () => SubTable;
+  note?: string;
+  noteEn?: string;
+  noteType?: "info" | "warn";
+}
+
+const INDICATORS: IndicatorDef[] = [
+  {
+    id: 1,
+    title: "عدد التشريعات أو البنود المعززة للوقاية من الفساد",
+    titleKey: "dash2.ind1T",
+    subtitle: "توزيعها حسب نوع التشريع عبر السنوات",
+    kpi: "المجموع الكلي: 182",
+    dataKey: "legislations",
+    Chart: LegislationsChart,
+    table: () => dashboardData.legislations,
+  },
+  {
+    id: 2,
+    title: "الشكاوى والبلاغات حسب مصدر التقديم",
+    titleKey: "dash2.ind2T",
+    subtitle: "توزيع أفراد/مؤسسات/مجهول حسب السنة",
+    kpi: "إجمالي 2923",
+    dataKey: "complaintsBySource",
+    Chart: ComplaintsBySourceChart,
+    table: () => dashboardData.complaintsBySource,
+  },
+  {
+    id: 13,
+    title: "الشكاوى والبلاغات حسب مصدر التقديم",
+    titleKey: "dash2.ind13T",
+    subtitle: "نسبة كل مصدر من الإجمالي الكلي للفترة",
+    kpi: "إجمالي 2923",
+    dataKey: "complaintsBySource",
+    Chart: ComplaintsBySourcePeriodChart,
+    table: () => dashboardData.complaintsBySource,
+  },
+  {
+    id: 3,
+    title: "الشكاوى حسب قطاع المشتكى عليه",
+    titleKey: "dash2.ind3T",
+    subtitle: "أعمدة أفقية قابلة للفلترة بالسنة",
+    kpi: "إجمالي 2923",
+    dataKey: "complaintsBySector",
+    Chart: ComplaintsBySectorChart,
+    table: () => dashboardData.complaintsBySector,
+  },
+  {
+    id: 4,
+    title: "الشكاوى حسب طريقة الاستلام",
+    titleKey: "dash2.ind4T",
+    subtitle: "توزيع طرق الاستلام حسب السنة",
+    kpi: "إجمالي 2923",
+    dataKey: "complaintsByReceiptMethod",
+    Chart: ComplaintsByReceiptMethodChart,
+    table: () => dashboardData.complaintsByReceiptMethod,
+  },
+  {
+    id: 14,
+    title: "الشكاوى حسب طريقة الاستلام",
+    titleKey: "dash2.ind14T",
+    subtitle: "نسبة كل طريقة من الإجمالي الكلي للفترة",
+    kpi: "إجمالي 2923",
+    dataKey: "complaintsByReceiptMethod",
+    Chart: ComplaintsByReceiptMethodPeriodChart,
+    table: () => dashboardData.complaintsByReceiptMethod,
+  },
+  {
+    id: 5,
+    title: "الملفات التحقيقية لدى الهيئة حسب التكييف القانوني",
+    titleKey: "dash2.ind5T",
+    subtitle: "مرتب تنازلياً حسب الحجم، مع فلتر سنة",
+    kpi: "إجمالي 1049",
+    dataKey: "investigationFilesByQualification",
+    Chart: InvestigationFilesChart,
+    table: () => dashboardData.investigationFilesByQualification,
+  },
+  {
+    id: 6,
+    title: "عدد الشكاوى المنجزة لدى هيئة مكافحة الفساد",
+    titleKey: "dash2.ind6T",
+    subtitle: "الإجمالي لدى الهيئة حسب النتيجة (حفظ / عدم اختصاص / إحالة)",
+    kpi: "إجمالي 2676",
+    dataKey: "completedComplaints",
+    Chart: CompletedComplaintsChart,
+    table: () => dashboardData.completedComplaints.totalAtCommission,
+    note: "يتوفر تفصيلان إضافيان: قبل التحقيق وبعد التحقيق.",
+    noteEn: "Two additional breakdowns are available: before and after investigation.",
+  },
+  {
+    id: 7,
+    title: "الملفات المحالة لنيابة جرائم الفساد حسب المصدر",
+    titleKey: "dash2.ind7T",
+    subtitle: "هيئة / النائب العام / منبثقة عن قضية / واردة من جهات أخرى",
+    kpi: "إجمالي 263 قضية",
+    dataKey: "filesReferredToProsecutionBySource",
+    Chart: FilesReferredBySourceChart,
+    table: () => dashboardData.filesReferredToProsecutionBySource,
+  },
+  {
+    id: 8,
+    title: "ملفات النيابة المحالة للمحكمة حسب الجرم",
+    titleKey: "dash2.ind8T",
+    subtitle: "أعمدة أفقية مع فلتر سنة (تُتجاهل القيم غير المتوفرة)",
+    kpi: "إجمالي 458",
+    dataKey: "prosecutionFilesReferredToCourtByCrime",
+    Chart: CourtByCrimeChart,
+    table: () => dashboardData.prosecutionFilesReferredToCourtByCrime,
+  },
+  {
+    id: 9,
+    title: "ملفات النيابة المنجزة حسب الإجراء",
+    titleKey: "dash2.ind9T",
+    subtitle: "إحالة للمحكمة / حفظ / ضم / إحالة لنيابات أخرى",
+    kpi: "إجمالي 219",
+    dataKey: "prosecutionFilesCompletedByProcedure",
+    Chart: FilesCompletedByProcedureChart,
+    table: () => dashboardData.prosecutionFilesCompletedByProcedure,
+  },
+  {
+    id: 10,
+    title: "المتهمون المحالون لمحكمة جرائم الفساد حسب الجنس",
+    titleKey: "dash2.ind10T",
+    subtitle: "أفراد ذكر / أنثى",
+    kpi: "إجمالي 310 أفراد",
+    dataKey: "defendantsReferredToCourtByGender",
+    Chart: DefendantsByGenderChart,
+    table: () => dashboardData.defendantsReferredToCourtByGender,
+    note: "شخص معنوي: 2 في 2022، و1 في 2025 (المجموع 3).",
+    noteEn: "Legal persons: 2 in 2022, and 1 in 2025 (total 3).",
+  },
+  {
+    id: 11,
+    title: "القضايا المفصولة بحكم حسب النتيجة",
+    titleKey: "dash2.ind11T",
+    subtitle: "إدانة / براءة / عدم اختصاص / انقضاء الدعوى",
+    kpi: "إجمالي 69 قضية",
+    dataKey: "courtVerdictResults",
+    Chart: CourtVerdictsChart,
+    table: () => dashboardData.courtVerdictResults,
+  },
+  {
+    id: 12,
+    title: "عدد المحكوم عليهم (المدانين) في محكمة جرائم الفساد",
+    titleKey: "dash2.ind12T",
+    subtitle: "تطور عدد المدانين حسب السنة",
+    kpi: "إجمالي 45",
+    dataKey: "courtVerdictResults-convicted",
+    Chart: ConvictedCountChart,
+    table: () => dashboardData.courtVerdictResults,
+  },
+];
+
+function YearFilterBar({
+  selected,
+  setSelected,
+}: {
+  selected: YearFilter;
+  setSelected: (s: YearFilter) => void;
+}) {
+  const toggle = (y: number) => {
+    const next = new Set(selected);
+    if (next.has(y)) {
+      next.delete(y);
     } else {
-      cur = cur ? cur + " " + w : w;
+      next.add(y);
     }
-  }
-  if (cur) lines.push(cur);
+    // if empty -> all
+    setSelected(next.size === 0 ? ALL_YEARS : next);
+  };
+  const isAll = selected.size === YEARS.length;
+  const { t } = useLocale();
   return (
-    <text x={x} y={y} textAnchor="middle" fill="var(--axis-color)" fontSize={10} fontWeight={600}>
-      {lines.map((ln, i) => (
-        <tspan key={i} x={x} dy={i === 0 ? 8 : 12}>
-          {ln}
-        </tspan>
-      ))}
-    </text>
-  );
-}
-
-function IndicatorChart({ item }: { item: IndicatorDefinition }) {
-  const { t, d } = useLocale();
-  if (item.chart === "bar-years") {
-    const data = item.table.rows.map((r) => ({
-      label: d(String(r[0])),
-      value: typeof r[1] === "number" ? r[1] : 0,
-    }));
-    return (
-      <ResponsiveContainer width="100%" height={340}>
-        <BarChart data={data} margin={{ top: 28, right: 8, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-          <XAxis dataKey="label" tick={{ ...AXIS, fontSize: 13 }} interval={0} />
-          <YAxis tick={AXIS} orientation="right" allowDecimals={false} />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-          />
-          <Bar
-            dataKey="value"
-            name={t("dash.count")}
-            radius={[8, 8, 0, 0]}
-            animationDuration={700}
-            barSize={56}
-          >
-            {data.map((d2, i) => (
-              <Cell
-                key={i}
-                fill={
-                  d2.value === 0 ? "var(--muted-foreground)" : CHART_COLORS[i % CHART_COLORS.length]
-                }
-                fillOpacity={d2.value === 0 ? 0.35 : 1}
-              />
-            ))}
-            <LabelList
-              dataKey="value"
-              position="top"
-              formatter={(v: number) => v}
-              className="fill-foreground font-bold"
-            />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  if (item.chart === "bar-single") {
-    const rows = item.table.rows
-      .filter((r) => typeof r[1] === "number")
-      .map((r) => ({ label: d(String(r[0])), value: r[1] as number }))
-      .sort((a, b) => b.value - a.value);
-    const fmt = (v: number) => v.toLocaleString("en-US");
-    return (
-      <ResponsiveContainer
-        width="100%"
-        height={Math.max(300, Math.min(600, rows.length * 46 + 120))}
+    <div className="flex items-center gap-1 rounded-lg border border-border bg-card p-1.5 shadow-soft">
+      <span className="inline-flex items-center gap-1.5 px-2.5 text-[13px] font-semibold text-muted-foreground">
+        <Filter className="h-4 w-4 text-accent" /> {t("dash2.filterTitle")}
+      </span>
+      <button
+        onClick={() => setSelected(ALL_YEARS)}
+        className={`rounded-md px-3 py-1.5 text-sm font-bold transition-colors ${
+          isAll
+            ? "bg-accent text-accent-foreground shadow-sm"
+            : "bg-surface text-foreground/80 hover:bg-secondary"
+        }`}
       >
-        <BarChart data={rows} layout="vertical" margin={{ top: 4, right: 56, left: 8, bottom: 4 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
-          <XAxis type="number" tick={{ ...AXIS, fontSize: 11 }} tickFormatter={fmt} />
-          <YAxis
-            type="category"
-            dataKey="label"
-            tick={{ ...AXIS, fontSize: 11 }}
-            width={210}
-            orientation="right"
-          />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-          />
-          <Bar
-            dataKey="value"
-            name={t("dash.count")}
-            radius={[0, 6, 6, 0]}
-            animationDuration={700}
-            barSize={24}
-          >
-            {rows.map((d2, i) => (
-              <Cell
-                key={i}
-                fill={CHART_COLORS[i % CHART_COLORS.length]}
-                fillOpacity={1 - i * 0.055}
-              />
-            ))}
-            <LabelList
-              dataKey="value"
-              position="right"
-              formatter={(v: number) => fmt(v)}
-              className="fill-foreground font-bold"
-            />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  const TOTAL_LABELS = new Set(["المجموع", "الإجمالي"]);
-
-  if (item.chart === "stacked-year") {
-    const cats = item.table.rows
-      .filter((r) => !TOTAL_LABELS.has(String(r[0])))
-      .map((r) => ({
-        label: d(String(r[0])),
-        "2022": typeof r[1] === "number" ? r[1] : 0,
-        "2023": typeof r[2] === "number" ? r[2] : 0,
-        "2024": typeof r[3] === "number" ? r[3] : 0,
-        "2025": typeof r[4] === "number" ? r[4] : 0,
-      }));
-    const yearRows = YEARS.map((y) => {
-      const row: Record<string, number | string> = { year: y };
-      cats.forEach((c) => {
-        row[c.label] = c[y as "2022"];
-      });
-      return row;
-    });
-    return (
-      <ResponsiveContainer width="100%" height={340}>
-        <BarChart data={yearRows} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-          <XAxis dataKey="year" tick={{ ...AXIS, fontSize: 12 }} interval={0} />
-          <YAxis tick={AXIS} orientation="right" />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-          />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-          {cats.map((c, i) => (
-            <Bar
-              key={c.label}
-              dataKey={c.label}
-              name={c.label}
-              stackId="s"
-              fill={CHART_COLORS[i % CHART_COLORS.length]}
-              radius={i === cats.length - 1 ? [6, 6, 0, 0] : [0, 0, 0, 0]}
-              animationDuration={700}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  const data = item.table.rows
-    .filter((r) => !TOTAL_LABELS.has(String(r[0])))
-    .map((r) => ({
-      label: d(String(r[0])),
-      "2022": typeof r[1] === "number" ? r[1] : 0,
-      "2023": typeof r[2] === "number" ? r[2] : 0,
-      "2024": typeof r[3] === "number" ? r[3] : 0,
-      "2025": typeof r[4] === "number" ? r[4] : 0,
-    }));
-
-  const horizontal = data.length >= 8;
-
-  if (horizontal) {
-    const h = Math.max(360, Math.min(620, data.length * 42 + 140));
-    return (
-      <ResponsiveContainer width="100%" height={h}>
-        <BarChart data={data} layout="vertical" margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
-          <XAxis type="number" tick={{ ...AXIS, fontSize: 11 }} />
-          <YAxis
-            type="category"
-            dataKey="label"
-            tick={{ ...AXIS, fontSize: 10 }}
-            width={230}
-            orientation="right"
-          />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-          />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-          {YEARS.map((y, i) => (
-            <Bar
-              key={y}
-              dataKey={y}
-              name={y}
-              fill={CHART_COLORS[i % CHART_COLORS.length]}
-              radius={[0, 5, 5, 0]}
-              animationDuration={700}
-              barSize={14}
-            />
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  return (
-    <ResponsiveContainer width="100%" height={Math.max(320, Math.min(560, data.length * 46 + 120))}>
-      <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-        <XAxis dataKey="label" tick={<WrappedTick />} interval={0} tickMargin={8} height={90} />
-        <YAxis tick={AXIS} orientation="right" />
-        <Tooltip
-          contentStyle={{
-            borderRadius: 10,
-            border: "1px solid var(--tooltip-border)",
-            background: "var(--tooltip-bg)",
-            fontSize: 12,
-          }}
-          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-        />
-        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-        {YEARS.map((y, i) => (
-          <Bar
-            key={y}
-            dataKey={y}
-            name={y}
-            fill={CHART_COLORS[i % CHART_COLORS.length]}
-            radius={[5, 5, 0, 0]}
-            animationDuration={700}
-            barSize={18}
-          />
-        ))}
-      </BarChart>
-    </ResponsiveContainer>
-  );
-
-  if (item.chart === "pie") {
-    const twoCol = item.table.columns.length === 2;
-    const slices = item.table.rows
-      .filter((r) => !TOTAL_LABELS.has(String(r[0])))
-      .map((r) => ({
-        name: d(String(r[0])),
-        value: twoCol
-          ? typeof r[1] === "number"
-            ? r[1]
-            : 0
-          : YEARS.reduce(
-              (s, _, i) => s + (typeof r[i + 1] === "number" ? (r[i + 1] as number) : 0),
-              0,
-            ),
-      }));
-    return (
-      <ResponsiveContainer width="100%" height={340}>
-        <PieChart>
-          <Pie
-            data={slices}
-            dataKey="value"
-            nameKey="name"
-            innerRadius={62}
-            outerRadius={108}
-            paddingAngle={2}
-            stroke="var(--color-card)"
-            strokeWidth={2}
-          >
-            {slices.map((_, i) => (
-              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-          />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-        </PieChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  if (item.chart === "line-years") {
-    const cats = item.table.rows.filter((r) => !TOTAL_LABELS.has(String(r[0])));
-    const isYearRows = cats.every((r) => YEARS.includes(String(r[0])));
-    if (isYearRows) {
-      const data = cats.map((r) => ({
-        year: String(r[0]),
-        value: typeof r[1] === "number" ? r[1] : 0,
-      }));
-      return (
-        <ResponsiveContainer width="100%" height={340}>
-          <LineChart data={data} margin={{ top: 12, right: 8, left: 0, bottom: 8 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" />
-            <XAxis dataKey="year" tick={{ ...AXIS, fontSize: 12 }} />
-            <YAxis tick={AXIS} orientation="right" />
-            <Tooltip
-              contentStyle={{
-                borderRadius: 10,
-                border: "1px solid var(--tooltip-border)",
-                background: "var(--tooltip-bg)",
-                fontSize: 12,
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="value"
-              name={t("dash.count")}
-              stroke={CHART_COLORS[0]}
-              strokeWidth={2.5}
-              dot={{ r: 4 }}
-              activeDot={{ r: 6 }}
-              animationDuration={800}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      );
-    }
-    const seriesNames = cats.map((r) => d(String(r[0])));
-    const yearRows = YEARS.map((y, yi) => {
-      const row: Record<string, string | number> = { year: y };
-      cats.forEach((r) => {
-        row[String(r[0])] = typeof r[yi + 1] === "number" ? (r[yi + 1] as number) : 0;
-      });
-      return row;
-    });
-    return (
-      <ResponsiveContainer width="100%" height={340}>
-        <LineChart data={yearRows} margin={{ top: 12, right: 8, left: 0, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" />
-          <XAxis dataKey="year" tick={{ ...AXIS, fontSize: 12 }} />
-          <YAxis tick={AXIS} orientation="right" />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-          />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-          {seriesNames.map((c, i) => (
-            <Line
-              key={c}
-              type="monotone"
-              dataKey={c}
-              name={c}
-              stroke={CHART_COLORS[i % CHART_COLORS.length]}
-              strokeWidth={2.5}
-              dot={{ r: 3 }}
-              activeDot={{ r: 5 }}
-              animationDuration={800}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    );
-  }
-}
-
-function YearChart({ item, year }: { item: IndicatorDefinition; year: string }) {
-  const { t, d } = useLocale();
-  const yearIdx = YEARS.indexOf(year);
-  const TOTAL_LABELS = new Set(["المجموع", "الإجمالي"]);
-  const cats = item.table.rows.filter((r) => !TOTAL_LABELS.has(String(r[0])));
-
-  const rows = cats.map((r) => ({
-    label: d(String(r[0])),
-    value: typeof r[yearIdx + 1] === "number" ? (r[yearIdx + 1] as number) : 0,
-  }));
-
-  const isYearRows = cats.every((r) => YEARS.includes(String(r[0])));
-  if (isYearRows) {
-    const curRow = cats.find((r) => String(r[0]) === year);
-    const cur = curRow ? (typeof curRow[1] === "number" ? (curRow[1] as number) : 0) : 0;
-    const prevRow = cats.find((r) => String(r[0]) === String(Number(year) - 1));
-    const prev = prevRow
-      ? typeof prevRow[1] === "number"
-        ? (prevRow[1] as number)
-        : 0
-      : undefined;
-    const delta = prev === undefined ? null : cur - prev;
-    return (
-      <div className="flex h-[340px] flex-col items-center justify-center gap-3 text-center">
-        <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-          {t("dash.valueInYear", { year })}
-        </span>
-        <div className="text-6xl font-black text-primary">{cur.toLocaleString("en-US")}</div>
-        {delta !== null && delta !== 0 && (
-          <div
-            className={`flex items-center gap-1 text-sm font-bold ${delta > 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}
-          >
-            {delta > 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-            {delta > 0 ? "+" : ""}
-            {delta.toLocaleString("en-US")} {t("dash.vsYear", { n: Number(year) - 1 })}
-          </div>
-        )}
-        {delta !== null && delta === 0 && (
-          <div className="text-sm font-bold text-muted-foreground">
-            {t("dash.stable", { n: Number(year) - 1 })}
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  if (item.chart === "pie" || item.chart === "stacked-year") {
-    return (
-      <ResponsiveContainer width="100%" height={340}>
-        <PieChart>
-          <Pie
-            data={rows}
-            dataKey="value"
-            nameKey="label"
-            innerRadius={62}
-            outerRadius={108}
-            paddingAngle={2}
-            stroke="var(--color-card)"
-            strokeWidth={2}
-          >
-            {rows.map((_, i) => (
-              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-          />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
-        </PieChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  if (rows.length >= 8) {
-    const h = Math.max(360, Math.min(620, rows.length * 42 + 140));
-    return (
-      <ResponsiveContainer width="100%" height={h}>
-        <BarChart data={rows} layout="vertical" margin={{ top: 8, right: 16, left: 8, bottom: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
-          <XAxis type="number" tick={{ ...AXIS, fontSize: 11 }} />
-          <YAxis
-            type="category"
-            dataKey="label"
-            tick={{ ...AXIS, fontSize: 10 }}
-            width={230}
-            orientation="right"
-          />
-          <Tooltip
-            contentStyle={{
-              borderRadius: 10,
-              border: "1px solid var(--tooltip-border)",
-              background: "var(--tooltip-bg)",
-              fontSize: 12,
-            }}
-            cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-          />
-          <Bar
-            dataKey="value"
-            name={year}
-            radius={[0, 5, 5, 0]}
-            animationDuration={700}
-            barSize={18}
-          >
-            {rows.map((_, i) => (
-              <Cell
-                key={i}
-                fill={CHART_COLORS[i % CHART_COLORS.length]}
-                fillOpacity={1 - i * 0.05}
-              />
-            ))}
-            <LabelList
-              dataKey="value"
-              position="right"
-              formatter={(v: number) => v.toLocaleString("en-US")}
-              className="fill-foreground font-bold"
-            />
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  }
-
-  return (
-    <ResponsiveContainer width="100%" height={Math.max(320, Math.min(560, rows.length * 46 + 120))}>
-      <BarChart data={rows} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
-        <XAxis dataKey="label" tick={<WrappedTick />} interval={0} tickMargin={8} height={90} />
-        <YAxis tick={AXIS} orientation="right" allowDecimals={false} />
-        <Tooltip
-          contentStyle={{
-            borderRadius: 10,
-            border: "1px solid var(--tooltip-border)",
-            background: "var(--tooltip-bg)",
-            fontSize: 12,
-          }}
-          cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
-        />
-        <Bar dataKey="value" name={year} radius={[5, 5, 0, 0]} animationDuration={700} barSize={28}>
-          {rows.map((_, i) => (
-            <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
-          ))}
-          <LabelList
-            dataKey="value"
-            position="top"
-            formatter={(v: number) => v.toLocaleString("en-US")}
-            className="fill-foreground font-bold"
-          />
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
-  );
-}
-
-function IndicatorCard({ item, year }: { item: IndicatorDefinition; year: string }) {
-  const { t, d, locale } = useLocale();
-  const [showDef, setShowDef] = useState(false);
-  const [showTable, setShowTable] = useState(false);
-
-  return (
-    <article className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-elevated">
-      <header className="flex items-start justify-between gap-3">
-        <h3 className="text-[15px] font-bold leading-8 text-foreground">{d(item.title)}</h3>
+        {t("dash2.allYears")}
+      </button>
+      {YEARS.map((y) => (
         <button
-          onClick={() => setShowDef((v) => !v)}
-          className="focus-ring inline-flex shrink-0 items-center gap-1 rounded-md bg-accent/10 px-2.5 py-1.5 text-[11px] font-semibold text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+          key={y}
+          onClick={() => toggle(y)}
+          className={`rounded-md px-3 py-1.5 text-sm font-bold transition-colors ${
+            selected.has(y)
+              ? "bg-accent text-accent-foreground shadow-sm"
+              : "bg-surface text-foreground/80 hover:bg-secondary"
+          }`}
         >
-          <BadgeInfo className="h-3.5 w-3.5" /> {t("dash.badge")}
+          {y}
         </button>
-      </header>
+      ))}
+    </div>
+  );
+}
 
-      {showDef && (
-        <div className="mt-4 space-y-3 rounded-xl border border-border bg-surface p-4 text-sm leading-7">
-          <div>
-            <p className="font-bold text-primary">{t("dash.definition")}</p>
-            <p className="text-muted-foreground">{d(item.definition)}</p>
+function SummaryCards({ selected }: { selected: YearFilter }) {
+  const items = getDashboardSummary(selected);
+  const { t, locale } = useLocale();
+  const colors = [
+    "#2563eb",
+    "#16a34a",
+    "#d97706",
+    "#dc2626",
+    "#7c3aed",
+    "#0d9488",
+    "#e11d48",
+    "#ca8a04",
+  ];
+  return (
+    <section className="mx-auto max-w-7xl px-4 lg:px-8">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((k, i) => (
+          <div
+            key={k.id}
+            className="relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
+          >
+            <span
+              className="absolute inset-x-0 top-0 h-1.5"
+              style={{ background: colors[i % colors.length] }}
+            />
+            <div className="flex flex-col gap-1 p-5 pt-4">
+              <div className="flex items-center gap-2">
+                <div
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-white"
+                  style={{ background: colors[i % colors.length] }}
+                >
+                  <span className="text-xs font-bold">{k.id === "complaints" ? "ش" : "م"}</span>
+                </div>
+                <span className="text-[13px] font-semibold leading-5 text-muted-foreground">
+                  {locale === "ar" ? k.label : k.labelEn}
+                </span>
+              </div>
+              <div className="mt-1 text-4xl font-black tracking-tight text-foreground" dir="ltr">
+                {k.value}
+              </div>
+            </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div>
-              <p className="font-bold text-primary">{t("dash.dataSource")}</p>
-              <p className="text-muted-foreground">{d(item.source)}</p>
-            </div>
-            <div>
-              <p className="font-bold text-primary">{t("dash.calculationMethod")}</p>
-              <p className="text-muted-foreground">{d(item.calculation)}</p>
-            </div>
-            <div>
-              <p className="font-bold text-primary">{t("dash.timePeriod")}</p>
-              <p className="text-muted-foreground">{d(item.period)}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {item.note && (
-        <p className="mt-3 rounded-lg bg-amber-100 px-3 py-2 text-xs leading-6 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300">
-          {d(item.note)}
+        ))}
+      </div>
+      {selected.size !== YEARS.length && (
+        <p className="mt-3 text-xs text-muted-foreground">
+          {t("dash2.summaryNote", { years: [...selected].sort().join("، ") })}
         </p>
       )}
+    </section>
+  );
+}
 
-      <div className="mt-5 flex-1 rounded-xl border border-border bg-surface/60 p-4">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">
-            <BarChart3 className="h-4 w-4" /> {t("dash.chart")}
+function IndicatorCard({ ind, selected }: { ind: IndicatorDef; selected: YearFilter }) {
+  const [showData, setShowData] = useState(false);
+  const C = ind.Chart;
+  const { t, locale } = useLocale();
+  const translateKpi = (kpi: string): string => {
+    if (locale === "ar") return kpi;
+    const n = kpi.replace(/[^0-9,.\s]/g, "").trim();
+    if (kpi.startsWith("المجموع الكلي")) return t("dash2.kpiTotal", { value: n });
+    if (kpi.includes("أفراد")) return t("dash2.kpiTotalPersons", { value: n });
+    if (kpi.includes("قضية")) return t("dash2.kpiTotalFiles", { value: n });
+    return t("dash2.kpiTotal", { value: n });
+  };
+  return (
+    <article
+      className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
+      id={`indicator-${ind.dataKey}`}
+    >
+      <div className="flex items-center justify-between gap-2 border-b border-border bg-surface px-4 py-2.5">
+        <div className="flex items-center gap-2.5">
+          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-accent text-xs font-bold text-accent-foreground">
+            {ind.id}
           </span>
-          <span className="rounded-md bg-card px-2 py-1 text-[11px] font-semibold text-muted-foreground ring-1 ring-border">
-            {year === "all" ? d(item.period) : t("dash.yearOf", { year })}
-          </span>
+          <h3 className="text-sm font-bold leading-5 text-foreground">{t(ind.titleKey)}</h3>
         </div>
-        {year === "all" ? <IndicatorChart item={item} /> : <YearChart item={item} year={year} />}
+        <div className="flex items-center gap-2">
+          {ind.kpi && (
+            <span className="hidden shrink-0 items-center gap-1 rounded-md bg-accent-soft px-2 py-1 text-xs font-bold text-foreground sm:inline-flex">
+              {translateKpi(ind.kpi)}
+            </span>
+          )}
+          <button
+            onClick={() => setShowData((v) => !v)}
+            className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-xs font-semibold text-foreground/80 transition-colors hover:bg-accent hover:text-accent-foreground"
+            aria-expanded={showData}
+          >
+            <Table2 className="h-3.5 w-3.5" />
+            {showData ? t("dash2.hideData") : t("dash2.showData")}
+          </button>
+        </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-2">
-        <button
-          onClick={() => setShowTable((v) => !v)}
-          className="focus-ring inline-flex items-center gap-1.5 rounded-lg bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
-        >
-          <Table2 className="h-4 w-4" /> {showTable ? t("dash.hideTable") : t("dash.showTable")}
-        </button>
-        <button
-          onClick={() =>
-            downloadExcel(
-              `indicator-${item.id}`,
-              d(item.title).slice(0, 30),
-              item.table.columns,
-              item.table.rows,
-            )
-          }
-          className="focus-ring inline-flex items-center gap-1.5 rounded-lg gradient-accent px-3.5 py-2 text-xs font-semibold text-accent-foreground transition-opacity hover:opacity-90"
-        >
-          <FileSpreadsheet className="h-4 w-4" /> {t("dash.downloadExcel")}
-        </button>
+      <div className="flex-1 bg-card p-4">
+        {showData ? (
+          <DataTable table={ind.table()} />
+        ) : (
+          <div className="flex min-h-[260px] flex-col">
+            <div className="flex-1">
+              <C selected={selected} />
+            </div>
+          </div>
+        )}
       </div>
 
-      {showTable && (
-        <div className="mt-4 overflow-x-auto rounded-xl border border-border">
-          <table className="w-full min-w-[520px] border-collapse text-sm">
-            <thead>
-              <tr className="bg-surface">
-                {item.table.columns.map((c) => (
-                  <th
-                    key={c}
-                    className="border-b border-border px-3 py-2.5 text-right text-xs font-bold text-primary"
-                  >
-                    {d(c)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {item.table.rows.map((row, ri) => (
-                <tr key={ri} className={ri % 2 ? "bg-surface/50" : "bg-card"}>
-                  {row.map((cell, ci) => (
-                    <td
-                      key={ci}
-                      className="border-b border-border/60 px-3 py-2 text-xs text-foreground/85"
-                    >
-                      {typeof cell === "number"
-                        ? cell.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")
-                        : d(cell)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      {ind.note && (
+        <p
+          className={`mx-4 mb-4 flex items-start gap-1.5 rounded-lg px-3 py-2 text-[11px] leading-5 ${
+            ind.noteType === "warn"
+              ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+              : "bg-muted/60 text-muted-foreground"
+          }`}
+        >
+          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />{" "}
+          {locale === "ar" ? ind.note : (ind.noteEn ?? ind.note)}
+        </p>
       )}
     </article>
   );
 }
 
 function Dashboard() {
-  const { t, d, locale } = useLocale();
-  const [active, setActive] = useState<IndicatorEntity>("pacc");
-  const [year, setYear] = useState<string>("all");
-  const q = dataSource.getDataQuality();
-  const items = getInteractiveByEntity(active);
+  const [selected, setSelected] = useState<YearFilter>(ALL_YEARS);
+  const { t } = useLocale();
 
   return (
     <SiteLayout>
       <PageHeader
-        eyebrow={t("dash.eyebrow")}
-        title={t("dash.title")}
-        description={t("dash.desc")}
+        eyebrow={t("dash2.eyebrow")}
+        title={t("dash2.title")}
+        description={t("dash2.desc")}
       />
 
-      <section className="border-b border-border bg-surface">
-        <div className="mx-auto grid max-w-7xl gap-4 px-4 py-6 sm:grid-cols-2 lg:grid-cols-5 lg:px-8">
-          {[
-            { icon: Calendar, label: t("dash.periodCovered"), value: q.coveragePeriod },
-            {
-              icon: Database,
-              label: t("dash.investigationFiles"),
-              value: q.records.toLocaleString(locale === "ar" ? "ar-EG" : "en-US"),
-            },
-            {
-              icon: Layers,
-              label: t("dash.indicators"),
-              value: q.indicators.toLocaleString(locale === "ar" ? "ar-EG" : "en-US"),
-            },
-            {
-              icon: ShieldCheck,
-              label: t("dash.worksheets"),
-              value: q.sheets.toLocaleString(locale === "ar" ? "ar-EG" : "en-US"),
-            },
-            { icon: BookOpen, label: t("dash.lastUpdate"), value: d(q.lastUpdate) },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="flex items-center gap-3 rounded-lg border border-border bg-card p-3"
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 lg:px-8">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <YearFilterBar selected={selected} setSelected={setSelected} />
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              to="/indicators"
+              className="inline-flex w-fit items-center gap-2 rounded-md gradient-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-soft transition-transform hover:-translate-y-0.5"
             >
-              <div className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <s.icon className="h-4 w-4" />
-              </div>
-              <div>
-                <div className="text-[11px] text-muted-foreground">{s.label}</div>
-                <div className="text-sm font-bold text-primary">{s.value}</div>
-              </div>
-            </div>
-          ))}
+              <Lightbulb className="h-4 w-4" /> {t("dash2.spotlight")}
+            </Link>
+            <span className="hidden items-center gap-1.5 rounded-md border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground md:inline-flex">
+              <Info className="h-3.5 w-3.5" /> {t("dash2.hoverHint")}
+            </span>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="mb-6 flex flex-wrap items-center gap-2">
-          <span className="text-sm font-bold text-primary">{t("dash.yearLabel")}</span>
-          {[
-            { value: "all", label: t("dash.allYears") },
-            ...YEARS.map((y) => ({ value: y, label: y })),
-          ].map((o) => (
-            <button
-              key={o.value}
-              onClick={() => setYear(o.value)}
-              className={`focus-ring rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                year === o.value
-                  ? "gradient-accent text-accent-foreground shadow-soft"
-                  : "border border-border bg-card text-foreground/75 hover:bg-secondary"
-              }`}
-            >
-              {o.label}
-            </button>
-          ))}
+      <div className="pb-8 pt-2">
+        <SummaryCards selected={selected} />
+      </div>
+
+      <section className="mx-auto max-w-7xl px-4 pb-20 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-2xl font-bold text-primary">{t("dash2.sectionTitle")}</h2>
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground">
+            <Info className="h-3.5 w-3.5" /> {t("dash2.hoverHint")}
+          </span>
         </div>
-
-        <div className="mb-6 flex flex-wrap gap-2">
-          {ENTITY_ORDER.map((e) => (
-            <button
-              key={e}
-              onClick={() => setActive(e)}
-              className={`focus-ring rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
-                active === e
-                  ? "gradient-accent text-accent-foreground shadow-soft"
-                  : "border border-border bg-card text-foreground/75 hover:bg-secondary"
-              }`}
-            >
-              {d(ENTITY_LABELS[e])}
-            </button>
-          ))}
-        </div>
-
-        <div className="mb-8 grid gap-6 md:grid-cols-2">
-          {items.length === 0 && <p className="text-muted-foreground">{t("dash.noIndicators")}</p>}
-          {items.map((item) => (
-            <IndicatorCard key={item.id} item={item} year={year} />
+        <div className="grid gap-6 md:grid-cols-2">
+          {INDICATORS.map((ind) => (
+            <IndicatorCard key={ind.dataKey} ind={ind} selected={selected} />
           ))}
         </div>
       </section>

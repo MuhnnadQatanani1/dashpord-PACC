@@ -1,18 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { StatCard } from "@/components/site/StatCard";
 import { ChartCard } from "@/components/site/ChartCard";
 import { MultiLine, ShareDonut } from "@/components/site/Charts";
+import { FunnelCard } from "@/components/site/FunnelCard";
 import { HeroVisual } from "@/components/site/HeroVisual";
 import { dataSource } from "@/lib/mock-data";
+import { KPI_2025 } from "@/lib/pacc-dashboard-data";
 import { interactiveIndicators } from "@/data/indicators-catalog";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import hqImage from "@/assets/pacc-headquarters.png.asset.json";
 import {
   BarChart3,
-  Gavel,
-  Scale,
-  Megaphone,
   ArrowLeft,
   Database,
   BookOpen,
@@ -25,7 +23,12 @@ import {
   CalendarCheck,
   CalendarRange,
   LayoutGrid,
-  Files,
+  Megaphone,
+  CheckCircle2,
+  Send,
+  Gavel,
+  Percent,
+  Scale,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -48,16 +51,26 @@ export const Route = createFileRoute("/")({
   },
 });
 
-const KPI_ICONS = {
+const KEY_KPI_ICONS: Record<string, typeof Megaphone> = {
   complaints: Megaphone,
-  investigations: Files,
-  referrals: Scale,
-  verdicts: Gavel,
-} as const;
+  completed: CheckCircle2,
+  referrals: Send,
+  convicted: Gavel,
+  convictionRate: Percent,
+  legislation: Scale,
+};
+
+const KEY_KPI_COLORS: Record<string, string> = {
+  complaints: "#2563eb",
+  completed: "#16a34a",
+  referrals: "#d97706",
+  convicted: "#dc2626",
+  convictionRate: "#7c3aed",
+  legislation: "#0d9488",
+};
 
 function Home() {
   const { t, d, pick } = useLocale();
-  const kpis = dataSource.getKpis();
   const journey = dataSource.getJourney();
   const findInd = (id: string) => interactiveIndicators.find((i) => i.id === id)!;
   const yearlyTotals = (id: string) => {
@@ -215,16 +228,32 @@ function Home() {
           <h2 className="text-3xl font-bold text-primary md:text-4xl">{t("home.kpiTitle")}</h2>
           <p className="mt-3 leading-8 text-muted-foreground">{t("home.kpiDesc")}</p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {kpis.map((k) => (
-            <StatCard
-              key={k.id}
-              label={d(k.label)}
-              value={k.value}
-              trend={k.trend}
-              icon={KPI_ICONS[k.id as keyof typeof KPI_ICONS]}
-            />
-          ))}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {KPI_2025.map((k) => {
+            const Icon = KEY_KPI_ICONS[k.icon];
+            const color = KEY_KPI_COLORS[k.icon];
+            return (
+              <div
+                key={k.id}
+                className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-soft transition-shadow hover:shadow-elevated"
+              >
+                <div
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white"
+                  style={{ background: color }}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="mt-4">
+                  <div className="text-3xl font-black text-primary" dir="ltr">
+                    {k.value.toLocaleString("en-US")}
+                    {k.suffix}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-foreground">{k.label}</div>
+                  <p className="mt-1.5 text-[11px] leading-5 text-muted-foreground">{k.desc}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -358,6 +387,10 @@ function Home() {
           <ChartCard title={t("home.chartSourcesTitle")} subtitle={t("home.chartSourcesSubtitle")}>
             <ShareDonut data={sourcesDonut} />
           </ChartCard>
+        </div>
+
+        <div className="mt-6">
+          <FunnelCard showLink />
         </div>
       </section>
 

@@ -1,13 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
-import {
-  ENTITY_LABELS,
-  ENTITY_ORDER,
-  getSpotlightByEntity,
-  type IndicatorEntity,
-} from "@/data/indicators-catalog";
+import { YEARS } from "@/components/site/EnforcementCharts";
+import { getSpotlight, nf, type YearFilter } from "@/lib/enforcement-kpis";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
-import { Lightbulb, Info } from "lucide-react";
+import { Filter, Lightbulb } from "lucide-react";
 
 export const Route = createFileRoute("/indicators")({
   component: Indicators,
@@ -22,57 +19,127 @@ export const Route = createFileRoute("/indicators")({
   },
 });
 
-const ENTITY_ICON_COLOR: Record<IndicatorEntity, string> = {
-  pacc: "bg-primary/10 text-primary",
-  prosecution: "bg-accent/10 text-accent",
-  court: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400",
-};
+const ALL = new Set<number>(YEARS) as YearFilter;
+
+/** Soft light backgrounds + matching strong number/band colors, cycled for the 11 slots. */
+const SPOTLIGHT_COLORS = [
+  { bg: "#e7efff", band: "#3b82f6", number: "#274dbd" },
+  { bg: "#fdebe0", band: "#f97316", number: "#c44d0f" },
+  { bg: "#fdf3d8", band: "#eab308", number: "#966d04" },
+  { bg: "#e8ecf4", band: "#64748b", number: "#3f4a5c" },
+  { bg: "#eef2f7", band: "#94a3b8", number: "#526071" },
+  { bg: "#ddf4f1", band: "#0d9488", number: "#0b6f66" },
+  { bg: "#fbeaf0", band: "#e11d48", number: "#b90f38" },
+  { bg: "#eceffe", band: "#6366f1", number: "#4338ca" },
+];
+
+function YearFilterBar({
+  selected,
+  setSelected,
+}: {
+  selected: YearFilter;
+  setSelected: (s: YearFilter) => void;
+}) {
+  const toggle = (y: number) => {
+    const next = new Set(selected);
+    if (next.has(y)) next.delete(y);
+    else next.add(y);
+    setSelected(next.size === 0 ? ALL : next);
+  };
+  const isAll = selected.size === YEARS.length;
+  const { t } = useLocale();
+  return (
+    <div className="mx-auto mt-6 flex max-w-7xl flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3 shadow-soft px-4 lg:px-8">
+      <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground">
+        <Filter className="h-4 w-4" /> {t("ind.yearLabel")}:
+      </span>
+      <button
+        onClick={() => setSelected(ALL)}
+        className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+          isAll
+            ? "bg-primary text-primary-foreground"
+            : "bg-secondary text-foreground/80 hover:bg-secondary/70"
+        }`}
+      >
+        {t("ind.allYears")}
+      </button>
+      {YEARS.map((y) => (
+        <button
+          key={y}
+          onClick={() => toggle(y)}
+          className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-colors ${
+            selected.has(y)
+              ? "bg-primary text-primary-foreground"
+              : "bg-secondary text-foreground/80 hover:bg-secondary/70"
+          }`}
+        >
+          {y}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function Indicators() {
-  const { t, d, locale } = useLocale();
+  const [selected, setSelected] = useState<YearFilter>(ALL);
+  const kpis = getSpotlight(selected);
+  const { t, locale } = useLocale();
+
   return (
     <SiteLayout>
-      <PageHeader
-        eyebrow={t("indicators.eyebrow")}
-        title={t("indicators.title")}
-        description={t("indicators.desc")}
-      />
+      <PageHeader eyebrow={t("ind.eyebrow")} title={t("ind.title")} description={t("ind.desc")} />
 
-      <section className="mx-auto max-w-7xl space-y-10 px-4 py-12 lg:px-8">
-        {ENTITY_ORDER.map((e) => {
-          const items = getSpotlightByEntity(e);
-          return (
-            <div key={e}>
-              <div className="mb-5 flex items-center gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg gradient-accent text-accent-foreground">
-                  <Lightbulb className="h-5 w-5" />
-                </div>
-                <h2 className="text-2xl font-bold text-primary">{d(ENTITY_LABELS[e])}</h2>
-              </div>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((i) => (
-                  <article
-                    key={i.id}
-                    className={`rounded-2xl border border-border bg-card p-6 shadow-soft transition-transform hover:-translate-y-1 ${ENTITY_ICON_COLOR[e]}`}
-                  >
-                    <div className="text-5xl font-extrabold tracking-tight text-primary">
-                      {i.value.toLocaleString(locale === "en" ? "en-US" : "ar-EG")}
-                      <span className="text-2xl">{locale === "en" ? "%" : "٪"}</span>
+      <YearFilterBar selected={selected} setSelected={setSelected} />
+      {selected.size !== YEARS.length && (
+        <p className="mx-auto mt-3 max-w-7xl px-4 text-xs text-muted-foreground lg:px-8">
+          {t("ind.filterNote", { years: [...selected].sort().join(", ") })}
+        </p>
+      )}
+
+      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 text-xl font-bold text-primary">
+            <Lightbulb className="h-5 w-5" /> {t("ind.sectionTitle")}
+          </h2>
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary hover:text-primary"
+          >
+            ← {t("ind.backToDashboard")}
+          </Link>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {kpis.map((k, i) => {
+            const c = SPOTLIGHT_COLORS[i % SPOTLIGHT_COLORS.length];
+            return (
+              <article
+                key={k.id}
+                className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft transition-transform hover:-translate-y-1"
+                style={{ background: c.bg }}
+              >
+                <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: c.band }} />
+                <div className="text-right" style={{ color: c.number }}>
+                  {k.unit === "%" ? (
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl font-extrabold tracking-tight" dir="ltr">
+                        {k.value}
+                      </span>
+                      <span className="text-3xl font-bold">٪</span>
                     </div>
-                    <h3 className="mt-3 min-h-[2.5rem] text-sm font-bold leading-6 text-foreground">
-                      {d(i.label)}
-                    </h3>
-                    {i.note && (
-                      <p className="mt-2 flex items-start gap-1.5 text-xs leading-5 text-muted-foreground">
-                        <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" /> {d(i.note)}
-                      </p>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+                  ) : (
+                    <div className="text-4xl font-extrabold tracking-tight" dir="ltr">
+                      {k.value}
+                      {k.unit ? <span className="text-2xl">{k.unit}</span> : null}
+                    </div>
+                  )}
+                </div>
+                <h3 className="mt-4 min-h-[2.5rem] text-[15px] font-bold leading-6 text-foreground">
+                  {locale === "ar" ? k.label : k.labelEn}
+                </h3>
+              </article>
+            );
+          })}
+        </div>
       </section>
     </SiteLayout>
   );
