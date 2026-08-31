@@ -11,7 +11,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <section className="mx-auto max-w-7xl px-4 pb-8 pt-12 lg:px-8">
-        <div className="max-w-md">
+        <div className="mx-auto max-w-xl">
           <OpinionPoll />
         </div>
       </section>
