@@ -1,9 +1,9 @@
-﻿import { dashboardData, type SubTable } from "@/data/dashboardData";
+import { dashboardData, type SubTable } from "@/data/dashboardData";
 import { YEARS } from "@/components/site/EnforcementCharts";
 
 export type YearFilter = Set<number>;
 
-export const nf = (v: number | null | undefined) => (v == null ? "â€”" : v.toLocaleString("en-US"));
+export const nf = (v: number | null | undefined) => (v == null ? "—" : v.toLocaleString("en-US"));
 
 /** Sum of a column over all years (year-row tables). */
 export function columnTotal(table: SubTable, col: number | string): number {
@@ -14,10 +14,10 @@ export function columnTotal(table: SubTable, col: number | string): number {
   return valid.reduce((a, b) => a + b, 0);
 }
 
-/** Total complaints across the period (879+587+670+787). */
+/** Total complaints across the period (879 + 587 + 670 + 787). */
 export const TOTAL_COMPLAINTS = 2923;
 
-/** 10 summary cards on the dashboard page, updated by the year filter. */
+/** Summary cards on the dashboard page, updated by the year filter. */
 export interface SummaryKpi {
   id: string;
   value: number | string;
@@ -27,7 +27,6 @@ export interface SummaryKpi {
 }
 
 export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
-  // summed over selected years
   const yearArray = YEARS.filter((y) => selected.has(y) || selected.size === 0);
 
   const sumYearCol = (table: SubTable, year: number, colIdx: number): number => {
@@ -36,23 +35,33 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     return typeof row[colIdx] === "number" ? (row[colIdx] as number) : 0;
   };
 
-  const yrs = yearArray;
-
-  const sumComplaints = yrs.reduce(
+  const sumComplaints = yearArray.reduce(
     (s, y) => s + sumYearCol(dashboardData.complaintsBySource, y, 6),
     0,
   );
-  const sumCompleted = yrs.reduce(
+  const sumCompleted = yearArray.reduce(
     (s, y) => s + sumYearCol(dashboardData.completedComplaints.totalAtCommission, y, 4),
     0,
   );
-  const sumLegis = yrs.reduce((s, y) => s + sumYearCol(dashboardData.legislations, y, 5), 0);
-  const sumReferred = yrs.reduce(
+  const sumLegis = yearArray.reduce((s, y) => s + sumYearCol(dashboardData.legislations, y, 5), 0);
+  const sumReferred = yearArray.reduce(
     (s, y) => s + sumYearCol(dashboardData.filesReferredToProsecutionBySource, y, 5),
     0,
   );
-  const sumConvicted = yrs.reduce(
+  const sumConvicted = yearArray.reduce(
     (s, y) => s + sumYearCol(dashboardData.courtVerdictResults, y, 6),
+    0,
+  );
+  const sumProcedures = yearArray.reduce(
+    (s, y) => s + sumYearCol(dashboardData.prosecutionFilesCompletedByProcedure, y, 5),
+    0,
+  );
+  const sumDefendants = yearArray.reduce(
+    (s, y) => s + sumYearCol(dashboardData.defendantsReferredToCourtByGender, y, 3),
+    0,
+  );
+  const sumVerdicts = yearArray.reduce(
+    (s, y) => s + sumYearCol(dashboardData.courtVerdictResults, y, 5),
     0,
   );
 
@@ -60,60 +69,59 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "complaints",
       value: nf(sumComplaints),
-      label: "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ ÙˆØ§Ù„Ø¨Ù„Ø§ØºØ§Øª Ø§Ù„ÙˆØ§Ø±Ø¯Ø©",
+      label: "إجمالي الشكاوى والبلاغات الواردة",
       labelEn: "Total complaints and reports received",
     },
     {
       id: "completed",
       value: nf(sumCompleted),
-      label: "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ Ø§Ù„Ù…Ù†Ø¬Ø²Ø© Ù„Ø¯Ù‰ Ø§Ù„Ù‡ÙŠØ¦Ø©",
+      label: "إجمالي الشكاوى المنجزة لدى الهيئة",
       labelEn: "Total complaints completed at the Commission",
     },
     {
       id: "legislations",
       value: nf(sumLegis),
-      label: "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ØªØ´Ø±ÙŠØ¹Ø§Øª ÙˆØ§Ù„Ø¨Ù†ÙˆØ¯ Ø§Ù„Ù…Ø¹Ø²Ø²Ø© Ù„Ù„ÙˆÙ‚Ø§ÙŠØ©",
+      label: "إجمالي التشريعات والبنود المعززة للوقاية",
       labelEn: "Total legislations and provisions for prevention",
     },
     {
       id: "referred",
       value: nf(sumReferred),
-      label: "Ù…Ù„ÙØ§Øª Ø§Ù„ØªØ­Ù‚ÙŠÙ‚ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© Ù„Ù†ÙŠØ§Ø¨Ø© Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„ÙØ³Ø§Ø¯",
+      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد",
       labelEn: "Investigation files received by the Corruption Crimes Prosecution",
     },
     {
       id: "convicted",
       value: nf(sumConvicted),
-      label:
-        "Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ù…Ø­ÙƒÙˆÙ…ÙŠÙ† (Ø§Ù„Ù…Ø¯Ø§Ù†ÙŠÙ†) ÙÙŠ Ù…Ø­ÙƒÙ…Ø© Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„ÙØ³Ø§Ø¯",
+      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد",
       labelEn: "Total convicted persons in the Corruption Crimes Court",
     },
     {
       id: "procedures",
-      value: nf(columnTotal(dashboardData.prosecutionFilesCompletedByProcedure, 5)),
-      label: "Ù…Ù„ÙØ§Øª Ø§Ù„ØªØ­Ù‚ÙŠÙ‚ Ø§Ù„Ù…Ù†Ø¬Ø²Ø© Ù„Ù†ÙŠØ§Ø¨Ø© Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„ÙØ³Ø§Ø¯",
+      value: nf(sumProcedures),
+      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد",
       labelEn: "Investigation files completed by the Corruption Crimes Prosecution",
     },
     {
       id: "defendants",
-      value: nf(columnTotal(dashboardData.defendantsReferredToCourtByGender, 3)),
-      label: "Ø§Ù„Ù…ØªÙ‡Ù…ÙˆÙ† Ø§Ù„Ù…Ø­Ø§Ù„ÙˆÙ† Ù„Ù…Ø­ÙƒÙ…Ø© Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„ÙØ³Ø§Ø¯",
+      value: nf(sumDefendants),
+      label: "المتهمون المحالون لمحكمة جرائم الفساد",
       labelEn: "Defendants referred to the Corruption Crimes Court",
     },
     {
       id: "verdicts",
-      value: nf(columnTotal(dashboardData.courtVerdictResults, 5)),
-      label: "Ø§Ù„Ù‚Ø¶Ø§ÙŠØ§ Ø§Ù„Ù…ÙØµÙˆÙ„Ø© Ø¨Ø­ÙƒÙ…",
+      value: nf(sumVerdicts),
+      label: "القضايا المفصولة بحكم",
       labelEn: "Cases settled by verdict",
     },
   ];
 }
 
-/** 11 spotlight KPI numbers (period 2022-2025). */
+/** Spotlight KPI numbers for the selected years. */
 export interface SpotlightKpi {
   id: string;
   value: string;
-  unit: "%" | "Ù…Ù„Ù" | "ÙØ±Ø¯" | "Ø´ÙƒÙˆÙ‰" | "Ù…Ø´ØªØ¨Ù‡ Ø¨Ù‡" | "";
+  unit: "%" | "ملف" | "فرد" | "شكوى" | "مشتبه به" | "";
   label: string;
   labelEn: string;
   note?: string;
@@ -125,7 +133,7 @@ function pct(part: number, whole: number): string {
   return ((part / whole) * 100).toFixed(1);
 }
 
-/** Recompute the 11 spotlight cards for a specific set of years (default all four). */
+/** Recompute spotlight cards for a specific set of years (default all four). */
 export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
   const yearArray: number[] = YEARS.filter((y) => selected.has(y) || selected.size === 0);
   const all = selected.size === 0 || selected.size === YEARS.length;
@@ -138,7 +146,6 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
     return typeof v === "number" ? v : 0;
   };
 
-  /** Per-year total of a category-row table (from total_row; columns after the first are years). */
   const catYearTotal = (table: SubTable, year: number): number => {
     if (!table.total_row) return 0;
     const idx = table.columns.slice(1).indexOf(String(year)) + 1;
@@ -164,7 +171,6 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
     return typeof row[colIdx] === "number" ? (row[colIdx] as number) : 0;
   };
 
-  // complaints per year total (col 6 = Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹)
   const complaintsTotal = all
     ? TOTAL_COMPLAINTS
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.complaintsBySource, y, 6), 0);
@@ -173,24 +179,21 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
     ? 140
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.complaintsBySource, y, 2), 0);
 
-  const abuseSum = catSum(
-    dashboardData.complaintsByCrimeQualification,
-    "Ø¥Ø³Ø§Ø¡Ø© Ø§Ø³ØªØ¹Ù…Ø§Ù„ Ø§Ù„Ø³Ù„Ø·Ø©",
-  );
+  const abuseSum = catSum(dashboardData.complaintsByCrimeQualification, "إساءة استعمال السلطة");
   const abuseTotal = all ? TOTAL_COMPLAINTS : complaintsTotal;
 
   const attendanceSum = catSum(
     dashboardData.complaintsByReceiptMethod,
-    "Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø´Ø®ØµÙŠ ÙˆØªØ³Ù„ÙŠÙ… Ø¨Ø§Ù„ÙŠØ¯",
+    "الحضور الشخصي وتسليم باليد",
   );
   const electronicSum = catSum(
     dashboardData.complaintsByReceiptMethod,
-    "Ø§Ù„ÙˆØ³Ø§Ø¦Ù„ ÙˆØ§Ù„ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ©",
+    "الوسائل والتطبيقات الإلكترونية",
   );
 
   const forgeryInv = catSum(
     dashboardData.investigationFilesReferredToProsecutionBySectorAndCrime.byCrime,
-    "Ø§Ù„ØªØ²ÙˆÙŠØ±/Ø¥Ø¹Ø·Ø§Ø¡ Ù…ØµØ¯Ù‚Ø§Øª ÙƒØ§Ø°Ø¨Ø©/Ø§Ø³ØªØ¹Ù…Ø§Ù„ Ø³Ù†Ø¯ Ù…Ø²ÙˆØ±",
+    "التزوير/إعطاء مصدقات كاذبة/استعمال سند مزور",
   );
   const totalReferredByCrime = all
     ? 319
@@ -245,7 +248,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
 
   const forgeryCourt = catSum(
     dashboardData.prosecutionFilesReferredToCourtByCrime,
-    "Ø§Ù„ØªØ²ÙˆÙŠØ±/Ø¥Ø¹Ø·Ø§Ø¡ Ù…ØµØ¯Ù‚Ø§Øª ÙƒØ§Ø°Ø¨Ø©/Ø§Ø³ØªØ¹Ù…Ø§Ù„ Ø³Ù†Ø¯ Ù…Ø²ÙˆØ±",
+    "التزوير/إعطاء مصدقات كاذبة/استعمال سند مزور",
   );
   const courtTotalReferred = all
     ? 458
@@ -266,119 +269,106 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "female-participation",
       value: pct(femaleSum, complaintsTotal),
       unit: "%",
-      label:
-        "Ù†Ø³Ø¨Ø© Ù…Ø´Ø§Ø±ÙƒØ© Ø§Ù„Ø¥Ù†Ø§Ø« Ø¶Ù…Ù† Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù‡ÙŠØ¦Ø©",
+      label: "نسبة مشاركة الإناث ضمن الشكاوى الواردة إلى الهيئة",
       labelEn: "Share of female complainants among complaints received by the Commission",
       isRatio: true,
       note: all
-        ? "Ø£ÙØ±Ø§Ø¯-Ø£Ù†Ø«Ù‰ (140) Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ 2923 Ø´ÙƒÙˆÙ‰"
-        : `Ø£Ù†Ø«Ù‰ (${nf(femaleSum)}) Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(complaintsTotal)} ÙÙŠ Ø§Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©`,
+        ? "أفراد-أنثى (140) من إجمالي 2923 شكوى"
+        : `أنثى (${nf(femaleSum)}) من إجمالي ${nf(complaintsTotal)} في السنوات المختارة`,
     },
     {
       id: "top-crime",
       value: pct(abuseSum, abuseTotal),
       unit: "%",
-      label:
-        "Ù…Ù† Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© ØµÙÙ†Ù‘ÙØª ÙƒØ¥Ø³Ø§Ø¡Ø© Ø§Ø³ØªØ¹Ù…Ø§Ù„ Ù„Ù„Ø³Ù„Ø·Ø©",
+      label: "من الشكاوى الواردة صُنّفت كإساءة استعمال للسلطة",
       labelEn: "of complaints received classified as abuse of power",
       isRatio: true,
       note: all
-        ? "2256 Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ 2923 â€” Ø§Ù„Ø£Ø¹Ù„Ù‰ ØªÙƒØ±Ø§Ø±Ø§Ù‹ ÙÙŠ Ø§Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ø£Ø±Ø¨Ø¹"
-        : `${nf(abuseSum)} Ù…Ù† ${nf(abuseTotal)} ÙÙŠ Ø§Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©`,
+        ? "2256 من إجمالي 2923 - الأعلى تكراراً في السنوات الأربع"
+        : `${nf(abuseSum)} من ${nf(abuseTotal)} في السنوات المختارة`,
     },
     {
       id: "personal-attendance",
       value: pct(attendanceSum, complaintsTotal),
       unit: "%",
-      label:
-        "Ù…Ù† Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© Ø¹Ù† Ø·Ø±ÙŠÙ‚ Ø§Ù„Ø­Ø¶ÙˆØ± Ø§Ù„Ø´Ø®ØµÙŠ ÙˆØ§Ù„ØªØ³Ù„ÙŠÙ… Ø¨Ø§Ù„ÙŠØ¯",
+      label: "من الشكاوى الواردة عن طريق الحضور الشخصي والتسليم باليد",
       labelEn: "of complaints received by in-person attendance and hand delivery",
       isRatio: true,
-      note: all
-        ? "1086 Ø´ÙƒÙˆÙ‰ Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ 2923"
-        : `${nf(attendanceSum)} Ù…Ù† ${nf(complaintsTotal)}`,
+      note: all ? "1086 شكوى من إجمالي 2923" : `${nf(attendanceSum)} من ${nf(complaintsTotal)}`,
     },
     {
       id: "electronic",
       value: pct(electronicSum, complaintsTotal),
       unit: "%",
-      label:
-        "Ù…Ù† Ø§Ù„Ø´ÙƒØ§ÙˆÙ‰ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© Ø¹Ø¨Ø± Ø§Ù„ÙˆØ³Ø§Ø¦Ù„ ÙˆØ§Ù„ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ©",
+      label: "من الشكاوى الواردة عبر الوسائل والتطبيقات الإلكترونية",
       labelEn: "of complaints received via electronic means and applications",
       isRatio: true,
-      note: all
-        ? "1634 Ø´ÙƒÙˆÙ‰ Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ 2923"
-        : `${nf(electronicSum)} Ù…Ù† ${nf(complaintsTotal)}`,
+      note: all ? "1634 شكوى من إجمالي 2923" : `${nf(electronicSum)} من ${nf(complaintsTotal)}`,
     },
     {
       id: "forgery-files",
       value: pct(forgeryInv, totalReferredByCrime),
       unit: "%",
-      label:
-        "Ù…Ù† Ø§Ù„Ù…Ù„ÙØ§Øª Ø§Ù„ØªØ­Ù‚ÙŠÙ‚ÙŠØ© Ø§Ù„Ù…Ø­Ø§Ù„Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù†ÙŠØ§Ø¨Ø© Ø¹Ù† Ø¬Ø±ÙŠÙ…Ø© Ø§Ù„ØªØ²ÙˆÙŠØ±",
+      label: "من الملفات التحقيقية المحالة إلى النيابة عن جريمة التزوير",
       labelEn: "of investigation files referred to the Prosecution for forgery",
       isRatio: true,
       note: all
-        ? `${nf(forgeryInv)} Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(totalReferredByCrime)} Ù…Ù„ÙØ§Ù‹`
-        : `${nf(forgeryInv)} Ù…Ù† ${nf(totalReferredByCrime)} ÙÙŠ Ø§Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©`,
+        ? `${nf(forgeryInv)} من إجمالي ${nf(totalReferredByCrime)} ملفاً`
+        : `${nf(forgeryInv)} من ${nf(totalReferredByCrime)} في السنوات المختارة`,
     },
     {
       id: "suspects",
       value: nf(suspects),
       unit: "",
-      label:
-        "Ø¹Ø¯Ø¯ Ø§Ù„Ù…Ø´ØªØ¨Ù‡ Ø¨Ù‡Ù… Ø§Ù„Ù…Ø­Ø§Ù„ÙŠÙ† Ø¥Ù„Ù‰ Ø§Ù„Ù†ÙŠØ§Ø¨Ø© Ø§Ù„Ø¹Ø§Ù…Ø© (Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ Ø§Ù„ÙƒÙ„ÙŠ)",
+      label: "عدد المشتبه بهم المحالين إلى النيابة العامة (المجموع الكلي)",
       labelEn: "Number of suspects referred to the Public Prosecution (total)",
-      note: "ðŸ”¢ 2022: 93 Â· 2023: 58 Â· 2024: 75 (ÙŠÙØ³ØªØ«Ù†Ù‰ ØµÙ 68 Ø§Ù„Ù…ÙƒØ±Ù‘Ø±) â€” Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹ 226",
+      note: "2022: 93 · 2023: 58 · 2024: 75 (يُستثنى صف 68 المكرّر) - المجموع 226",
     },
     {
       id: "pacc-source",
       value: pct(paccSrc, paccSrcTotal),
       unit: "%",
-      label:
-        "Ù…Ù† Ù…Ù„ÙØ§Øª Ø§Ù„ØªØ­Ù‚ÙŠÙ‚ Ø§Ù„Ø¬Ø²Ø§Ø¦ÙŠ Ø§Ù„ÙˆØ§Ø±Ø¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù†ÙŠØ§Ø¨Ø© Ù…Ù† Ø§Ù„Ù‡ÙŠØ¦Ø©",
+      label: "من ملفات التحقيق الجزائي الواردة إلى النيابة من الهيئة",
       labelEn: "of criminal investigation files received by the Prosecution from the Commission",
       isRatio: true,
       note: all
-        ? `${nf(paccSrc)} Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(paccSrcTotal)} Ù‚Ø¶ÙŠØ© ÙˆØ§Ø±Ø¯Ø©`
-        : `${nf(paccSrc)} Ù…Ù† ${nf(paccSrcTotal)} ÙÙŠ Ø§Ù„Ø³Ù†ÙˆØ§Øª Ø§Ù„Ù…Ø®ØªØ§Ø±Ø©`,
+        ? `${nf(paccSrc)} من إجمالي ${nf(paccSrcTotal)} قضية واردة`
+        : `${nf(paccSrc)} من ${nf(paccSrcTotal)} في السنوات المختارة`,
     },
     {
       id: "to-court",
       value: nf(toCourtTotalAll),
       unit: "",
-      label: "Ø¹Ø¯Ø¯ Ø§Ù„Ø£ÙØ±Ø§Ø¯ Ø§Ù„Ù…Ø­Ø§Ù„ÙŠÙ† Ø¥Ù„Ù‰ Ù…Ø­ÙƒÙ…Ø© Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„ÙØ³Ø§Ø¯",
+      label: "عدد الأفراد المحالين إلى محكمة جرائم الفساد",
       labelEn: "Number of individuals referred to the Corruption Crimes Court",
-      note: `Ø¥Ø¶Ø§ÙØ© Ø¥Ù„Ù‰ ${nf(toCourtLegal)} Ø£Ø´Ø®Ø§Øµ Ù…Ø¹Ù†ÙˆÙŠÙŠÙ†`,
+      note: `إضافة إلى ${nf(toCourtLegal)} أشخاص معنويين`,
     },
     {
       id: "court-top-crime",
       value: pct(forgeryCourt, courtTotalReferred),
       unit: "%",
-      label:
-        "Ù…Ù† Ø§Ù„Ø¬Ø±Ø§Ø¦Ù… Ø§Ù„Ù…Ø­Ø§Ù„Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù…Ø­ÙƒÙ…Ø© ÙƒÙŠÙ‘ÙØª Ø¹Ù„Ù‰ Ø£Ù†Ù‡Ø§ ØªØ²ÙˆÙŠØ±",
+      label: "من الجرائم المحالة إلى المحكمة كيّفت على أنها تزوير",
       labelEn: "of crimes referred to court classified as forgery",
       isRatio: true,
-      note: `${nf(forgeryCourt)} Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(courtTotalReferred)} Ù…Ù„ÙØ§Ù‹ Ù…Ø­Ø§Ù„Ø§Ù‹ Ù„Ù„Ù…Ø­ÙƒÙ…Ø©`,
+      note: `${nf(forgeryCourt)} من إجمالي ${nf(courtTotalReferred)} ملفاً محالاً للمحكمة`,
     },
     {
       id: "male-share",
       value: pct(toCourtMale, toCourtTotalAll),
       unit: "%",
-      label: "Ù†Ø³Ø¨Ø© Ø§Ù„Ø°ÙƒÙˆØ± Ø¶Ù…Ù† Ø§Ù„Ù…ØªÙ‡Ù…ÙŠÙ† Ø§Ù„Ù…Ø­Ø§Ù„ÙŠÙ† Ø¥Ù„Ù‰ Ø§Ù„Ù…Ø­ÙƒÙ…Ø©",
+      label: "نسبة الذكور ضمن المتهمين المحالين إلى المحكمة",
       labelEn: "Share of males among defendants referred to court",
       isRatio: true,
-      note: `${nf(toCourtMale)} Ø°ÙƒØ±Ø§Ù‹ Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(toCourtTotalAll)} Ø£ÙØ±Ø§Ø¯`,
+      note: `${nf(toCourtMale)} ذكراً من إجمالي ${nf(toCourtTotalAll)} أفراد`,
     },
     {
       id: "conviction-rate",
       value: pct(convictionCount, verdictTotal),
       unit: "%",
-      label:
-        "Ù†Ø³Ø¨Ø© Ø§Ù„Ù…Ø¯Ø§Ù†ÙŠÙ† Ø¶Ù…Ù† Ø§Ù„Ù‚Ø¶Ø§ÙŠØ§ Ø§Ù„Ù…ÙØµÙˆÙ„Ø© Ø¨Ø­ÙƒÙ… ÙÙŠ Ø§Ù„Ù…Ø­ÙƒÙ…Ø©",
-      labelEn: "Share of convicted persons among cases settled by verdict",
+      label: "نسبة الإدانات ضمن القضايا المفصولة بحكم في المحكمة",
+      labelEn: "Share of convictions among cases settled by verdict",
       isRatio: true,
-      note: `${nf(convictionCount)} Ø¥Ø¯Ø§Ù†Ø© Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${nf(verdictTotal)} Ù‚Ø¶ÙŠØ© Ù…ÙØµÙˆÙ„Ø©`,
+      note: `${nf(convictionCount)} إدانة من إجمالي ${nf(verdictTotal)} قضية مفصولة`,
     },
   ];
 }

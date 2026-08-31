@@ -83,7 +83,7 @@ function YearFilterBar({
 function Indicators() {
   const [selected, setSelected] = useState<YearFilter>(ALL);
   const kpis = getSpotlight(selected);
-  const { t, locale } = useLocale();
+  const { t, locale, dir } = useLocale();
 
   return (
     <SiteLayout>
@@ -114,20 +114,22 @@ function Indicators() {
             return (
               <article
                 key={k.id}
+                dir={dir}
                 className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft transition-transform hover:-translate-y-1"
                 style={{ background: c.bg }}
               >
                 <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: c.band }} />
-                <div className="text-right" style={{ color: c.number }}>
+                <div
+                  className={locale === "ar" ? "text-right" : "text-left"}
+                  style={{ color: c.number }}
+                >
                   {k.unit === "%" ? (
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-5xl font-extrabold tracking-tight" dir="ltr">
-                        {k.value}
-                      </span>
+                    <div className="flex items-baseline justify-start gap-1" dir={dir}>
+                      <span className="text-5xl font-extrabold tracking-tight">{k.value}</span>
                       <span className="text-3xl font-bold">٪</span>
                     </div>
                   ) : (
-                    <div className="text-4xl font-extrabold tracking-tight" dir="ltr">
+                    <div className="text-4xl font-extrabold tracking-tight" dir={dir}>
                       {k.value}
                       {k.unit ? <span className="text-2xl">{k.unit}</span> : null}
                     </div>

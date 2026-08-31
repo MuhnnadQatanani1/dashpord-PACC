@@ -256,7 +256,7 @@ function YearFilterBar({
 
 function SummaryCards({ selected }: { selected: YearFilter }) {
   const items = getDashboardSummary(selected);
-  const { t, locale } = useLocale();
+  const { t, locale, dir } = useLocale();
   const colors = [
     "#2563eb",
     "#16a34a",
@@ -273,6 +273,7 @@ function SummaryCards({ selected }: { selected: YearFilter }) {
         {items.map((k, i) => (
           <div
             key={k.id}
+            dir={dir}
             className="relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
           >
             <span
@@ -280,18 +281,17 @@ function SummaryCards({ selected }: { selected: YearFilter }) {
               style={{ background: colors[i % colors.length] }}
             />
             <div className="flex flex-col gap-1 p-5 pt-4">
-              <div className="flex items-center gap-2">
-                <div
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-white"
-                  style={{ background: colors[i % colors.length] }}
-                >
-                  <span className="text-xs font-bold">{k.id === "complaints" ? "ش" : "م"}</span>
-                </div>
+              <div className="flex items-center">
                 <span className="text-[13px] font-semibold leading-5 text-muted-foreground">
                   {locale === "ar" ? k.label : k.labelEn}
                 </span>
               </div>
-              <div className="mt-1 text-4xl font-black tracking-tight text-foreground" dir="ltr">
+              <div
+                className={`mt-1 text-4xl font-black tracking-tight text-foreground ${
+                  locale === "ar" ? "text-right" : "text-left"
+                }`}
+                dir={dir}
+              >
                 {k.value}
               </div>
             </div>

@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { ChartCard } from "@/components/site/ChartCard";
-import { MultiLine, ShareDonut } from "@/components/site/Charts";
-import { FunnelCard } from "@/components/site/FunnelCard";
 import { HeroVisual } from "@/components/site/HeroVisual";
 import { dataSource } from "@/lib/mock-data";
-import { KPI_2025 } from "@/lib/pacc-dashboard-data";
-import { interactiveIndicators } from "@/data/indicators-catalog";
+import { getDashboardSummary } from "@/lib/enforcement-kpis";
+import { YEARS as ENFORCEMENT_YEARS } from "@/components/site/EnforcementCharts";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import hqImage from "@/assets/pacc-headquarters.png.asset.json";
 import {
@@ -18,17 +15,10 @@ import {
   ShieldCheck,
   MapPin,
   Activity,
-  ChevronsLeft,
   ShieldAlert,
   CalendarCheck,
   CalendarRange,
   LayoutGrid,
-  Megaphone,
-  CheckCircle2,
-  Send,
-  Gavel,
-  Percent,
-  Scale,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -51,61 +41,23 @@ export const Route = createFileRoute("/")({
   },
 });
 
-const KEY_KPI_ICONS: Record<string, typeof Megaphone> = {
-  complaints: Megaphone,
-  completed: CheckCircle2,
-  referrals: Send,
-  convicted: Gavel,
-  convictionRate: Percent,
-  legislation: Scale,
-};
-
-const KEY_KPI_COLORS: Record<string, string> = {
-  complaints: "#2563eb",
-  completed: "#16a34a",
-  referrals: "#d97706",
-  convicted: "#dc2626",
-  convictionRate: "#7c3aed",
-  legislation: "#0d9488",
-};
-
 function Home() {
-  const { t, d, pick } = useLocale();
-  const journey = dataSource.getJourney();
-  const findInd = (id: string) => interactiveIndicators.find((i) => i.id === id)!;
-  const yearlyTotals = (id: string) => {
-    const t = findInd(id).table;
-    const last = t.rows[t.rows.length - 1];
-    return [0, 1, 2, 3].map((i) => (typeof last[i + 1] === "number" ? (last[i + 1] as number) : 0));
-  };
-  const YRS = ["2022", "2023", "2024", "2025"];
-  const incoming = yearlyTotals("pacc-complaints-source");
-  const completed = yearlyTotals("pacc-complaints-completed");
-  const flow = YRS.map((year, i) => ({ year, واردة: incoming[i], منجزة: completed[i] }));
-  const sourceRows = findInd("pacc-complaints-source").table.rows;
-  const sourcesDonut = sourceRows.slice(0, -1).map((r) => ({
-    name: d(String(r[0])),
-    value: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]),
-  }));
-  const topCrime = findInd("pacc-complaints-crime")
-    .table.rows.slice(0, -1)
-    .map((r) => ({
-      name: d(String(r[0])),
-      total: Number(r[1]) + Number(r[2]) + Number(r[3]) + Number(r[4]),
-    }))
-    .sort((a, b) => b.total - a.total)[0];
-  const totalIncoming = incoming.reduce((a, b) => a + b, 0);
-  const abuseShare = topCrime ? Math.round((topCrime.total / totalIncoming) * 100) : 0;
-  const launch = {
-    headline: t("home.launchHeadline"),
-    date: t("home.launchDate"),
-    paragraphs: [t("home.launchP1"), t("home.launchP2")] as string[],
-    outputs: journey.slice(-4).map((m) => ({ title: d(m.title), desc: d(m.description) })),
-  };
+  const { t, d, pick, dir, locale } = useLocale();
   const dq = dataSource.getDataQuality();
+  const summaryKpis = getDashboardSummary(new Set<number>(ENFORCEMENT_YEARS));
+  const summaryColors = [
+    "#2563eb",
+    "#16a34a",
+    "#d97706",
+    "#dc2626",
+    "#7c3aed",
+    "#0d9488",
+    "#e11d48",
+    "#ca8a04",
+  ];
   const heroStats = [
     { icon: CalendarCheck, label: t("home.heroStatUpdated"), value: d(dq.lastUpdate) },
-    { icon: LayoutGrid, label: t("home.heroStatIndicators"), value: "29" },
+    { icon: LayoutGrid, label: t("home.heroStatIndicators"), value: "31" },
     { icon: CalendarRange, label: t("home.heroStatCoverage"), value: dq.coveragePeriod },
   ];
 
@@ -157,7 +109,9 @@ function Home() {
                     <s.icon className="h-4 w-4 text-accent" />
                     <span className="text-[11px] font-semibold">{s.label}</span>
                   </div>
-                  <div className="mt-2 text-lg font-extrabold text-white">{s.value}</div>
+                  <div className="mt-2 text-lg font-extrabold text-white" dir={dir}>
+                    {s.value}
+                  </div>
                 </div>
               ))}
             </div>
@@ -172,53 +126,6 @@ function Home() {
         </div>
       </section>
 
-      {/* بداية المرصد الوطني */}
-      <section className="border-b border-border bg-background">
-        <div className="mx-auto max-w-7xl px-4 py-20 lg:px-8 lg:py-28">
-          <div className="grid gap-14 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <div className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                {t("home.launchEyebrow")}
-              </div>
-              <h2 className="text-balance text-3xl font-bold leading-tight text-primary md:text-4xl">
-                {launch.headline}
-              </h2>
-              <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-foreground">
-                <CalendarCheck className="h-4 w-4 text-accent" />
-                {launch.date}
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              {launch.paragraphs.map((p: string) => (
-                <p
-                  key={p.slice(0, 24)}
-                  className="mb-5 text-base leading-9 text-muted-foreground md:text-[1.0625rem]"
-                >
-                  {p}
-                </p>
-              ))}
-
-              <div className="mt-8 grid gap-x-8 gap-y-6 sm:grid-cols-2">
-                {launch.outputs.map((o: { title: string; desc: string }) => (
-                  <div key={o.title} className="border-t border-border pt-4">
-                    <h3 className="text-sm font-bold text-foreground">{o.title}</h3>
-                    <p className="mt-1.5 text-sm leading-7 text-muted-foreground">{o.desc}</p>
-                  </div>
-                ))}
-              </div>
-
-              <Link
-                to="/concepts"
-                className="focus-ring mt-10 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
-              >
-                <BookOpen className="h-4 w-4" /> {t("nav.concepts")}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* KPI CARDS */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="mb-10 max-w-2xl">
@@ -228,169 +135,34 @@ function Home() {
           <h2 className="text-3xl font-bold text-primary md:text-4xl">{t("home.kpiTitle")}</h2>
           <p className="mt-3 leading-8 text-muted-foreground">{t("home.kpiDesc")}</p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {KPI_2025.map((k) => {
-            const Icon = KEY_KPI_ICONS[k.icon];
-            const color = KEY_KPI_COLORS[k.icon];
-            return (
-              <div
-                key={k.id}
-                className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-soft transition-shadow hover:shadow-elevated"
-              >
-                <div
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-white"
-                  style={{ background: color }}
-                >
-                  <Icon className="h-5 w-5" />
-                </div>
-                <div className="mt-4">
-                  <div className="text-3xl font-black text-primary" dir="ltr">
-                    {k.value.toLocaleString("en-US")}
-                    {k.suffix}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-foreground">{k.label}</div>
-                  <p className="mt-1.5 text-[11px] leading-5 text-muted-foreground">{k.desc}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ABOUT SNAPSHOT */}
-      <section className="mx-auto max-w-7xl px-4 py-20 lg:py-24 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-5">
-          <div className="lg:col-span-2">
-            <div className="mb-3 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              {t("home.aboutBadge")}
-            </div>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-              {t("home.aboutTitle")}
-            </h2>
-            <p className="mt-4 text-base leading-8 text-muted-foreground">
-              {t("home.aboutDescA")} <em>{t("home.aboutPerc")}</em>
-              {t("home.aboutDescB")} <em>{t("home.aboutInd")}</em> {t("home.aboutDescC")}
-            </p>
-            <Link
-              to="/about"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline"
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {summaryKpis.map((k, i) => (
+            <div
+              key={k.id}
+              dir={dir}
+              className="relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
             >
-              {t("home.aboutMore")} <ChevronsLeft className="h-4 w-4" />
-            </Link>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-3">
-            {[
-              { icon: Database, title: t("home.cardDataTitle"), desc: t("home.cardDataDesc") },
-              {
-                icon: BarChart3,
-                title: t("home.cardAnalyzeTitle"),
-                desc: t("home.cardAnalyzeDesc"),
-              },
-              {
-                icon: ShieldCheck,
-                title: t("home.cardPolicyTitle"),
-                desc: t("home.cardPolicyDesc"),
-              },
-              {
-                icon: BookOpen,
-                title: t("home.cardKnowledgeTitle"),
-                desc: t("home.cardKnowledgeDesc"),
-              },
-            ].map((c) => (
-              <div
-                key={c.title}
-                className="glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated"
-              >
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20 transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
-                  <c.icon className="h-5 w-5" />
-                </div>
-                <h3 className="text-base font-bold text-foreground">{c.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{c.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="bg-surface py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <div className="mb-12 text-center">
-            <div className="mb-3 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              {t("home.howBadge")}
-            </div>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t("home.howTitle")}</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{t("home.howDesc")}</p>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-4">
-            {[
-              { n: "01", t: t("home.step1Title"), d: t("home.step1Desc") },
-              { n: "02", t: t("home.step2Title"), d: t("home.step2Desc") },
-              { n: "03", t: t("home.step3Title"), d: t("home.step3Desc") },
-              { n: "04", t: t("home.step4Title"), d: t("home.step4Desc") },
-            ].map((s, i) => (
-              <div
-                key={s.n}
-                className="glow-card relative rounded-2xl border border-border bg-card p-6 shadow-soft"
-              >
-                <div className="text-5xl font-black text-accent/25">{s.n}</div>
-                <h3 className="mt-2 text-lg font-bold text-foreground">{s.t}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">{s.d}</p>
-                {i < 3 && (
-                  <div className="absolute -left-3 top-1/2 hidden h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-accent-foreground md:flex">
-                    <ArrowLeft className="h-3.5 w-3.5" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MINI DASHBOARD PREVIEW */}
-      <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <div className="mb-2 inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent">
-              {t("home.dashBadge")}
-            </div>
-            <h2 className="text-3xl font-bold text-foreground md:text-4xl">
-              {t("home.dashTitle")}
-            </h2>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-              {t("home.dashDesc", { crime: topCrime?.name ?? "", share: abuseShare })}
-            </p>
-          </div>
-          <Link
-            to="/dashboard"
-            className="focus-ring inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90"
-          >
-            {t("home.dashCta")} <ArrowLeft className="h-4 w-4" />
-          </Link>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <ChartCard title={t("home.chartFlowTitle")} subtitle={t("home.chartFlowSubtitle")}>
-              <MultiLine
-                data={flow}
-                keys={[
-                  { key: "واردة", name: t("home.seriesIncoming") },
-                  { key: "منجزة", name: t("home.seriesCompleted") },
-                ]}
-                height={360}
+              <span
+                className="absolute inset-x-0 top-0 h-1.5"
+                style={{ background: summaryColors[i % summaryColors.length] }}
               />
-            </ChartCard>
-          </div>
-          <ChartCard title={t("home.chartSourcesTitle")} subtitle={t("home.chartSourcesSubtitle")}>
-            <ShareDonut data={sourcesDonut} />
-          </ChartCard>
-        </div>
-
-        <div className="mt-6">
-          <FunnelCard showLink />
+              <div className="flex flex-col gap-1 p-5 pt-4">
+                <div className="flex items-center">
+                  <span className="text-[13px] font-semibold leading-5 text-muted-foreground">
+                    {locale === "ar" ? k.label : k.labelEn}
+                  </span>
+                </div>
+                <div
+                  className={`mt-1 text-4xl font-black tracking-tight text-foreground ${
+                    locale === "ar" ? "text-right" : "text-left"
+                  }`}
+                  dir={dir}
+                >
+                  {k.value}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

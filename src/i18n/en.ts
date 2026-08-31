@@ -596,10 +596,10 @@ export const en: Dict = {
   "mainInd.desc":
     "The official framework of law enforcement indicators with its two adopted bands, comprising {total} indicators.",
   "mainInd.intro":
-    "Review the official framework of law enforcement indicators with its two adopted bands, with the definition, measurement method, data source and periodicity for each indicator, downloadable as PDF.",
+    "The approved law enforcement indicator list, organized by official item, showing only the indicator name and measurement unit.",
   "mainInd.downloadPdf": "Download PDF",
   "mainInd.groupCount": "{count} indicators",
-  "mainInd.cardNumber": "No. {num}",
+  "mainInd.cardNumber": "Indicator {num}",
   "mainInd.viewDetails": "View details",
   "mainInd.printOrg":
     "National Observatory for Integrity, Governance and Anti-Corruption Indicators",
