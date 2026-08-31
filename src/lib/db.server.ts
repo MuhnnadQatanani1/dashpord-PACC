@@ -34,9 +34,9 @@ async function ensureTables(pool: sql.ConnectionPool) {
     );
   `);
 
-  const cols = await pool.request().query(
-    "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'reports'"
-  );
+  const cols = await pool
+    .request()
+    .query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'reports'");
   const colNames = cols.recordset.map((r: Record<string, unknown>) => r.COLUMN_NAME as string);
   if (!colNames.includes("file_data")) {
     await pool.request().query("ALTER TABLE reports ADD file_data VARBINARY(MAX) NULL");
@@ -56,9 +56,7 @@ async function ensureTables(pool: sql.ConnectionPool) {
     );
   `);
 
-  const existing = await pool
-    .request()
-    .query("SELECT COUNT(*) AS cnt FROM admin_users");
+  const existing = await pool.request().query("SELECT COUNT(*) AS cnt FROM admin_users");
   if (existing.recordset[0].cnt === 0) {
     await pool
       .request()
@@ -69,6 +67,19 @@ async function ensureTables(pool: sql.ConnectionPool) {
         "INSERT INTO admin_users (email, password_hash, display_name) VALUES (@email, @hash, @name)",
       );
   }
+
+  await pool.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'opinion_poll_responses')
+    CREATE TABLE opinion_poll_responses (
+      id INT IDENTITY(1,1) PRIMARY KEY,
+      rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+      feedback NVARCHAR(MAX) NULL,
+      locale NVARCHAR(5) NULL,
+      page_path NVARCHAR(1000) NULL,
+      user_agent NVARCHAR(1000) NULL,
+      created_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+  `);
 }
 
 export async function getPool(): Promise<sql.ConnectionPool> {

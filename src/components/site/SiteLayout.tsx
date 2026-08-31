@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { OpinionPoll } from "./OpinionPoll";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -9,6 +10,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <main id="main-content" tabIndex={-1} className="pt-[85px]">
         {children}
       </main>
+      <OpinionPoll />
       <Footer />
     </div>
   );

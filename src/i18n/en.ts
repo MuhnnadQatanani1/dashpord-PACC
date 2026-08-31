@@ -61,6 +61,19 @@ export const en: Dict = {
   "footer.note":
     "Published data is statistical and aggregated under Anti-Corruption Law No. 1 of 2005 and its amendments.",
 
+  "poll.trigger": "Opinion Poll",
+  "poll.title": "Opinion Poll",
+  "poll.desc": "Help us improve the Observatory platform experience.",
+  "poll.ratingLabel": "Rate usability from 1 to 5",
+  "poll.feedbackLabel": "Additional feedback",
+  "poll.feedbackPlaceholder": "Write your feedback here...",
+  "poll.submit": "Submit rating",
+  "poll.submitting": "Submitting...",
+  "poll.error": "Could not submit your rating. Please try again.",
+  "poll.thanksTitle": "Thank you for sharing",
+  "poll.thanksDesc":
+    "Your rating has been received. We appreciate your time improving the platform.",
+
   "reports.eyebrow": "Reports",
   "reports.title": "National Observatory Reports",
   "reports.description":
@@ -584,9 +597,11 @@ export const en: Dict = {
   "dash.vsYear": "compared to year {n}",
   "dash.stable": "Stable compared to year {n}",
   "dash.funnelTitle": "Full Case Journey",
-  "dash.funnelDesc": "How numbers flow through every stage of handling a corruption case in the latest year, from receiving the complaint to the final verdict.",
+  "dash.funnelDesc":
+    "How numbers flow through every stage of handling a corruption case in the latest year, from receiving the complaint to the final verdict.",
   "dash.indicatorsTitle": "Top 18 Indicators",
-  "dash.indicatorsDesc": "Performance indicators for 2025 with their evolution across years, presented in a variety of visual formats.",
+  "dash.indicatorsDesc":
+    "Performance indicators for 2025 with their evolution across years, presented in a variety of visual formats.",
 
   "meta.mainIndTitle": "Law Enforcement Indicators | National Observatory",
   "meta.mainIndDesc":
@@ -676,17 +691,20 @@ export const en: Dict = {
   "dash2.ind12T": "Number of convicted persons in the Corruption Crimes Court",
   "dash2.ind13T": "Complaints by submission source",
   "dash2.ind14T": "Complaints by receipt method",
-  "dash2.max4Note": "Shows the 4 largest categories by value — use the “Show data” button to see the rest.",
+  "dash2.max4Note":
+    "Shows the 4 largest categories by value — use the “Show data” button to see the rest.",
   "dash2.periodTotal": "Total distribution for the period",
   "dash2.colYear": "Year",
   "dash2.toggleDataAria": "Toggle data table",
 
   "ind.eyebrow": "Numbers under the Spotlight",
   "ind.title": "Numbers and ratios under the Spotlight",
-  "ind.desc": "11 striking numbers from law enforcement 2022-2025, calculated on the whole period and filterable by year.",
+  "ind.desc":
+    "11 striking numbers from law enforcement 2022-2025, calculated on the whole period and filterable by year.",
   "ind.yearLabel": "Year:",
   "ind.allYears": "All years",
-  "ind.filterNote": "The figures and ratios above are recalculated for the selected years only ({years}).",
+  "ind.filterNote":
+    "The figures and ratios above are recalculated for the selected years only ({years}).",
   "ind.sectionTitle": "Numbers in the Spotlight",
   "ind.backToDashboard": "← Data Dashboard",
 };
