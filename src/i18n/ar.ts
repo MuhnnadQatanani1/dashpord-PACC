@@ -59,11 +59,14 @@ export const ar = {
   "footer.note":
     "البيانات المنشورة إحصائية ومجمّعة وفق قانون مكافحة الفساد رقم 1 لسنة 2005 وتعديلاته.",
 
-  "poll.trigger": "استطلاع رأي",
-  "poll.title": "استطلاع رأي",
-  "poll.desc": "ساعدنا في تحسين تجربة استخدام منصة المرصد.",
+  "poll.trigger": "شاركنا رأيك",
+  "poll.footerTitle": "شاركنا رأيك",
+  "poll.footerDesc": "ساعدنا في تحسين تجربتك",
+  "poll.footerTime": "لن يستغرق أكثر من دقيقة",
+  "poll.title": "شاركنا رأيك",
+  "poll.desc": "ساعدنا في تحسين تجربة استخدام منصة المرصد. لن يستغرق أكثر من دقيقة.",
   "poll.ratingLabel": "قيّم سهولة الاستخدام من 1 إلى 5",
-  "poll.feedbackLabel": "ملاحظات إضافية",
+  "poll.feedbackLabel": "ملاحظات إضافية (اختياري)",
   "poll.feedbackPlaceholder": "اكتب ملاحظتك هنا...",
   "poll.submit": "إرسال التقييم",
   "poll.submitting": "جارٍ الإرسال...",

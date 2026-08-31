@@ -61,11 +61,14 @@ export const en: Dict = {
   "footer.note":
     "Published data is statistical and aggregated under Anti-Corruption Law No. 1 of 2005 and its amendments.",
 
-  "poll.trigger": "Opinion Poll",
-  "poll.title": "Opinion Poll",
-  "poll.desc": "Help us improve the Observatory platform experience.",
+  "poll.trigger": "Share your feedback",
+  "poll.footerTitle": "Share your feedback",
+  "poll.footerDesc": "Help us improve your experience",
+  "poll.footerTime": "Takes less than a minute",
+  "poll.title": "Share your feedback",
+  "poll.desc": "Help us improve the Observatory platform experience. It takes less than a minute.",
   "poll.ratingLabel": "Rate usability from 1 to 5",
-  "poll.feedbackLabel": "Additional feedback",
+  "poll.feedbackLabel": "Additional feedback (optional)",
   "poll.feedbackPlaceholder": "Write your feedback here...",
   "poll.submit": "Submit rating",
   "poll.submitting": "Submitting...",

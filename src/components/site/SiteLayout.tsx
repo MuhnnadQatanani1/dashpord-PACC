@@ -10,7 +10,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <main id="main-content" tabIndex={-1} className="pt-[85px]">
         {children}
       </main>
-      <OpinionPoll />
+      <section className="mx-auto max-w-7xl px-4 pb-8 pt-12 lg:px-8">
+        <div className="max-w-md">
+          <OpinionPoll />
+        </div>
+      </section>
       <Footer />
     </div>
   );

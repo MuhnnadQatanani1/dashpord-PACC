@@ -290,14 +290,27 @@ const BANDS: IndicatorBand[] = [
   },
 ];
 
+const INDICATOR_COLORS = [
+  "#2563eb",
+  "#16a34a",
+  "#d97706",
+  "#dc2626",
+  "#7c3aed",
+  "#0d9488",
+  "#e11d48",
+  "#ca8a04",
+];
+
 function IndicatorCard({
   indicator,
   locale,
   t,
+  color,
 }: {
   indicator: IndicatorRow;
   locale: "ar" | "en";
   t: ReturnType<typeof useLocale>["t"];
+  color: string;
 }) {
   const isArabic = locale === "ar";
   const title = isArabic ? indicator.titleAr : indicator.titleEn;
@@ -307,9 +320,10 @@ function IndicatorCard({
   return (
     <article
       dir={isArabic ? "rtl" : "ltr"}
-      className="flex min-h-[170px] flex-col items-start justify-start rounded-lg border border-border bg-card p-6 shadow-sm transition-colors hover:border-primary/25"
+      className="relative flex min-h-[170px] flex-col items-start justify-start overflow-hidden rounded-lg border border-border bg-card p-6 pt-7 shadow-sm transition-colors hover:border-primary/25"
     >
-      <span className="mb-3 text-sm font-medium leading-5 text-muted-foreground">
+      <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: color }} />
+      <span className="mb-3 text-sm font-semibold leading-5" style={{ color }}>
         {t("mainInd.cardNumber", { num: indicatorNumber })}
       </span>
 
@@ -317,7 +331,9 @@ function IndicatorCard({
 
       <div className="mt-3 text-sm font-medium leading-6 text-muted-foreground">
         <span>{t("mainInd.colUnit")}: </span>
-        <span>{unit}</span>
+        <span className="font-semibold" style={{ color }}>
+          {unit}
+        </span>
       </div>
     </article>
   );
@@ -406,12 +422,13 @@ function MainIndicators() {
                   </div>
 
                   <div className="grid items-stretch gap-6 md:grid-cols-2">
-                    {band.rows.map((indicator) => (
+                    {band.rows.map((indicator, indicatorIndex) => (
                       <IndicatorCard
                         key={indicator.num}
                         indicator={indicator}
                         locale={locale}
                         t={t}
+                        color={INDICATOR_COLORS[indicatorIndex % INDICATOR_COLORS.length]}
                       />
                     ))}
                   </div>
