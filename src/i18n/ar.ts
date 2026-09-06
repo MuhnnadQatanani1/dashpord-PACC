@@ -67,7 +67,7 @@ export const ar = {
   "poll.desc": "ساعدنا في تحسين تجربة استخدام منصة المرصد. لن يستغرق أكثر من دقيقة.",
   "poll.ratingLabel": "قيّم سهولة الاستخدام من 1 إلى 5",
   "poll.feedbackLabel": "ملاحظات إضافية (اختياري)",
-  "poll.feedbackPlaceholder": "اكتب ملاحظتك هنا...",
+  "poll.feedbackPlaceholder": "ملاحظات إضافية (اختياري)",
   "poll.submit": "إرسال التقييم",
   "poll.submitting": "جارٍ الإرسال...",
   "poll.error": "تعذر إرسال التقييم. يرجى المحاولة مرة أخرى.",

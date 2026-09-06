@@ -69,7 +69,7 @@ export const en: Dict = {
   "poll.desc": "Help us improve the Observatory platform experience. It takes less than a minute.",
   "poll.ratingLabel": "Rate usability from 1 to 5",
   "poll.feedbackLabel": "Additional feedback (optional)",
-  "poll.feedbackPlaceholder": "Write your feedback here...",
+  "poll.feedbackPlaceholder": "Additional feedback (optional)",
   "poll.submit": "Submit rating",
   "poll.submitting": "Submitting...",
   "poll.error": "Could not submit your rating. Please try again.",
