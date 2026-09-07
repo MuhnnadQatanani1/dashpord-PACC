@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { HeroVisual } from "@/components/site/HeroVisual";
+import { ComplaintsByGovernorate } from "@/components/site/ComplaintsByGovernorate";
 import { dataSource } from "@/lib/mock-data";
 import { getDashboardSummary } from "@/lib/enforcement-kpis";
 import { YEARS as ENFORCEMENT_YEARS } from "@/components/site/EnforcementCharts";
@@ -13,7 +14,6 @@ import {
   BookOpen,
   Layers,
   ShieldCheck,
-  MapPin,
   Activity,
   ShieldAlert,
   CalendarCheck,
@@ -36,6 +36,14 @@ export const Route = createFileRoute("/")({
         { property: "og:description", content: dict["meta.homeDesc"] },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [
+        {
+          rel: "stylesheet",
+          href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+          integrity: "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=",
+          crossOrigin: "",
+        },
       ],
     };
   },
@@ -166,6 +174,9 @@ function Home() {
         </div>
       </section>
 
+      {/* COMPLAINTS BY GOVERNORATE */}
+      <ComplaintsByGovernorate />
+
       {/* QUICK NAV CARDS */}
       <section className="bg-surface py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
@@ -203,12 +214,6 @@ function Home() {
                 icon: Activity,
                 title: t("home.explore5Title"),
                 desc: t("home.explore5Desc"),
-              },
-              {
-                to: "/map",
-                icon: MapPin,
-                title: t("home.explore6Title"),
-                desc: t("home.explore6Desc"),
               },
               {
                 to: "/stories",

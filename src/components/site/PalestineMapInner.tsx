@@ -10,22 +10,27 @@ import { useLocale } from "@/i18n";
 
 const PALESTINE_CENTER: [number, number] = [31.9, 35.2];
 
-function getStyle(_feature: GovernorateFeature | undefined, isHovered: boolean): PathOptions {
-  if (isHovered) {
-    return {
-      fillColor: "#dc2626",
-      fillOpacity: 0.28,
-      weight: 3,
-      color: "#dc2626",
-      opacity: 1,
-    };
-  }
+const GREEN_LO: [number, number, number] = [187, 247, 208];
+const GREEN_HI: [number, number, number] = [6, 78, 59];
+
+const MAX_COMPLAINTS = Math.max(1, ...Object.values(governorateStats).map((s) => s.complaints));
+
+function greenRamp(intensity: number): string {
+  const t = Math.max(0, Math.min(1, intensity));
+  const c = GREEN_LO.map((lo, i) => Math.round(lo + (GREEN_HI[i] - lo) * t));
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+}
+
+function getStyle(feature: GovernorateFeature | undefined, isHovered: boolean): PathOptions {
+  const stat = feature ? governorateStats[feature.properties.name_ar] : undefined;
+  const hasData = Boolean(stat);
+  const intensity = stat ? stat.complaints / MAX_COMPLAINTS : 0;
   return {
-    fillColor: "#6b7280",
-    fillOpacity: 0.02,
-    weight: 1,
-    color: "#9ca3af",
-    opacity: 0.7,
+    fillColor: hasData ? greenRamp(intensity) : "#f3f4f6",
+    fillOpacity: hasData ? (isHovered ? 0.95 : 0.85) : 0.45,
+    weight: isHovered ? 2.5 : 0.8,
+    color: "#ffffff",
+    opacity: 1,
   };
 }
 
@@ -64,12 +69,16 @@ function TilesReady({ onReady }: { onReady: () => void }) {
   return null;
 }
 
-export function PalestineMapInner({ compact = false }: PalestineMapProps) {
+export function PalestineMapInner({ compact = false, onGovernorateClick }: PalestineMapProps) {
   const { locale, t, pick } = useLocale();
   const [hoveredName, setHoveredName] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
   const handleReady = useCallback(() => setReady(true), []);
   const geoRef = useRef<L.GeoJSON | null>(null);
+  const onClickRef = useRef(onGovernorateClick);
+  useEffect(() => {
+    onClickRef.current = onGovernorateClick;
+  });
 
   const features = (geoData as GeoJSON.FeatureCollection)
     .features as unknown as GovernorateFeature[];
@@ -103,11 +112,12 @@ export function PalestineMapInner({ compact = false }: PalestineMapProps) {
         },
         click: (e: LeafletMouseEvent) => {
           const target = e.target;
-          target._map.fitBounds(target.getBounds(), { padding: [40, 40] });
+          if (!compact) target._map.fitBounds(target.getBounds(), { padding: [40, 40] });
+          onClickRef.current?.(name, f.properties.name_en, stat);
         },
       });
     },
-    [locale],
+    [locale, compact],
   );
 
   const geoStyle = useCallback(

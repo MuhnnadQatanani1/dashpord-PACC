@@ -45,7 +45,7 @@ function MapPage() {
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 rounded-xl border border-border bg-surface p-6">
             <div className="relative isolate h-[500px] w-full overflow-hidden rounded-lg">
-              <PalestineMap />
+              <PalestineMap onGovernorateClick={() => {}} />
             </div>
             <p className="mt-3 text-xs text-muted-foreground">{t("map.mapNote")}</p>
           </div>

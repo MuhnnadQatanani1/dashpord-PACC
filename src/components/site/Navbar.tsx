@@ -33,7 +33,6 @@ const NAV: NavItem[] = [
     children: [
       { to: "/dashboard", label: "nav.dashboard" },
       { to: "/indicators", label: "nav.spotlight" },
-      { to: "/map", label: "nav.map" },
       { to: "/stories", label: "nav.stories" },
     ],
   },
@@ -89,7 +88,6 @@ const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
     label: "nav.spotlight",
     keywords: "أرقام تحت الضوء figures focus statistics مؤشرات",
   },
-  { to: "/map", label: "nav.map", keywords: "خريطة تحليل جغرافي map governorates محافظات" },
   { to: "/stories", label: "nav.stories", keywords: "قصص البيانات data stories trends اتجاهات" },
   { to: "/reports/annual", label: "nav.annual", keywords: "تقارير سنوية دورية annual reports" },
   {
@@ -222,40 +220,37 @@ function DropdownGroup({ item }: { item: NavGroup }) {
   }, [cancelClose]);
 
   return (
-    <div
-      className="relative pb-2"
-      onMouseEnter={show}
-      onMouseLeave={scheduleClose}
-    >
+    <div className="relative pb-2" onMouseEnter={show} onMouseLeave={scheduleClose}>
       <button
         ref={btnRef}
         className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary hover:bg-secondary"
       >
         {t(item.label)} <ChevronDown className="h-3.5 w-3.5" />
       </button>
-      {mounted && createPortal(
-        <div
-          onMouseEnter={cancelClose}
-          onMouseLeave={scheduleClose}
-          className={`fixed z-[10000] min-w-[220px] rounded-xl border border-border bg-popover p-1 shadow-elevated ${
-            open ? "visible opacity-100" : "invisible opacity-0"
-          }`}
-          style={{ top: pos.top, right: pos.right }}
-        >
-          {item.children.map((c) => (
-            <Link
-              key={c.to}
-              to={c.to}
-              activeProps={{ className: "text-primary bg-secondary" }}
-              className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-primary"
-              onClick={() => setOpen(false)}
-            >
-              {t(c.label)}
-            </Link>
-          ))}
-        </div>,
-        document.body,
-      )}
+      {mounted &&
+        createPortal(
+          <div
+            onMouseEnter={cancelClose}
+            onMouseLeave={scheduleClose}
+            className={`fixed z-[10000] min-w-[220px] rounded-xl border border-border bg-popover p-1 shadow-elevated ${
+              open ? "visible opacity-100" : "invisible opacity-0"
+            }`}
+            style={{ top: pos.top, right: pos.right }}
+          >
+            {item.children.map((c) => (
+              <Link
+                key={c.to}
+                to={c.to}
+                activeProps={{ className: "text-primary bg-secondary" }}
+                className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {t(c.label)}
+              </Link>
+            ))}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
