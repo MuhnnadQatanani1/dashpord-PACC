@@ -15,7 +15,10 @@ export function ComplaintsByGovernorate() {
   const { t, d, locale, dir } = useLocale();
   const [selectedName, setSelectedName] = useState<string | null>(null);
 
-  const governorates = useMemo(() => dataSource.getGovernorates(), []);
+  const governorates = useMemo(
+    () => dataSource.getGovernorates(),
+    [],
+  );
   const stats = useMemo(() => computeGovernorateStatistics(governorates), [governorates]);
   const selected = useMemo(() => findGovernorateByName(stats, selectedName), [stats, selectedName]);
   const maxCount = stats[0]?.complaints ?? 1;

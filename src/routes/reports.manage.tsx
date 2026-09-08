@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { Plus, LogOut, Trash2, Loader2 } from "lucide-react";
+import { Plus, LogOut, Trash2, Loader2, BarChart3, Save } from "lucide-react";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { useAuth } from "@/lib/use-auth";
 import { adminLogin } from "@/lib/auth.functions";
+import { getAnalyticsSettings, saveAnalyticsSettings } from "@/lib/analytics.functions";
 import { getReports, deleteReport, type ReportItem } from "@/lib/reports.functions";
 import { ReportCard } from "@/components/reports/ReportCard";
 import { ReportForm } from "@/components/reports/ReportForm";
@@ -123,12 +124,43 @@ function ManageReports() {
   const [editing, setEditing] = useState<ReportItem | null>(null);
   const [deleting, setDeleting] = useState<ReportItem | null>(null);
   const svcDelete = useServerFn(deleteReport);
+  const loadAnalytics = useServerFn(getAnalyticsSettings);
+  const saveAnalytics = useServerFn(saveAnalyticsSettings);
+  const [analyticsId, setAnalyticsId] = useState("");
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [analyticsStatus, setAnalyticsStatus] = useState<string | null>(null);
+  const [analyticsBusy, setAnalyticsBusy] = useState(false);
+
+  useEffect(() => {
+    void loadAnalytics({ data: undefined }).then((settings) => {
+      setAnalyticsId(settings.measurementId ?? "");
+      setAnalyticsEnabled(settings.enabled);
+    });
+  }, [loadAnalytics]);
 
   async function handleDelete() {
     if (!deleting) return;
     await svcDelete({ data: { id: deleting.id } });
     await queryClient.invalidateQueries({ queryKey: ["reports"] });
     setDeleting(null);
+  }
+
+  async function handleAnalyticsSave(e: React.FormEvent) {
+    e.preventDefault();
+    setAnalyticsBusy(true);
+    setAnalyticsStatus(null);
+    try {
+      const settings = await saveAnalytics({
+        data: { enabled: analyticsEnabled, measurementId: analyticsId },
+      });
+      setAnalyticsId(settings.measurementId ?? "");
+      setAnalyticsEnabled(settings.enabled);
+      setAnalyticsStatus(t("admin.analyticsSaved"));
+    } catch {
+      setAnalyticsStatus(t("admin.analyticsError"));
+    } finally {
+      setAnalyticsBusy(false);
+    }
   }
 
   if (loading) {
@@ -163,6 +195,55 @@ function ManageReports() {
           {t("auth.logout")}
         </button>
       </div>
+
+      <form
+        onSubmit={handleAnalyticsSave}
+        className="mb-8 rounded-2xl border border-border bg-card p-6 shadow-soft"
+      >
+        <div className="flex items-center gap-2 text-lg font-bold text-primary">
+          <BarChart3 className="h-5 w-5 text-accent" />
+          {t("admin.analyticsTitle")}
+        </div>
+        <p className="mt-1 text-sm text-muted-foreground">{t("admin.analyticsDesc")}</p>
+        <div className="mt-5 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+          <label className="grid gap-1.5 text-sm font-medium">
+            <span>{t("admin.analyticsMeasurementId")}</span>
+            <input
+              value={analyticsId}
+              onChange={(e) => setAnalyticsId(e.target.value)}
+              placeholder="G-XXXXXXXXXX"
+              className="focus-ring rounded-lg border border-input bg-background px-3 py-2 font-mono text-sm"
+              dir="ltr"
+            />
+          </label>
+          <label className="flex items-center gap-2 text-sm font-medium">
+            <input
+              type="checkbox"
+              checked={analyticsEnabled}
+              onChange={(e) => setAnalyticsEnabled(e.target.checked)}
+              className="h-4 w-4 accent-accent"
+            />
+            {t("admin.analyticsEnabled")}
+          </label>
+        </div>
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={analyticsBusy}
+            className="focus-ring inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+          >
+            {analyticsBusy ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
+            {t("common.save")}
+          </button>
+          {analyticsStatus && (
+            <span className="text-sm text-muted-foreground">{analyticsStatus}</span>
+          )}
+        </div>
+      </form>
 
       {showForm && (
         <div className="mb-6 rounded-2xl border border-accent/40 bg-surface p-5">

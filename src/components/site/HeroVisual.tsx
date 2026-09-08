@@ -8,7 +8,6 @@ const HISTORIC_PALESTINE =
   "M180,52 L284,20 L280,90 L274,126 L270,190 L266,250 L264,300 L260,316 L270,380 L254,450 L240,490 L200,590 L170,690 L156,760 L144,772 L10,426 L20,400 L56,360 L90,310 L110,260 L126,206 L144,160 L158,104 L172,80 Z";
 const WEST_BANK =
   "M222,164 L270,194 L266,250 L264,300 L256,326 L244,370 L230,398 L180,400 L150,370 L150,326 L186,296 L154,270 L158,238 L170,200 L186,176 Z";
-const GAZA_STRIP = "M10,426 L30,414 L72,360 L56,352 L18,404 Z";
 
 export function HeroVisual() {
   const linePoints = "0,46 26,34 52,38 78,22 104,26 130,10";
@@ -38,7 +37,7 @@ export function HeroVisual() {
           ))}
         </g>
 
-        {/* Palestine full historic map with West Bank and Gaza highlighted */}
+        {/* Palestine outline with the available data area highlighted */}
         <g transform="translate(90 20) scale(0.4)">
           <path
             d={HISTORIC_PALESTINE}
@@ -58,15 +57,6 @@ export function HeroVisual() {
             strokeWidth="6"
             strokeLinejoin="round"
           />
-          <path
-            d={GAZA_STRIP}
-            fill="#f87171"
-            fillOpacity="0.45"
-            stroke="#f87171"
-            strokeOpacity="0.95"
-            strokeWidth="5"
-            strokeLinejoin="round"
-          />
         </g>
         <text
           x="175"
@@ -79,18 +69,6 @@ export function HeroVisual() {
         >
           الضفة الغربية
         </text>
-        <text
-          x="106"
-          y="184"
-          fontSize="6"
-          fontWeight="700"
-          fill="#ffffff"
-          fillOpacity="0.85"
-          textAnchor="middle"
-        >
-          قطاع غزة
-        </text>
-
         {/* line chart card */}
         <g transform="translate(14 232)">
           <rect

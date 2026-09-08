@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { PalestineMap } from "@/components/site/PalestineMap";
-import { ChartCard } from "@/components/site/ChartCard";
-import { ShareDonut } from "@/components/site/Charts";
 import { dataSource } from "@/lib/mock-data";
+import { TOTAL_COMPLAINTS } from "@/lib/enforcement-kpis";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
-import { MapPin, AlertTriangle, Building2 } from "lucide-react";
+import { Building2, MapPinned } from "lucide-react";
 
 export const Route = createFileRoute("/map")({
   component: MapPage,
@@ -34,7 +33,6 @@ export const Route = createFileRoute("/map")({
 
 function MapPage() {
   const { t, d, locale } = useLocale();
-  const gaza = dataSource.getGaza2024();
   const governorates = dataSource.getGovernorates();
 
   return (
@@ -47,45 +45,33 @@ function MapPage() {
             <div className="relative isolate h-[500px] w-full overflow-hidden rounded-lg">
               <PalestineMap onGovernorateClick={() => {}} />
             </div>
-            <p className="mt-3 text-xs text-muted-foreground">{t("map.mapNote")}</p>
           </div>
 
-          <aside className="lg:col-span-2 space-y-4">
-            <div className="rounded-xl gradient-hero p-6 text-white shadow-elevated">
-              <div className="flex items-center gap-2 text-sm opacity-85">
-                <MapPin className="h-4 w-4" /> {t("map.gazaBadge", { year: gaza.year })}
-              </div>
-              <div className="mt-6 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-xs opacity-75">{t("map.inMandate")}</div>
-                  <div className="text-3xl font-bold">
-                    {gaza.inMandate.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs opacity-75">{t("map.outOfMandate")}</div>
-                  <div className="text-3xl font-bold">
-                    {gaza.outOfMandate.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
-                  </div>
-                </div>
-              </div>
-              <p className="mt-6 rounded-lg bg-white/10 p-3 text-xs leading-6 backdrop-blur">
-                {d(gaza.note)}
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-border bg-card p-5">
+          <aside className="lg:col-span-2">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-soft">
               <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-primary">
-                <AlertTriangle className="h-4 w-4" /> {t("map.topIssues")}
+                <MapPinned className="h-4 w-4 text-accent" />
+                {t("map.summaryTitle")}
               </div>
-              <ul className="space-y-2">
-                {gaza.issues.map((i) => (
-                  <li key={i} className="flex gap-2 text-sm leading-7 text-muted-foreground">
-                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                    <span>{d(i)}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="text-sm leading-7 text-muted-foreground">{t("map.summaryDesc")}</p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <div className="rounded-lg bg-surface p-4">
+                  <div className="text-xs text-muted-foreground">
+                    {t("home.geoGovernorateCount")}
+                  </div>
+                  <div className="mt-1 text-2xl font-extrabold text-primary">
+                    {governorates.length.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
+                  </div>
+                </div>
+                <div className="rounded-lg bg-surface p-4">
+                  <div className="text-xs text-muted-foreground">
+                    {t("home.geoTotalComplaints")}
+                  </div>
+                  <div className="mt-1 text-2xl font-extrabold text-primary">
+                    {TOTAL_COMPLAINTS.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
+                  </div>
+                </div>
+              </div>
             </div>
           </aside>
         </div>
@@ -108,17 +94,6 @@ function MapPage() {
             ))}
           </div>
           <p className="mt-4 text-xs text-muted-foreground">{t("map.governoratesNote")}</p>
-        </div>
-
-        <div className="mt-10">
-          <ChartCard title={t("map.chartTitle")} subtitle={t("map.chartSubtitle")}>
-            <ShareDonut
-              data={[
-                { name: t("map.inMandateShort"), value: gaza.inMandate },
-                { name: t("map.outOfMandateShort"), value: gaza.outOfMandate },
-              ]}
-            />
-          </ChartCard>
         </div>
       </section>
     </SiteLayout>

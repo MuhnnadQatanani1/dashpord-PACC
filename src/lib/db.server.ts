@@ -56,13 +56,35 @@ async function ensureTables(pool: sql.ConnectionPool) {
     );
   `);
 
+  await pool.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'admin_sessions')
+    CREATE TABLE admin_sessions (
+      token_hash NVARCHAR(128) PRIMARY KEY,
+      admin_user_id INT NOT NULL,
+      expires_at DATETIME2 NOT NULL,
+      created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+      CONSTRAINT FK_admin_sessions_user FOREIGN KEY (admin_user_id) REFERENCES admin_users(id)
+    );
+  `);
+
+  await pool.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'site_settings')
+    CREATE TABLE site_settings (
+      setting_key NVARCHAR(100) PRIMARY KEY,
+      setting_value NVARCHAR(MAX) NULL,
+      updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+  `);
+
   const existing = await pool.request().query("SELECT COUNT(*) AS cnt FROM admin_users");
-  if (existing.recordset[0].cnt === 0) {
+  const bootstrapEmail = process.env.ADMIN_EMAIL?.trim();
+  const bootstrapPassword = process.env.ADMIN_PASSWORD;
+  if (existing.recordset[0].cnt === 0 && bootstrapEmail && bootstrapPassword) {
     await pool
       .request()
-      .input("email", sql.NVarChar(255), "admin@pacc.ps")
-      .input("hash", sql.NVarChar(255), sha256("admin123"))
-      .input("name", sql.NVarChar(255), "Admin")
+      .input("email", sql.NVarChar(255), bootstrapEmail)
+      .input("hash", sql.NVarChar(255), sha256(bootstrapPassword))
+      .input("name", sql.NVarChar(255), process.env.ADMIN_DISPLAY_NAME?.trim() || "Administrator")
       .query(
         "INSERT INTO admin_users (email, password_hash, display_name) VALUES (@email, @hash, @name)",
       );

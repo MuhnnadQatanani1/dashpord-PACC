@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
-import { Settings2 } from "lucide-react";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { cn } from "@/lib/utils";
@@ -36,7 +35,7 @@ function ReportsLayout() {
         title={t("reports.title")}
         description={t("reports.description")}
       />
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-4 pb-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 pb-6 lg:px-8">
         <nav className="flex flex-wrap gap-2">
           {TABS.map((tab) => (
             <Link
@@ -50,13 +49,6 @@ function ReportsLayout() {
             </Link>
           ))}
         </nav>
-        <Link
-          to="/reports/manage"
-          className="focus-ring inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-primary"
-        >
-          <Settings2 className="h-4 w-4" />
-          {t("reports.manage")}
-        </Link>
       </div>
       <Outlet />
     </SiteLayout>

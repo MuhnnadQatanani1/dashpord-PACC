@@ -15,6 +15,7 @@ import { syncA11y } from "../lib/accessibility-store";
 import { useLocale, getLocale, dictionaries } from "../i18n";
 import { AccessibilityWidget } from "../components/accessibility/AccessibilityWidget";
 import { ReadAloud } from "../components/tts/ReadAloud";
+import { AnalyticsScript } from "../components/analytics/AnalyticsScript";
 
 function NotFoundComponent() {
   const { t, dir } = useLocale();
@@ -155,6 +156,7 @@ function RootComponent() {
       <Outlet />
       <AccessibilityWidget />
       <ReadAloud />
+      <AnalyticsScript />
     </QueryClientProvider>
   );
 }

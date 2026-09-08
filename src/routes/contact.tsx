@@ -48,7 +48,7 @@ function Contact() {
               t: t("contact.card3T"),
               d: t("contact.card3D"),
               cta: t("contact.card3Cta"),
-              href: null,
+              href: "https://www.pacc.ps/ContactUs",
             },
           ].map((c) => (
             <div key={c.t} className="rounded-xl border border-border bg-card p-6 shadow-soft">
@@ -57,20 +57,14 @@ function Contact() {
               </div>
               <h3 className="text-lg font-bold text-primary">{c.t}</h3>
               <p className="mt-2 text-sm leading-7 text-muted-foreground">{c.d}</p>
-              {c.href ? (
-                <a
-                  href={c.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
-                >
-                  {c.cta}
-                </a>
-              ) : (
-                <button className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-                  {c.cta}
-                </button>
-              )}
+              <a
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
+              >
+                {c.cta}
+              </a>
             </div>
           ))}
         </div>

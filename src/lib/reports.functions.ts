@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireAdmin } from "./admin-session.server";
 
 export type ReportCategory =
   | "annual"
@@ -436,6 +437,7 @@ export const getReports = createServerFn({ method: "GET" })
 export const createReport = createServerFn({ method: "POST" })
   .validator((d: Partial<ReportItem> & { file_data_b64?: string }) => d)
   .handler(async ({ data }) => {
+    await requireAdmin();
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();
@@ -464,6 +466,7 @@ export const createReport = createServerFn({ method: "POST" })
 export const updateReport = createServerFn({ method: "POST" })
   .validator((d: Partial<ReportItem> & { id: string; file_data_b64?: string }) => d)
   .handler(async ({ data }) => {
+    await requireAdmin();
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();
@@ -507,6 +510,7 @@ export const updateReport = createServerFn({ method: "POST" })
 export const deleteReport = createServerFn({ method: "POST" })
   .validator((d: { id: string }) => d)
   .handler(async ({ data }) => {
+    await requireAdmin();
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();

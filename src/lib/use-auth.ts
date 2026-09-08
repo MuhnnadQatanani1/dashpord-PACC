@@ -1,35 +1,32 @@
 import { useCallback, useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { adminLogout, getAdminSession } from "./auth.functions";
 
 export interface AdminSession {
   email: string;
   display_name: string | null;
 }
 
-const STORAGE_KEY = "pacc_admin_session";
-
 export function useAuth() {
   const [session, setSession] = useState<AdminSession | null>(null);
   const [loading, setLoading] = useState(true);
+  const loadSession = useServerFn(getAdminSession);
+  const logout = useServerFn(adminLogout);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setSession(JSON.parse(raw));
-    } catch {
-      /* ignore */
-    }
-    setLoading(false);
-  }, []);
+    void loadSession({ data: undefined })
+      .then((user) => setSession(user))
+      .finally(() => setLoading(false));
+  }, [loadSession]);
 
   const signIn = useCallback((user: AdminSession) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
     setSession(user);
   }, []);
 
-  const signOut = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
+  const signOut = useCallback(async () => {
+    await logout({ data: undefined });
     setSession(null);
-  }, []);
+  }, [logout]);
 
   return { session, loading, signIn, signOut };
 }

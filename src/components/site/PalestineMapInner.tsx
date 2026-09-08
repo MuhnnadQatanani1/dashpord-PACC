@@ -9,11 +9,8 @@ import { governorateStats } from "@/data/governorate-stats";
 import { useLocale } from "@/i18n";
 
 const PALESTINE_CENTER: [number, number] = [31.9, 35.2];
-
 const GREEN_LO: [number, number, number] = [187, 247, 208];
 const GREEN_HI: [number, number, number] = [6, 78, 59];
-
-const MAX_COMPLAINTS = Math.max(1, ...Object.values(governorateStats).map((s) => s.complaints));
 
 function greenRamp(intensity: number): string {
   const t = Math.max(0, Math.min(1, intensity));
@@ -21,10 +18,14 @@ function greenRamp(intensity: number): string {
   return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
 }
 
-function getStyle(feature: GovernorateFeature | undefined, isHovered: boolean): PathOptions {
+function getStyle(
+  feature: GovernorateFeature | undefined,
+  isHovered: boolean,
+  maxComplaints: number,
+): PathOptions {
   const stat = feature ? governorateStats[feature.properties.name_ar] : undefined;
   const hasData = Boolean(stat);
-  const intensity = stat ? stat.complaints / MAX_COMPLAINTS : 0;
+  const intensity = stat ? stat.complaints / maxComplaints : 0;
   return {
     fillColor: hasData ? greenRamp(intensity) : "#f3f4f6",
     fillOpacity: hasData ? (isHovered ? 0.95 : 0.85) : 0.45,
@@ -50,30 +51,9 @@ function FitBounds({ features }: { features: GovernorateFeature[] }) {
   return null;
 }
 
-function TilesReady({ onReady }: { onReady: () => void }) {
-  const map = useMap();
-  useEffect(() => {
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      onReady();
-    };
-    const fallback = window.setTimeout(finish, 4000);
-    map.on("load", () => window.setTimeout(finish, 350));
-    return () => {
-      window.clearTimeout(fallback);
-      map.off("load");
-    };
-  }, [map, onReady]);
-  return null;
-}
-
 export function PalestineMapInner({ compact = false, onGovernorateClick }: PalestineMapProps) {
-  const { locale, t, pick } = useLocale();
+  const { locale, pick } = useLocale();
   const [hoveredName, setHoveredName] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
-  const handleReady = useCallback(() => setReady(true), []);
   const geoRef = useRef<L.GeoJSON | null>(null);
   const onClickRef = useRef(onGovernorateClick);
   useEffect(() => {
@@ -82,6 +62,14 @@ export function PalestineMapInner({ compact = false, onGovernorateClick }: Pales
 
   const features = (geoData as GeoJSON.FeatureCollection)
     .features as unknown as GovernorateFeature[];
+  const filteredGeoData = {
+    ...(geoData as GeoJSON.FeatureCollection),
+    features,
+  } satisfies GeoJSON.FeatureCollection;
+  const maxComplaints = Math.max(
+    1,
+    ...features.map((feature) => governorateStats[feature.properties.name_ar]?.complaints ?? 0),
+  );
 
   const onEachFeature = useCallback(
     (feature: GeoJSON.Feature, layer: L.GeoJSON) => {
@@ -98,7 +86,7 @@ export function PalestineMapInner({ compact = false, onGovernorateClick }: Pales
       layer.on({
         mouseover: (e: LeafletMouseEvent) => {
           const target = e.target;
-          target.setStyle(getStyle(f, true));
+          target.setStyle(getStyle(f, true, maxComplaints));
           target
             .bindTooltip(label, { direction: "center", className: "gov-tooltip", sticky: false })
             .openTooltip();
@@ -106,7 +94,7 @@ export function PalestineMapInner({ compact = false, onGovernorateClick }: Pales
         },
         mouseout: (e: LeafletMouseEvent) => {
           const target = e.target;
-          target.setStyle(getStyle(f, false));
+          target.setStyle(getStyle(f, false, maxComplaints));
           target.unbindTooltip();
           setHoveredName(null);
         },
@@ -117,21 +105,21 @@ export function PalestineMapInner({ compact = false, onGovernorateClick }: Pales
         },
       });
     },
-    [locale, compact],
+    [locale, compact, maxComplaints],
   );
 
   const geoStyle = useCallback(
     (feature: GeoJSON.Feature | undefined): PathOptions => {
       const f = feature as unknown as GovernorateFeature | undefined;
-      return getStyle(f, f?.properties.name_ar === hoveredName);
+      return getStyle(f, f?.properties.name_ar === hoveredName, maxComplaints);
     },
-    [hoveredName],
+    [hoveredName, maxComplaints],
   );
 
   const hoveredFeature = features.find((f) => f.properties.name_ar === hoveredName);
 
   return (
-    <div className={`relative isolate h-full w-full ${ready ? "map-pane-fade" : ""}`}>
+    <div className="relative isolate h-full w-full">
       <MapContainer
         center={PALESTINE_CENTER}
         zoom={compact ? 8 : 9}
@@ -144,34 +132,21 @@ export function PalestineMapInner({ compact = false, onGovernorateClick }: Pales
         className="h-full w-full"
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/light_nolabels/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
           subdomains="abcd"
+          attribution="&copy; OpenStreetMap contributors &copy; CARTO"
           maxZoom={19}
         />
-
-        <TilesReady onReady={handleReady} />
-
         <GeoJSON
           key={locale}
           ref={geoRef}
-          data={geoData as GeoJSON.FeatureCollection}
+          data={filteredGeoData}
           style={geoStyle}
           onEachFeature={onEachFeature}
         />
 
         {!compact && <FitBounds features={features} />}
       </MapContainer>
-
-      <div
-        className={`absolute inset-0 z-[1000] flex items-center justify-center bg-background transition-opacity duration-700 ${
-          ready ? "pointer-events-none opacity-0" : "opacity-100"
-        }`}
-      >
-        <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
-          {t("map.loading")}
-        </div>
-      </div>
 
       {hoveredFeature && !compact && (
         <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] rounded-xl border border-border bg-popover px-4 py-3 shadow-lg">

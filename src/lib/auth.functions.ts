@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { endAdminSession, getCurrentAdmin, startAdminSession } from "./admin-session.server";
 
 export interface AdminUser {
   id: number;
@@ -19,5 +20,20 @@ export const adminLogin = createServerFn({ method: "POST" })
       .query(
         "SELECT id, email, display_name FROM admin_users WHERE email = @email AND password_hash = @hash",
       );
-    return result.recordset[0] ?? null;
+    const user = result.recordset[0] ?? null;
+    if (user) await startAdminSession(user.id);
+    return user;
   });
+
+export const getAdminSession = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    return await getCurrentAdmin();
+  } catch {
+    return null;
+  }
+});
+
+export const adminLogout = createServerFn({ method: "POST" }).handler(async () => {
+  await endAdminSession();
+  return { ok: true };
+});

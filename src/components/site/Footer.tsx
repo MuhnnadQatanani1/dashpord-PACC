@@ -44,6 +44,21 @@ export function Footer() {
                   {t("footer.methodology")}
                 </Link>
               </li>
+              <li>
+                <Link to="/contact" className="hover:opacity-100">
+                  {t("footer.contactPage")}
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://www.pacc.ps/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-100"
+                >
+                  {t("footer.officialSite")}
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -60,7 +75,15 @@ export function Footer() {
                 <Mail className="h-4 w-4" /> info@pacc.pna.ps
               </li>
               <li className="flex items-center gap-2" dir="ltr">
-                <Globe className="h-4 w-4" /> pacc.pna.ps
+                <Globe className="h-4 w-4" />
+                <a
+                  href="https://www.pacc.ps/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-100"
+                >
+                  pacc.ps
+                </a>
               </li>
             </ul>
           </div>
