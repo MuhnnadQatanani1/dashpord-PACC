@@ -22,5 +22,6 @@ export interface GovernorateStatsMap {
 export interface PalestineMapProps {
   compact?: boolean;
   stats?: GovernorateStatsMap;
+  selectedAr?: string | null;
   onGovernorateClick?: (nameAr: string, nameEn: string, stats: GovernorateStat | undefined) => void;
 }

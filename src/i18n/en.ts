@@ -295,6 +295,7 @@ export const en: Dict = {
   "home.geoLegendLow": "Low complaints",
   "home.geoLegendHigh": "High",
   "home.geoLegendLabel": "Green gradient from low to high",
+  "home.geoLegendColor": "Complaints in the governorate",
   "home.exploreOpen": "Open",
   "home.ctaBadge": "Confidential · Legal · Protected",
   "home.ctaTitle": "Do you have a corruption report?",
@@ -568,6 +569,8 @@ export const en: Dict = {
   "map.complaintsUnit": "complaints",
   "map.governoratesNote":
     "* Illustrative figures based on the expected distribution of complaints across governorates.",
+  "map.filterTitle": "Year filter:",
+  "map.allYears": "All years",
   "map.loading": "Loading map…",
 
   "meta.effortsTitle": "Main Indicators of Anti-Corruption Efforts | National Observatory",

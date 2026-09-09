@@ -283,6 +283,7 @@ export const ar = {
   "home.geoLegendLow": "عدد الشكاوى منخفض",
   "home.geoLegendHigh": "مرتفع",
   "home.geoLegendLabel": "تدرج أخضر من منخفض إلى مرتفع",
+  "home.geoLegendColor": "عدد الشكاوى في المحافظة",
   "home.exploreOpen": "فتح",
   "home.ctaBadge": "سرية · قانونية · محمية",
   "home.ctaTitle": "هل لديك بلاغ عن فساد؟",
@@ -522,6 +523,8 @@ export const ar = {
   "map.complaintsUnit": "شكوى",
   "map.governoratesNote": "* أرقام توضيحية مبنية على التوزيع المتوقع للشكاوى حسب المحافظات.",
   "map.loading": "جارٍ تحميل الخريطة…",
+  "map.filterTitle": "فلترة حسب السنة:",
+  "map.allYears": "الكُل",
 
   "meta.effortsTitle": "المؤشرات الرئيسية لجهود مكافحة الفساد | المرصد الوطني",
   "meta.effortsDesc":

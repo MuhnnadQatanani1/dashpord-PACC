@@ -32,6 +32,7 @@ const NAV: NavItem[] = [
     label: "nav.data",
     children: [
       { to: "/dashboard", label: "nav.dashboard" },
+      { to: "/map", label: "nav.map" },
       { to: "/indicators", label: "nav.spotlight" },
       { to: "/stories", label: "nav.stories" },
     ],
@@ -82,6 +83,11 @@ const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
     to: "/dashboard",
     label: "nav.dashboard",
     keywords: "لوحة البيانات التفاعلية dashboard charts filters مؤشرات",
+  },
+  {
+    to: "/map",
+    label: "nav.map",
+    keywords: "التحليل الجغرافي geographic map خريطة محافظات شكاوى توزيع",
   },
   {
     to: "/indicators",

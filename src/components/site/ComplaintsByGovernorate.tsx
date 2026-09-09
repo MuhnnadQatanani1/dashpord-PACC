@@ -2,26 +2,32 @@ import { useCallback, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Building2, MapPin } from "lucide-react";
 import { PalestineMap } from "./PalestineMap";
+import { GovernorateYearFilter } from "./GovernorateYearFilter";
 import { dataSource } from "@/lib/mock-data";
 import { useLocale } from "@/i18n";
-import {
-  computeGovernorateStatistics,
-  findGovernorateByName,
-  formatCount,
-  formatPercent,
-} from "@/lib/governorate-map-data";
+import { findGovernorateByName, formatCount, formatPercent } from "@/lib/governorate-map-data";
+import { ALL_STAT_YEARS, statsForYears } from "@/data/governorate-stats";
 
 export function ComplaintsByGovernorate() {
   const { t, d, locale, dir } = useLocale();
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [selectedYears, setSelectedYears] = useState<ReadonlySet<number>>(ALL_STAT_YEARS);
 
-  const governorates = useMemo(
-    () => dataSource.getGovernorates(),
-    [],
-  );
-  const stats = useMemo(() => computeGovernorateStatistics(governorates), [governorates]);
+  const governorates = useMemo(() => dataSource.getGovernorates(), []);
+  const filteredMap = useMemo(() => statsForYears(selectedYears), [selectedYears]);
+  const stats = useMemo(() => {
+    const total = Object.values(filteredMap).reduce((sum, v) => sum + v.complaints, 0);
+    return Object.entries(filteredMap)
+      .map(([name, v]) => ({
+        name,
+        complaints: v.complaints,
+        region: governorates.find((g) => g.name === name)?.label ?? "",
+        share: total > 0 ? v.complaints / total : 0,
+      }))
+      .sort((a, b) => b.complaints - a.complaints);
+  }, [filteredMap, governorates]);
   const selected = useMemo(() => findGovernorateByName(stats, selectedName), [stats, selectedName]);
-  const maxCount = stats[0]?.complaints ?? 1;
+  const maxCount = Math.max(...stats.map((s) => s.complaints), 1);
 
   const handleGovernorateClick = useCallback((nameAr: string) => {
     setSelectedName(nameAr);
@@ -51,20 +57,24 @@ export function ComplaintsByGovernorate() {
         <div className="grid gap-6 lg:grid-cols-12">
           {/* Map */}
           <div className="lg:col-span-7">
-            <div className="relative h-[460px] w-full overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
-              <PalestineMap onGovernorateClick={handleGovernorateClick} />
+            <div className="mb-4">
+              <GovernorateYearFilter selected={selectedYears} onChange={setSelectedYears} />
+            </div>
+            <div className="relative h-[640px] w-full">
+              <PalestineMap
+                stats={filteredMap}
+                selectedAr={selectedName}
+                onGovernorateClick={handleGovernorateClick}
+              />
             </div>
             <div className="mt-3 flex items-center justify-center gap-3 text-xs text-muted-foreground">
-              <span>{t("home.geoLegendLow")}</span>
-              <div
-                className="h-2.5 w-28 rounded-full"
-                role="img"
-                aria-label={t("home.geoLegendLabel")}
-                style={{
-                  background: "linear-gradient(to right, #bbf7d0, #064e3b)",
-                }}
-              />
-              <span>{t("home.geoLegendHigh")}</span>
+              <div className="flex items-center gap-2">
+                <span
+                  className="h-3 w-24 rounded-sm bg-gradient-to-r from-[#bfe8d2] via-[#2baa75] to-[#166534]"
+                  aria-hidden="true"
+                />
+                <span>{t("home.geoLegendColor")}</span>
+              </div>
             </div>
           </div>
 
