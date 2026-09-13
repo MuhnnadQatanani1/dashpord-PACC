@@ -5,6 +5,7 @@ import { PalestineMap } from "@/components/site/PalestineMap";
 import { GovernorateYearFilter } from "@/components/site/GovernorateYearFilter";
 import { dataSource } from "@/lib/mock-data";
 import { ALL_STAT_YEARS, statsForYears } from "@/data/governorate-stats";
+import { TOTAL_COMPLAINTS } from "@/lib/enforcement-kpis";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { Building2, MapPinned } from "lucide-react";
 
@@ -26,14 +27,14 @@ export const Route = createFileRoute("/map")({
 });
 
 function MapPage() {
-  const { t, d, locale } = useLocale();
+  const { t, d } = useLocale();
   const governorates = dataSource.getGovernorates();
   const [selectedYears, setSelectedYears] = useState<ReadonlySet<number>>(ALL_STAT_YEARS);
   const filteredMap = statsForYears(selectedYears);
 
   return (
     <SiteLayout>
-      <PageHeader eyebrow={t("map.eyebrow")} title={t("map.title")} description={t("map.desc")} />
+      <PageHeader eyebrow={t("map.eyebrow")} title={t("map.title")} />
 
       <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
         <div className="mb-6">
@@ -60,7 +61,15 @@ function MapPage() {
                     {t("home.geoGovernorateCount")}
                   </div>
                   <div className="mt-1 text-2xl font-extrabold text-primary">
-                    {governorates.length.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")}
+                    {governorates.length.toLocaleString("en-US")}
+                  </div>
+                </div>
+                <div className="rounded-lg bg-surface p-4">
+                  <div className="text-xs text-muted-foreground">
+                    {t("home.geoTotalComplaints")}
+                  </div>
+                  <div className="mt-1 text-2xl font-extrabold text-primary">
+                    {TOTAL_COMPLAINTS.toLocaleString("en-US")}
                   </div>
                 </div>
               </div>
@@ -79,9 +88,7 @@ function MapPage() {
                 <div className="text-xs text-muted-foreground">{d(g.label)}</div>
                 <div className="mt-1 text-base font-bold text-foreground">{d(g.name)}</div>
                 <div className="mt-2 text-2xl font-extrabold text-accent">
-                  {(filteredMap[g.name]?.complaints ?? 0).toLocaleString(
-                    locale === "ar" ? "ar-EG" : "en-US",
-                  )}
+                  {(filteredMap[g.name]?.complaints ?? 0).toLocaleString("en-US")}
                 </div>
                 <div className="text-xs text-muted-foreground">{t("map.complaintsUnit")}</div>
               </div>

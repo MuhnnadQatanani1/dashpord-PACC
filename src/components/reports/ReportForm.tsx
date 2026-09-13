@@ -59,6 +59,7 @@ export function ReportForm({
     pages: z.coerce.number().int().min(0),
     size_mb: z.coerce.number().min(0),
     added_by: z.string(),
+    is_published: z.boolean(),
   });
 
   type FormValues = z.infer<typeof schema>;
@@ -75,6 +76,7 @@ export function ReportForm({
       pages: initial?.pages ?? 0,
       size_mb: initial?.size_mb ?? 0,
       added_by: initial?.added_by ?? "",
+      is_published: initial?.is_published ?? true,
     },
   });
 
@@ -82,16 +84,14 @@ export function ReportForm({
     setBusy(true);
     setMessage(null);
     try {
-      let file_url = initial?.file_url ?? null;
+      const file_url = initial?.file_url ?? null;
       let original_filename = initial?.original_filename ?? null;
       let file_data_b64: string | undefined;
       let file_mime: string | undefined;
 
       if (file) {
         const buf = await file.arrayBuffer();
-        file_data_b64 = btoa(
-          new Uint8Array(buf).reduce((s, b) => s + String.fromCharCode(b), ""),
-        );
+        file_data_b64 = btoa(new Uint8Array(buf).reduce((s, b) => s + String.fromCharCode(b), ""));
         file_mime = file.type || "application/octet-stream";
         original_filename = file.name;
       }
@@ -108,6 +108,7 @@ export function ReportForm({
         file_url,
         original_filename,
         added_by: values.added_by || null,
+        is_published: values.is_published,
         file_data_b64,
         file_mime,
       };
@@ -271,23 +272,46 @@ export function ReportForm({
           )}
         />
 
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-foreground">{t("form.file")}</label>
-          <div className="flex flex-col gap-2">
-              <label className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-surface px-3 py-3 text-sm text-muted-foreground hover:bg-secondary">
-                <Upload className="h-4 w-4" />
-                {file ? file.name : initial?.original_filename || t("form.file")}
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
-                  className="sr-only"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                />
+        <FormField
+          control={form.control}
+          name="is_published"
+          render={({ field }) => (
+            <FormItem>
+              <label className="focus-ring flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-foreground">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={(event) => field.onChange(event.target.checked)}
+                    className="h-4 w-4 accent-accent"
+                  />
+                </FormControl>
+                {t("form.published")}
               </label>
-              {initial?.file_url && !file && (
-                <p className="text-xs text-muted-foreground">{t("form.fileNote")}</p>
-              )}
-            </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-foreground">
+            {t("form.file")}
+          </label>
+          <div className="flex flex-col gap-2">
+            <label className="focus-ring inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-input bg-surface px-3 py-3 text-sm text-muted-foreground hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              {file ? file.name : initial?.original_filename || t("form.file")}
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.csv"
+                className="sr-only"
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            {initial?.file_url && !file && (
+              <p className="text-xs text-muted-foreground">{t("form.fileNote")}</p>
+            )}
+          </div>
         </div>
 
         {message && (

@@ -61,9 +61,21 @@ export function ReportCard({
   return (
     <article className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition-shadow hover:shadow-elevated">
       <div className="flex items-start justify-between gap-2">
-        <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent">
-          {t(CAT_LABEL[report.category])}
-        </span>
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent">
+            {t(CAT_LABEL[report.category])}
+          </span>
+          <span
+            className={cn(
+              "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold",
+              report.is_published
+                ? "border-success/30 bg-success/10 text-success"
+                : "border-amber-400/40 bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300",
+            )}
+          >
+            {report.is_published ? t("reports.published") : t("reports.draft")}
+          </span>
+        </div>
         {(onEdit || onDelete) && (
           <div className="flex items-center gap-1">
             {onEdit && (

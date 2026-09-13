@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as CommissionRouteImport } from './routes/commission'
 import { Route as ConceptsRouteImport } from './routes/concepts'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CpanelRouteImport } from './routes/cpanel'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndicatorsRouteImport } from './routes/indicators'
 import { Route as JourneyRouteImport } from './routes/journey'
@@ -55,6 +56,11 @@ const ConceptsRoute = ConceptsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CpanelRoute = CpanelRouteImport.update({
+  id: '/cpanel',
+  path: '/cpanel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/commission': typeof CommissionRoute
   '/concepts': typeof ConceptsRoute
   '/contact': typeof ContactRoute
+  '/cpanel': typeof CpanelRoute
   '/dashboard': typeof DashboardRoute
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/commission': typeof CommissionRoute
   '/concepts': typeof ConceptsRoute
   '/contact': typeof ContactRoute
+  '/cpanel': typeof CpanelRoute
   '/dashboard': typeof DashboardRoute
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
@@ -198,6 +206,7 @@ export interface FileRoutesById {
   '/commission': typeof CommissionRoute
   '/concepts': typeof ConceptsRoute
   '/contact': typeof ContactRoute
+  '/cpanel': typeof CpanelRoute
   '/dashboard': typeof DashboardRoute
   '/indicators': typeof IndicatorsRoute
   '/journey': typeof JourneyRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/commission'
     | '/concepts'
     | '/contact'
+    | '/cpanel'
     | '/dashboard'
     | '/indicators'
     | '/journey'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/commission'
     | '/concepts'
     | '/contact'
+    | '/cpanel'
     | '/dashboard'
     | '/indicators'
     | '/journey'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/commission'
     | '/concepts'
     | '/contact'
+    | '/cpanel'
     | '/dashboard'
     | '/indicators'
     | '/journey'
@@ -297,6 +309,7 @@ export interface RootRouteChildren {
   CommissionRoute: typeof CommissionRoute
   ConceptsRoute: typeof ConceptsRoute
   ContactRoute: typeof ContactRoute
+  CpanelRoute: typeof CpanelRoute
   DashboardRoute: typeof DashboardRoute
   IndicatorsRoute: typeof IndicatorsRoute
   JourneyRoute: typeof JourneyRoute
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cpanel': {
+      id: '/cpanel'
+      path: '/cpanel'
+      fullPath: '/cpanel'
+      preLoaderRoute: typeof CpanelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -496,6 +516,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommissionRoute: CommissionRoute,
   ConceptsRoute: ConceptsRoute,
   ContactRoute: ContactRoute,
+  CpanelRoute: CpanelRoute,
   DashboardRoute: DashboardRoute,
   IndicatorsRoute: IndicatorsRoute,
   JourneyRoute: JourneyRoute,

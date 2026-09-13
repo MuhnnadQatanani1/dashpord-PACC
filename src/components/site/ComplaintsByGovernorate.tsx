@@ -9,7 +9,7 @@ import { findGovernorateByName, formatCount, formatPercent } from "@/lib/governo
 import { ALL_STAT_YEARS, statsForYears } from "@/data/governorate-stats";
 
 export function ComplaintsByGovernorate() {
-  const { t, d, locale, dir } = useLocale();
+  const { t, d, dir } = useLocale();
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [selectedYears, setSelectedYears] = useState<ReadonlySet<number>>(ALL_STAT_YEARS);
 
@@ -35,7 +35,7 @@ export function ComplaintsByGovernorate() {
   const clearSelection = useCallback(() => setSelectedName(null), []);
 
   const unit = t("map.complaintsUnit");
-  const num = (v: number) => formatCount(v, locale);
+  const num = (v: number) => formatCount(v);
 
   return (
     <section
@@ -101,7 +101,7 @@ export function ComplaintsByGovernorate() {
                     </div>
                     <div className="text-end">
                       <div className="text-base font-bold text-accent" dir={dir}>
-                        {formatPercent(selected.share, locale)}
+                        {formatPercent(selected.share)}
                       </div>
                       <div className="text-xs text-muted-foreground">{t("home.geoShare")}</div>
                     </div>

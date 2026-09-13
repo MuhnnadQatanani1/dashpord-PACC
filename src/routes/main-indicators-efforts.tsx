@@ -22,12 +22,13 @@ const CRITERIA_ICONS: LucideIcon[] = [Gavel, Handshake, Zap, Eye, Scale];
 
 function PrintDocument() {
   const { t, d } = useLocale();
+  const intro = t("efforts.printIntro");
   return (
     <div className="print-doc hidden print:block">
       <header className="print-doc__header">
         <div className="print-doc__org">{t("efforts.printOrg")}</div>
         <h1>{t("efforts.printTitle")}</h1>
-        <p className="print-doc__intro">{t("efforts.printIntro")}</p>
+        {intro && <p className="print-doc__intro">{intro}</p>}
       </header>
 
       {frameworkCriteria.map((c) => (
@@ -45,17 +46,10 @@ function MainIndicatorsEfforts() {
   return (
     <SiteLayout>
       <div className="print:hidden">
-        <PageHeader
-          eyebrow={t("efforts.eyebrow")}
-          title={t("efforts.title")}
-          description={t("efforts.desc")}
-        />
+        <PageHeader eyebrow={t("efforts.eyebrow")} title={t("efforts.title")} />
 
         <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              {t("efforts.intro")}
-            </p>
             <button
               onClick={() => window.print()}
               className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"

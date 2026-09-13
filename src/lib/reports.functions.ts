@@ -1,12 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { requireAdmin } from "./admin-session.server";
+import { getCurrentAdmin, requireAdmin } from "./admin-session.server";
 
-export type ReportCategory =
-  | "annual"
-  | "quarterly"
-  | "specialized"
-  | "surveys"
-  | "international";
+export type ReportCategory = "annual" | "quarterly" | "specialized" | "surveys" | "international";
 
 export interface ReportItem {
   id: string;
@@ -35,6 +30,18 @@ export const REPORT_CATEGORIES: ReportCategory[] = [
   "international",
 ];
 
+function normalizeReportRow(row: Record<string, unknown>): ReportItem {
+  return {
+    ...row,
+    file_data: undefined,
+    is_published: Boolean(row.is_published),
+    created_at:
+      row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at ?? ""),
+    updated_at:
+      row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at ?? ""),
+  } as ReportItem;
+}
+
 function mockDate(y: number, m: number, d: number): string {
   return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}T00:00:00`;
 }
@@ -46,7 +53,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "التقرير السنوي لمؤشرات النزاهة ومكافحة الفساد 2025",
     title_en: "Annual Report on Integrity and Anti-Corruption Indicators 2025",
     description_ar: "تقرير سنوي شامل يستعرض مؤشرات النزاهة والشفافية والمساءلة.",
-    description_en: "A comprehensive annual report reviewing integrity and accountability indicators.",
+    description_en:
+      "A comprehensive annual report reviewing integrity and accountability indicators.",
     publish_date: "2026-03-01",
     pages: 148,
     size_mb: 8.4,
@@ -244,7 +252,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "ورقة تحليلية: الحوكمة المحلية ومخاطر الفساد",
     title_en: "Analytical Paper: Local Governance and Corruption Risks",
     description_ar: "ورقة تحليلية تبحث في مؤشرات الحوكمة المحلية ومخاطر الفساد.",
-    description_en: "An analytical paper examining local governance indicators and corruption risks.",
+    description_en:
+      "An analytical paper examining local governance indicators and corruption risks.",
     publish_date: "2025-04-02",
     pages: 45,
     size_mb: 2.6,
@@ -280,7 +289,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "استطلاع رأي حول تصورات المواطنين لمكافحة الفساد 2025",
     title_en: "Citizen Perceptions Survey on Anti-Corruption 2025",
     description_ar: "استطلاع رأي وطني يعكس تصورات المواطنين حول انتشار الفساد وجهود مكافحته.",
-    description_en: "A national survey reflecting citizens' perceptions of corruption and anti-corruption efforts.",
+    description_en:
+      "A national survey reflecting citizens' perceptions of corruption and anti-corruption efforts.",
     publish_date: "2025-09-20",
     pages: 88,
     size_mb: 5.2,
@@ -298,7 +308,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "استطلاع رأي الشباب حول النزاهة والمشاركة المجتمعية",
     title_en: "Youth Survey on Integrity and Community Participation",
     description_ar: "استطلاع يستكشف اتجاهات الشباب نحو النزاهة والمشاركة في مكافحة الفساد.",
-    description_en: "A survey exploring youth attitudes toward integrity and anti-corruption participation.",
+    description_en:
+      "A survey exploring youth attitudes toward integrity and anti-corruption participation.",
     publish_date: "2025-03-30",
     pages: 54,
     size_mb: 3.1,
@@ -316,7 +327,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "استطلاع رأي القطاع الخاص حول بيئة الأعمال والنزاهة",
     title_en: "Private Sector Survey on Business Environment and Integrity",
     description_ar: "استطلاع يبحث في تقييم القطاع الخاص لبيئة الأعمال ومؤشرات النزاهة.",
-    description_en: "A survey examining the private sector's assessment of business environment and integrity.",
+    description_en:
+      "A survey examining the private sector's assessment of business environment and integrity.",
     publish_date: "2024-10-14",
     pages: 61,
     size_mb: 3.6,
@@ -334,7 +346,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "استطلاع رأي حول الخدمات العامة والرضا عن الأداء الحكومي",
     title_en: "Survey on Public Services and Government Performance",
     description_ar: "استطلاع وطني لقياس رضا المواطنين عن الخدمات العامة وعلاقته بالنزاهة.",
-    description_en: "A national survey measuring citizen satisfaction with public services and integrity.",
+    description_en:
+      "A national survey measuring citizen satisfaction with public services and integrity.",
     publish_date: "2024-05-22",
     pages: 70,
     size_mb: 4.2,
@@ -352,7 +365,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "إضاءة: موقع فلسطين من مؤشر مدركات الفساد الدولي",
     title_en: "Highlight: Palestine's Position in the CPI",
     description_ar: "إضاءة تحليلية حول موقع المؤشرات الوطنية من المؤشرات الدولية المرجعية.",
-    description_en: "An analytical highlight on national indicators relative to international references.",
+    description_en:
+      "An analytical highlight on national indicators relative to international references.",
     publish_date: "2025-07-10",
     pages: 18,
     size_mb: 1.4,
@@ -370,7 +384,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "إضاءة: التعاون الدولي في استرداد الأصول",
     title_en: "Highlight: International Cooperation in Asset Recovery",
     description_ar: "إضاءة حول جهود فلسطين في التعاون الدولي لاسترداد الأصول.",
-    description_en: "A highlight on Palestine's efforts in international cooperation for asset recovery.",
+    description_en:
+      "A highlight on Palestine's efforts in international cooperation for asset recovery.",
     publish_date: "2024-08-19",
     pages: 15,
     size_mb: 1.2,
@@ -388,7 +403,8 @@ export const MOCK_REPORTS: ReportItem[] = [
     title_ar: "إضاءة: فلسطين ومنظومة اتفاقية الأمم المتحدة لمكافحة الفساد",
     title_en: "Highlight: Palestine and the UN Convention against Corruption",
     description_ar: "إضاءة تستعرض التزام فلسطين بمقتضيات اتفاقية الأمم المتحدة لمكافحة الفساد.",
-    description_en: "A highlight reviewing Palestine's compliance with the UN Convention against Corruption.",
+    description_en:
+      "A highlight reviewing Palestine's compliance with the UN Convention against Corruption.",
     publish_date: "2024-03-05",
     pages: 22,
     size_mb: 1.8,
@@ -419,12 +435,7 @@ export const getReports = createServerFn({ method: "GET" })
       }
       query += " ORDER BY publish_date DESC";
       const result = await req.query(query);
-      return (result.recordset as Record<string, unknown>[]).map((r) => ({
-        ...r,
-        file_data: undefined,
-        created_at: r.created_at instanceof Date ? r.created_at.toISOString() : String(r.created_at ?? ""),
-        updated_at: r.updated_at instanceof Date ? r.updated_at.toISOString() : String(r.updated_at ?? ""),
-      })) as ReportItem[];
+      return (result.recordset as Record<string, unknown>[]).map(normalizeReportRow);
     } catch (e) {
       const errMsg = e instanceof Error ? e.message : String(e);
       console.warn("[reports] SQL Server unavailable, serving demo data:", e);
@@ -433,6 +444,17 @@ export const getReports = createServerFn({ method: "GET" })
         : MOCK_REPORTS;
     }
   });
+
+export const getAdminReports = createServerFn({ method: "GET" }).handler(async () => {
+  await requireAdmin();
+  const sql = (await import("mssql")).default;
+  const { getPool } = await import("./db.server");
+  const pool = await getPool();
+  const result = await pool
+    .request()
+    .query("SELECT * FROM reports ORDER BY publish_date DESC, created_at DESC");
+  return (result.recordset as Record<string, unknown>[]).map(normalizeReportRow);
+});
 
 export const createReport = createServerFn({ method: "POST" })
   .validator((d: Partial<ReportItem> & { file_data_b64?: string }) => d)
@@ -455,11 +477,12 @@ export const createReport = createServerFn({ method: "POST" })
       .input("file_url", sql.NVarChar(1000), data.file_url ?? null)
       .input("original_filename", sql.NVarChar(255), data.original_filename ?? null)
       .input("added_by", sql.NVarChar(255), data.added_by ?? null)
+      .input("is_published", sql.Bit, data.is_published ?? true)
       .input("file_data", sql.VarBinary(sql.MAX), fileBuf)
       .input("file_mime", sql.NVarChar(100), data.file_mime ?? null)
       .query(
-        `INSERT INTO reports (category, title_ar, title_en, description_ar, description_en, publish_date, pages, size_mb, file_url, original_filename, added_by, file_data, file_mime)
-         VALUES (@category, @title_ar, @title_en, @description_ar, @description_en, @publish_date, @pages, @size_mb, @file_url, @original_filename, @added_by, @file_data, @file_mime)`,
+        `INSERT INTO reports (category, title_ar, title_en, description_ar, description_en, publish_date, pages, size_mb, file_url, original_filename, added_by, is_published, file_data, file_mime)
+         VALUES (@category, @title_ar, @title_en, @description_ar, @description_en, @publish_date, @pages, @size_mb, @file_url, @original_filename, @added_by, @is_published, @file_data, @file_mime)`,
       );
   });
 
@@ -485,6 +508,7 @@ export const updateReport = createServerFn({ method: "POST" })
       .input("file_url", sql.NVarChar(1000), data.file_url ?? null)
       .input("original_filename", sql.NVarChar(255), data.original_filename ?? null)
       .input("added_by", sql.NVarChar(255), data.added_by ?? null)
+      .input("is_published", sql.Bit, data.is_published ?? true)
       .input("file_mime", sql.NVarChar(100), data.file_mime ?? null);
 
     if (fileBuf) {
@@ -493,7 +517,7 @@ export const updateReport = createServerFn({ method: "POST" })
         `UPDATE reports SET category=@category, title_ar=@title_ar, title_en=@title_en,
          description_ar=@description_ar, description_en=@description_en, publish_date=@publish_date,
          pages=@pages, size_mb=@size_mb, file_url=@file_url, original_filename=@original_filename,
-         added_by=@added_by, file_data=@file_data, file_mime=@file_mime, updated_at=GETDATE()
+         added_by=@added_by, is_published=@is_published, file_data=@file_data, file_mime=@file_mime, updated_at=GETDATE()
          WHERE id=@id`,
       );
     } else {
@@ -501,7 +525,7 @@ export const updateReport = createServerFn({ method: "POST" })
         `UPDATE reports SET category=@category, title_ar=@title_ar, title_en=@title_en,
          description_ar=@description_ar, description_en=@description_en, publish_date=@publish_date,
          pages=@pages, size_mb=@size_mb, file_url=@file_url, original_filename=@original_filename,
-         added_by=@added_by, file_mime=@file_mime, updated_at=GETDATE()
+         added_by=@added_by, is_published=@is_published, file_mime=@file_mime, updated_at=GETDATE()
          WHERE id=@id`,
       );
     }
@@ -514,7 +538,10 @@ export const deleteReport = createServerFn({ method: "POST" })
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();
-    await pool.request().input("id", sql.Int, Number(data.id)).query("DELETE FROM reports WHERE id=@id");
+    await pool
+      .request()
+      .input("id", sql.Int, Number(data.id))
+      .query("DELETE FROM reports WHERE id=@id");
   });
 
 export const getReportById = createServerFn({ method: "GET" })
@@ -523,19 +550,17 @@ export const getReportById = createServerFn({ method: "GET" })
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();
+    const admin = await getCurrentAdmin().catch(() => null);
     const result = await pool
       .request()
       .input("id", sql.Int, Number(data.id))
-      .query("SELECT * FROM reports WHERE id = @id");
+      .input("include_unpublished", sql.Bit, Boolean(admin))
+      .query(
+        "SELECT * FROM reports WHERE id = @id AND (is_published = 1 OR @include_unpublished = 1)",
+      );
     const row = result.recordset[0] as Record<string, unknown> | undefined;
     if (!row) return null;
-    return {
-      ...row,
-      file_data: undefined,
-      file_mime: row.file_mime ?? null,
-      created_at: row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at ?? ""),
-      updated_at: row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at ?? ""),
-    } as ReportItem;
+    return normalizeReportRow(row);
   });
 
 export const getReportFile = createServerFn({ method: "GET" })
@@ -544,10 +569,14 @@ export const getReportFile = createServerFn({ method: "GET" })
     const sql = (await import("mssql")).default;
     const { getPool } = await import("./db.server");
     const pool = await getPool();
+    const admin = await getCurrentAdmin().catch(() => null);
     const result = await pool
       .request()
       .input("id", sql.Int, Number(data.id))
-      .query("SELECT file_data, file_mime, original_filename FROM reports WHERE id = @id");
+      .input("include_unpublished", sql.Bit, Boolean(admin))
+      .query(
+        "SELECT file_data, file_mime, original_filename FROM reports WHERE id = @id AND (is_published = 1 OR @include_unpublished = 1)",
+      );
     const row = result.recordset[0] as Record<string, unknown> | undefined;
     if (!row || !row.file_data) return null;
     const buf = row.file_data as Buffer;

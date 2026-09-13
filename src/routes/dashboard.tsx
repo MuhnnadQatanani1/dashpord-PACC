@@ -382,11 +382,7 @@ function Dashboard() {
 
   return (
     <SiteLayout>
-      <PageHeader
-        eyebrow={t("dash2.eyebrow")}
-        title={t("dash2.title")}
-        description={t("dash2.desc")}
-      />
+      <PageHeader eyebrow={t("dash2.eyebrow")} title={t("dash2.title")} />
 
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 lg:px-8">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

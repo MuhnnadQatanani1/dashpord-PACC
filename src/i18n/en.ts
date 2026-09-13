@@ -108,6 +108,8 @@ export const en: Dict = {
   "reports.noResults": "No matching reports.",
   "reports.uploadedFile": "Attached file",
   "reports.noFile": "No file attached",
+  "reports.published": "Published",
+  "reports.draft": "Draft",
 
   "form.titleAr": "Title (Arabic)",
   "form.titleEn": "Title (English)",
@@ -127,6 +129,7 @@ export const en: Dict = {
   "form.saveError": "Failed to save. Please try again.",
   "form.addedBy": "Added By",
   "form.addedByPlaceholder": "Name of person who added the report",
+  "form.published": "Publish report on the website",
 
   "reports.addedAt": "Added on",
 
@@ -157,8 +160,26 @@ export const en: Dict = {
   "auth.error": "Sign in failed. Check your credentials.",
   "auth.dbError":
     "Unable to reach the database. The page is currently running with temporary demo data.",
-  "auth.adminOnly": "This page is for administrators. Sign in to manage reports.",
-  "auth.manageTitle": "Manage Reports",
+  "auth.adminOnly": "This page is for certified administrators. Sign in to manage portal content.",
+  "auth.manageTitle": "Control Panel",
+  "admin.totalReports": "Total reports",
+  "admin.actions": "Actions",
+  "admin.dataTitle": "Indicator and analysis data entry",
+  "admin.dataDesc":
+    "Add values directly to an indicator or analysis table, manually or from table data, with source notes for review.",
+  "admin.dataDataset": "Indicator / dataset",
+  "admin.dataRow": "Item / category",
+  "admin.dataMetric": "Indicator / field",
+  "admin.dataYear": "Year",
+  "admin.dataValue": "Value",
+  "admin.dataSource": "Source",
+  "admin.dataSourcePlaceholder": "Example: Annual Report 2026",
+  "admin.dataNote": "Note",
+  "admin.dataNotePlaceholder": "Optional internal note",
+  "admin.dataSaved": "Data value saved.",
+  "admin.dataError": "Could not save data value.",
+  "admin.dataSavedEntries": "Saved values",
+  "admin.dataEmpty": "No saved values yet.",
   "admin.analyticsTitle": "Google Analytics settings",
   "admin.analyticsDesc": "Control visitor measurement from the admin panel only.",
   "admin.analyticsMeasurementId": "Measurement ID",
@@ -318,7 +339,7 @@ export const en: Dict = {
   "meta.storiesDesc": "Guided reads of the key findings and trends in corruption indicators.",
   "stories.eyebrow": "Data Stories",
   "stories.title": "Guided reads of the key findings",
-  "stories.desc": "We turn raw numbers into clear stories explaining what lies behind the trends.",
+  "stories.desc": "",
   "stories.badge": "Data Story",
 
   "meta.indicatorsTitle": "Numbers in Focus | National Observatory",
@@ -560,8 +581,7 @@ export const en: Dict = {
   "meta.mapOgDesc": "Map of Palestine and available geographic data by governorate.",
   "map.eyebrow": "Geographic Analysis",
   "map.title": "Map of Palestine and available geographic data",
-  "map.desc":
-    "Illustrative data on the distribution of complaints across the Palestinian governorates available in the Observatory database.",
+  "map.desc": "",
   "map.summaryTitle": "Geographic Distribution Summary",
   "map.summaryDesc":
     "This page displays the governorates available in the Observatory database and allows comparing registered complaint volumes across them.",
@@ -578,17 +598,14 @@ export const en: Dict = {
     "Main indicators of efforts to promote integrity, transparency and anti-corruption according to the reference framework adopted by the Observatory.",
   "efforts.eyebrow": "Main Indicators",
   "efforts.title": "Main Indicators of Anti-Corruption Efforts",
-  "efforts.desc":
-    "Five main sections on efforts to promote integrity, transparency and anti-corruption according to the Observatory's reference framework; digital content will be added to each section later.",
-  "efforts.intro":
-    "Anti-corruption efforts on this page are divided into five sections according to the Observatory's reference framework; each section will be populated with its digital indicators later.",
+  "efforts.desc": "",
+  "efforts.intro": "",
   "efforts.downloadPdf": "Download PDF",
   "efforts.inProgress": "Under preparation",
   "efforts.printOrg":
     "National Observatory for Integrity, Governance and Anti-Corruption Indicators",
   "efforts.printTitle": "Main Indicators of Anti-Corruption Efforts",
-  "efforts.printIntro":
-    "Five main sections on efforts to promote integrity, transparency and anti-corruption according to the reference framework adopted by the Observatory.",
+  "efforts.printIntro": "",
 
   "meta.dashboardTitle": "Interactive Data Dashboard | National Observatory",
   "meta.dashboardDesc":
@@ -631,10 +648,8 @@ export const en: Dict = {
     "Law enforcement indicators of the Anti-Corruption Commission, the Prosecution and the Corruption Crimes Court according to the adopted official framework.",
   "mainInd.eyebrow": "Main Indicators",
   "mainInd.title": "Law Enforcement Indicators",
-  "mainInd.desc":
-    "The official framework of law enforcement indicators with its two adopted bands, comprising {total} indicators.",
-  "mainInd.intro":
-    "The approved law enforcement indicator list, organized by official item, showing only the indicator name and measurement unit.",
+  "mainInd.desc": "",
+  "mainInd.intro": "",
   "mainInd.downloadPdf": "Download PDF",
   "mainInd.groupCount": "{count} indicators",
   "mainInd.cardNumber": "Indicator {num}",
@@ -642,8 +657,7 @@ export const en: Dict = {
   "mainInd.printOrg":
     "National Observatory for Integrity, Governance and Anti-Corruption Indicators",
   "mainInd.printTitle": "Law Enforcement Indicators",
-  "mainInd.printIntro":
-    "The official framework of law enforcement indicators according to the two adopted bands: the corruption-deterrent environment and applying the law effectively, fairly and equally.",
+  "mainInd.printIntro": "",
   "mainInd.colNum": "No.",
   "mainInd.colIndicator": "Indicator",
   "mainInd.colDefinition": "Definition",
@@ -668,9 +682,9 @@ export const en: Dict = {
     "International Highlights | National Corruption Indicators Observatory",
   "meta.internationalDesc":
     "Highlights on Palestine's international and regional engagement in the field of integrity and anti-corruption.",
-  "meta.manageTitle": "Manage Reports | National Corruption Indicators Observatory",
+  "meta.manageTitle": "Control Panel | National Corruption Indicators Observatory",
   "meta.manageDesc":
-    "Manage, add and edit reports of the National Observatory for Corruption Indicators.",
+    "Control panel for managing National Corruption Indicators Observatory content and reports.",
 
   "meta.siteTitle":
     "National Corruption Indicators Observatory | Palestinian Anti-Corruption Commission",
@@ -687,8 +701,7 @@ export const en: Dict = {
 
   "dash2.eyebrow": "Data Dashboard",
   "dash2.title": "Law Enforcement Indicators",
-  "dash2.desc":
-    "An interactive dashboard of the official indicators of the Anti-Corruption Commission, the Prosecution, and the Corruption Crimes Court for 2022-2025, with global filters that control all the charts.",
+  "dash2.desc": "",
   "dash2.filterTitle": "Year filter:",
   "dash2.allYears": "All years",
   "dash2.summaryNote": "The summary reflects the selected years only ({years}).",
@@ -722,8 +735,7 @@ export const en: Dict = {
 
   "ind.eyebrow": "Numbers under the Spotlight",
   "ind.title": "Numbers and ratios under the Spotlight",
-  "ind.desc":
-    "11 striking numbers from law enforcement 2022-2025, calculated on the whole period and filterable by year.",
+  "ind.desc": "",
   "ind.yearLabel": "Year:",
   "ind.allYears": "All years",
   "ind.filterNote":

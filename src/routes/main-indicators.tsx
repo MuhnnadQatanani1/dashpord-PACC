@@ -342,13 +342,14 @@ function IndicatorCard({
 function PrintDocument() {
   const { t, locale } = useLocale();
   const isArabic = locale === "ar";
+  const intro = t("mainInd.printIntro");
 
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className="print-doc hidden print:block">
       <header className="print-doc__header">
         <div className="print-doc__org">{t("mainInd.printOrg")}</div>
         <h1>{t("mainInd.printTitle")}</h1>
-        <p className="print-doc__intro">{t("mainInd.printIntro")}</p>
+        {intro && <p className="print-doc__intro">{intro}</p>}
       </header>
 
       {BANDS.map((band) => (
@@ -382,22 +383,14 @@ function PrintDocument() {
 
 function MainIndicators() {
   const { t, locale } = useLocale();
-  const total = BANDS.reduce((acc, band) => acc + band.rows.length, 0);
 
   return (
     <SiteLayout>
       <div className="print:hidden">
-        <PageHeader
-          eyebrow={t("mainInd.eyebrow")}
-          title={t("mainInd.title")}
-          description={t("mainInd.desc", { total })}
-        />
+        <PageHeader eyebrow={t("mainInd.eyebrow")} title={t("mainInd.title")} />
 
         <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-            <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
-              {t("mainInd.intro")}
-            </p>
             <button
               onClick={() => window.print()}
               className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"

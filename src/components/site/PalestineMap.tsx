@@ -170,7 +170,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
             <title>
               {locale === "ar" ? area.nameAr : area.nameEn}
               {area.stat
-                ? ` — ${area.stat.complaints.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")} ${
+                ? ` — ${area.stat.complaints.toLocaleString("en-US")} ${
                     locale === "ar" ? "شكوى" : "complaints"
                   }`
                 : ` — ${pick("لا توجد بيانات", "No data available")}`}
@@ -189,7 +189,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
           </div>
           <div className="text-xs text-muted-foreground">
             {tip.stat
-              ? `${tip.stat.complaints.toLocaleString(locale === "ar" ? "ar-EG" : "en-US")} ${
+              ? `${tip.stat.complaints.toLocaleString("en-US")} ${
                   locale === "ar" ? "شكوى" : "complaints"
                 }`
               : pick("لا توجد بيانات", "No data available")}

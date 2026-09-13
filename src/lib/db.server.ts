@@ -44,6 +44,9 @@ async function ensureTables(pool: sql.ConnectionPool) {
   if (!colNames.includes("file_mime")) {
     await pool.request().query("ALTER TABLE reports ADD file_mime NVARCHAR(100) NULL");
   }
+  if (!colNames.includes("is_published")) {
+    await pool.request().query("ALTER TABLE reports ADD is_published BIT NOT NULL DEFAULT 1");
+  }
 
   await pool.request().query(`
     IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'admin_users')
@@ -73,6 +76,24 @@ async function ensureTables(pool: sql.ConnectionPool) {
       setting_key NVARCHAR(100) PRIMARY KEY,
       setting_value NVARCHAR(MAX) NULL,
       updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+  `);
+
+  await pool.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'portal_data_points')
+    CREATE TABLE portal_data_points (
+      id INT IDENTITY(1,1) PRIMARY KEY,
+      dataset_key NVARCHAR(200) NOT NULL,
+      row_key NVARCHAR(500) NOT NULL,
+      metric_key NVARCHAR(500) NOT NULL DEFAULT 'value',
+      year INT NOT NULL,
+      value FLOAT NULL,
+      note NVARCHAR(MAX) NULL,
+      source_label NVARCHAR(500) NULL,
+      updated_by NVARCHAR(255) NULL,
+      created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+      updated_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+      CONSTRAINT UQ_portal_data_points UNIQUE (dataset_key, row_key, metric_key, year)
     );
   `);
 

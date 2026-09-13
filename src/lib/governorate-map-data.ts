@@ -64,13 +64,13 @@ export function findGovernorateByName(
   return stats.find((s) => s.name === name);
 }
 
-export function formatCount(value: number, locale: string): string {
-  return value.toLocaleString(locale === "ar" ? "ar-EG" : "en-US");
+export function formatCount(value: number): string {
+  return value.toLocaleString("en-US");
 }
 
-export function formatPercent(value: number, locale: string): string {
+export function formatPercent(value: number): string {
   const ratio = value * 100;
-  return `${ratio.toLocaleString(locale === "ar" ? "ar-EG" : "en-US", {
+  return `${ratio.toLocaleString("en-US", {
     maximumFractionDigits: 1,
   })}%`;
 }
