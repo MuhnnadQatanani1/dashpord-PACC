@@ -129,11 +129,7 @@ function Home() {
       {/* KPI CARDS */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="mb-10 max-w-2xl">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            {t("home.kpiEyebrow")}
-          </div>
           <h2 className="text-3xl font-bold text-primary md:text-4xl">{t("home.kpiTitle")}</h2>
-          <p className="mt-3 leading-8 text-muted-foreground">{t("home.kpiDesc")}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {summaryKpis.map((k, i) => (

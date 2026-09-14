@@ -245,15 +245,17 @@ function LineRows({
   );
 }
 
-/** categorized (name + per-year values) -> horizontal bar (sum of selected years) */
-function CategorizedHBar({
+/** categorized (name + per-year values) -> vertical bar (sum of selected years) */
+function CategorizedBar({
   rows,
   selected,
   valueName = "",
+  hideAxisLabels = false,
 }: {
   rows: Array<Array<number | string | null>>;
   selected: YearFilter;
   valueName?: string;
+  hideAxisLabels?: boolean;
 }) {
   const tr = useTr();
   const yIdx = YEARS.map((y, i) => ({ y, i }));
@@ -268,12 +270,12 @@ function CategorizedHBar({
       const value = sumValid(filtered.map((f) => f.value));
       return { name, value, byYear: filtered };
     })
-    .filter((it) => it.value > 0 || it.byYear.some((b) => b.value != null))
+    .filter((it) => it.value > 0)
     .sort((a, b) => b.value - a.value)
     .slice(0, 4);
 
   const labelValueName = tr(valueName || "المجموع");
-  const h = items.length * 44 + 110;
+  const h = 360;
   const hasMore = rows.length > 4;
   return (
     <div className="space-y-2">
@@ -286,22 +288,22 @@ function CategorizedHBar({
         {(w) => (
           <BarChart
             data={items}
-            layout="vertical"
             width={w}
             height={h}
-            margin={{ top: 8, right: 16, left: 8, bottom: 8 }}
+            margin={{ top: 24, right: 8, left: 0, bottom: 12 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" horizontal={false} />
-            <XAxis type="number" tick={AXIS} />
-            <YAxis
-              type="category"
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-color)" vertical={false} />
+            <XAxis
               dataKey="name"
-              tick={{ ...AXIS, fontSize: 11 }}
-              width={210}
-              tickMargin={16}
-              orientation="right"
+              tick={hideAxisLabels ? false : { ...AXIS, fontSize: 10 }}
+              interval={0}
+              angle={-35}
+              textAnchor="end"
+              height={hideAxisLabels ? 16 : 110}
+              tickMargin={6}
               tickFormatter={(v: string) => tr(v)}
             />
+            <YAxis tick={AXIS} orientation="right" />
             <Tooltip
               content={({ active, payload }: TooltipProps<number, string>) => {
                 if (!active || !payload || payload.length === 0) return null;
@@ -339,16 +341,16 @@ function CategorizedHBar({
             <Bar
               dataKey="value"
               name={labelValueName}
-              radius={[0, 6, 6, 0]}
+              radius={[6, 6, 0, 0]}
               animationDuration={700}
-              barSize={22}
+              barSize={56}
             >
               {items.map((_, i) => (
                 <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
               ))}
               <LabelList
                 dataKey="value"
-                position="right"
+                position="top"
                 formatter={(v: number | string) => nf(Number(v))}
                 className="fill-foreground font-bold"
               />
@@ -496,13 +498,14 @@ export function ComplaintsBySourcePeriodChart({ selected }: { selected: YearFilt
   return <DonutSlices slices={slices} />;
 }
 
-// 3) Complaints by sector (horizontal, year filterable)
+// 3) Complaints by sector (vertical bar without axis labels, year filterable)
 export function ComplaintsBySectorChart({ selected }: { selected: YearFilter }) {
   return (
-    <CategorizedHBar
+    <CategorizedBar
       rows={dashboardData.complaintsBySector.data}
       selected={selected}
       valueName="الشكاوى"
+      hideAxisLabels
     />
   );
 }
@@ -535,13 +538,14 @@ export function ComplaintsByReceiptMethodPeriodChart({ selected }: { selected: Y
   return <DonutSlices slices={slices} />;
 }
 
-// 5) Investigation files by qualification (horizontal desc, year filterable)
+// 5) Investigation files by qualification (vertical bar without axis labels, year filterable)
 export function InvestigationFilesChart({ selected }: { selected: YearFilter }) {
   return (
-    <CategorizedHBar
+    <CategorizedBar
       rows={dashboardData.investigationFilesByQualification.data}
       selected={selected}
       valueName="الملفات"
+      hideAxisLabels
     />
   );
 }
@@ -567,13 +571,14 @@ export function FilesReferredBySourceChart({ selected }: { selected: YearFilter 
   );
 }
 
-// 8) Prosecution files referred to court by crime (horizontal, ignore null)
+// 8) Prosecution files referred to court by crime (vertical bar without axis labels, ignore null)
 export function CourtByCrimeChart({ selected }: { selected: YearFilter }) {
   return (
-    <CategorizedHBar
+    <CategorizedBar
       rows={dashboardData.prosecutionFilesReferredToCourtByCrime.data}
       selected={selected}
       valueName="الملفات"
+      hideAxisLabels
     />
   );
 }
