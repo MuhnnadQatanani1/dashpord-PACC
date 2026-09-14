@@ -45,9 +45,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:opacity-100">
+                <a
+                  href="https://www.pacc.ps/ContactUs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-100"
+                >
                   {t("footer.contactPage")}
-                </Link>
+                </a>
               </li>
               <li>
                 <a

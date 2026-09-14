@@ -259,12 +259,14 @@ function Home() {
               >
                 {t("home.ctaProtection")}
               </a>
-              <Link
-                to="/contact"
+              <a
+                href="https://www.pacc.ps/ContactUs"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20"
               >
                 {t("home.ctaContact")}
-              </Link>
+              </a>
             </div>
           </div>
         </div>
