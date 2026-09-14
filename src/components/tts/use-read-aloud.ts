@@ -17,7 +17,7 @@ export interface ReadAloudApi {
 }
 
 function isSupported(): boolean {
-  return typeof window !== "undefined" && "Audio" in window;
+  return typeof window !== "undefined" && "speechSynthesis" in window;
 }
 
 function defaultRate(locale: "ar" | "en") {
@@ -74,6 +74,16 @@ function splitForSpeech(text: string) {
   return chunks;
 }
 
+function pickVoice(langPrefix: "ar" | "en"): SpeechSynthesisVoice | undefined {
+  if (!isSupported()) return undefined;
+  const voices = window.speechSynthesis.getVoices() ?? [];
+  const preferred = voices
+    .filter((v) => v.lang.toLowerCase().startsWith(langPrefix))
+    .sort((a, b) => (b.localService ? 1 : 0) - (a.localService ? 1 : 0));
+  if (preferred.length > 0) return preferred[0];
+  return voices[0];
+}
+
 export function useReadAloud(): ReadAloudApi {
   const { locale } = useLocale();
   const [state, setState] = useState<ReadState>(isSupported() ? "idle" : "unsupported");
@@ -84,22 +94,21 @@ export function useReadAloud(): ReadAloudApi {
   const segmentsRef = useRef<{ text: string; el: HTMLElement }[]>([]);
   const indexRef = useRef(0);
   const rateRef = useRef(defaultRate(locale));
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioUrlRef = useRef<string | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  const localeRef = useRef(locale);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  const cleanupAudio = useCallback(() => {
-    abortRef.current?.abort();
-    abortRef.current = null;
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.src = "";
-      audioRef.current = null;
+  localeRef.current = locale;
+
+  const cancelSpeech = useCallback(() => {
+    if (!isSupported()) return;
+    const current = utteranceRef.current;
+    utteranceRef.current = null;
+    if (current) {
+      current.onstart = null;
+      current.onend = null;
+      current.onerror = null;
     }
-    if (audioUrlRef.current) {
-      URL.revokeObjectURL(audioUrlRef.current);
-      audioUrlRef.current = null;
-    }
+    window.speechSynthesis.cancel();
   }, []);
 
   const collect = useCallback(() => {
@@ -112,42 +121,27 @@ export function useReadAloud(): ReadAloudApi {
     const selectors = "h1, h2, h3, h4, h5, p, li, blockquote, td, th";
     main.querySelectorAll<HTMLElement>(selectors).forEach((el) => {
       if (el.closest("button, script, style, nav, [data-tts-ignore]")) return;
-      const text = prepareTextForSpeech(el.innerText ?? el.textContent ?? "", locale);
+      const text = prepareTextForSpeech(el.innerText ?? el.textContent ?? "", localeRef.current);
       if (!text || text.length < 2) return;
       for (const chunk of splitForSpeech(text)) {
         segmentsRef.current.push({ text: chunk, el });
       }
     });
-  }, [locale]);
+  }, []);
 
   const clearHighlight = useCallback(() => {
     for (const s of segmentsRef.current) s.el.classList.remove("reading-active");
   }, []);
 
-  const requestAudio = useCallback(
-    async (text: string) => {
-      const controller = new AbortController();
-      abortRef.current = controller;
-      const response = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ text, locale, rate: rateRef.current }),
-        signal: controller.signal,
-      });
-
-      if (!response.ok) {
-        throw new Error(await response.text());
-      }
-
-      return URL.createObjectURL(await response.blob());
-    },
-    [locale],
-  );
+  const cleanup = useCallback(() => {
+    cancelSpeech();
+    clearHighlight();
+  }, [cancelSpeech, clearHighlight]);
 
   const speakSegment = useCallback(
-    async (i: number) => {
+    (i: number) => {
       if (!isSupported()) return;
-      cleanupAudio();
+      cancelSpeech();
       clearHighlight();
 
       if (i >= segmentsRef.current.length) {
@@ -161,32 +155,39 @@ export function useReadAloud(): ReadAloudApi {
       el.classList.add("reading-active");
       el.scrollIntoView({ block: "center", behavior: "auto" });
 
-      try {
-        const audioUrl = await requestAudio(text);
-        audioUrlRef.current = audioUrl;
-        const audio = new Audio(audioUrl);
-        audioRef.current = audio;
-        audio.onplay = () => setState("playing");
-        audio.onended = () => {
-          cleanupAudio();
-          void speakSegment(i + 1);
-        };
-        audio.onerror = () => {
-          cleanupAudio();
-          setError("tts.error");
-          setState("idle");
-          clearHighlight();
-        };
-        await audio.play();
-      } catch (error) {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        cleanupAudio();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utteranceRef.current = utterance;
+      const langPrefix = localeRef.current === "ar" ? "ar" : "en";
+      const voice = pickVoice(langPrefix);
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+        setVoiceName(voice.name);
+      } else {
+        utterance.lang = langPrefix === "ar" ? "ar-AR" : "en-US";
+        setVoiceName(null);
+      }
+      utterance.rate = rateRef.current;
+      utterance.pitch = 1;
+
+      utterance.onstart = () => setState("playing");
+      utterance.onend = () => {
+        if (utteranceRef.current !== utterance) return;
+        utteranceRef.current = null;
+        void speakSegment(i + 1);
+      };
+      utterance.onerror = (event) => {
+        if (utteranceRef.current !== utterance) return;
+        utteranceRef.current = null;
+        if (event.error === "canceled" || event.error === "interrupted") return;
+        clearHighlight();
         setError("tts.error");
         setState("idle");
-        clearHighlight();
-      }
+      };
+
+      window.speechSynthesis.speak(utterance);
     },
-    [cleanupAudio, clearHighlight, requestAudio],
+    [cancelSpeech, clearHighlight],
   );
 
   const play = useCallback(() => {
@@ -195,8 +196,8 @@ export function useReadAloud(): ReadAloudApi {
       setError("tts.unavailable");
       return;
     }
-    if (state === "paused") {
-      void audioRef.current?.play();
+    if (state === "paused" && window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
       setState("playing");
       return;
     }
@@ -212,18 +213,17 @@ export function useReadAloud(): ReadAloudApi {
   }, [state, collect, speakSegment]);
 
   const pause = useCallback(() => {
-    if (isSupported() && audioRef.current) {
-      audioRef.current.pause();
+    if (isSupported() && window.speechSynthesis.speaking) {
+      window.speechSynthesis.pause();
       setState("paused");
     }
   }, []);
 
   const stop = useCallback(() => {
-    cleanupAudio();
-    clearHighlight();
+    cleanup();
     setState("idle");
     setError(null);
-  }, [cleanupAudio, clearHighlight]);
+  }, [cleanup]);
 
   const setRate = useCallback((r: number) => {
     const clamped = Math.min(1.4, Math.max(0.65, r));
@@ -232,25 +232,29 @@ export function useReadAloud(): ReadAloudApi {
   }, []);
 
   useEffect(() => {
-    return () => cleanupAudio();
-  }, [cleanupAudio]);
+    return () => cleanup();
+  }, [cleanup]);
 
   useEffect(() => {
+    if (!isSupported()) {
+      setState("unsupported");
+      return;
+    }
     const nextRate = defaultRate(locale);
     rateRef.current = nextRate;
     setRateState(nextRate);
     segmentsRef.current = [];
     indexRef.current = 0;
-    setVoiceName(locale === "ar" ? "Python TTS (Arabic)" : "Python TTS (English)");
-    cleanupAudio();
-    setState(isSupported() ? "idle" : "unsupported");
-  }, [locale, cleanupAudio]);
+    setVoiceName(pickVoice(locale)?.name ?? null);
+    cleanup();
+    setState("idle");
+  }, [locale, cleanup]);
 
   return {
     supported: isSupported(),
     state,
     rate,
-    voiceName: voiceName ?? (locale === "ar" ? "Python TTS (Arabic)" : "Python TTS (English)"),
+    voiceName: voiceName ?? (locale === "ar" ? "صوت عربي (المتصفح)" : "Browser voice"),
     setRate,
     play,
     pause,
