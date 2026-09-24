@@ -292,7 +292,7 @@ const BANDS: IndicatorBand[] = [
 
 const INDICATOR_COLORS = [
   "#2563eb",
-  "#16a34a",
+  "#1d4ed8",
   "#d97706",
   "#dc2626",
   "#7c3aed",

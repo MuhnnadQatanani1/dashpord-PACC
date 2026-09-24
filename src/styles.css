@@ -11,8 +11,8 @@
  * Palette
  *   Primary   Deep Navy Blue    (institutional trust)
  *   Secondary Royal Blue        (depth, hierarchy)
- *   Accent    Cyan / Turquoise  (data highlights)
- *   Success   Emerald Green     (integrity)
+ *   Accent    Royal Blue        (data highlights)
+ *   Success   Navy Blue         (positive state)
  *
  * Type scale, spacing, radii, shadows and motion are token-driven so
  * every page composes from the same primitives.
@@ -96,12 +96,12 @@
   --muted: oklch(0.955 0.003 250);
   --muted-foreground: oklch(0.46 0.008 250);
 
-  /* Flag green — data accents */
-  --accent: oklch(0.52 0.13 155);
+  /* Royal blue — data accents */
+  --accent: oklch(0.48 0.16 252);
   --accent-foreground: oklch(0.99 0 0);
-  --accent-soft: oklch(0.94 0.045 155);
+  --accent-soft: oklch(0.94 0.035 252);
 
-  --success: oklch(0.52 0.13 155);
+  --success: oklch(0.4 0.11 252);
   --success-foreground: oklch(0.99 0 0);
 
   /* Flag red */
@@ -110,10 +110,10 @@
 
   --border: oklch(0.905 0.003 250);
   --input: oklch(0.905 0.003 250);
-  --ring: oklch(0.52 0.13 155);
+  --ring: oklch(0.48 0.16 252);
 
   /* Chart palette — vibrant, diverse, accessible */
-  --chart-1: oklch(0.55 0.16 155);   /* emerald green */
+  --chart-1: oklch(0.5 0.16 252);    /* royal blue */
   --chart-2: oklch(0.55 0.2 27);     /* crimson red */
   --chart-3: oklch(0.5 0.16 250);    /* royal blue */
   --chart-4: oklch(0.65 0.18 70);    /* warm amber */
@@ -127,14 +127,14 @@
   --tooltip-bg: oklch(1 0 0);
   --tooltip-border: oklch(0.9 0.003 250);
 
-  --gradient-hero: radial-gradient(1100px 600px at 88% -10%, oklch(0.52 0.13 155 / 0.4), transparent 60%),
+  --gradient-hero: radial-gradient(1100px 600px at 88% -10%, oklch(0.48 0.16 252 / 0.4), transparent 60%),
                    radial-gradient(900px 500px at 6% 110%, oklch(0.53 0.21 27 / 0.28), transparent 60%),
-                   linear-gradient(135deg, oklch(0.14 0.004 250) 0%, oklch(0.2 0.005 250) 60%, oklch(0.26 0.02 155) 100%);
-  --gradient-accent: linear-gradient(135deg, oklch(0.46 0.13 155) 0%, oklch(0.6 0.12 155) 100%);
+                   linear-gradient(135deg, oklch(0.14 0.004 250) 0%, oklch(0.2 0.005 250) 60%, oklch(0.28 0.08 252) 100%);
+  --gradient-accent: linear-gradient(135deg, oklch(0.38 0.12 252) 0%, oklch(0.58 0.16 252) 100%);
   --gradient-surface: linear-gradient(180deg, oklch(0.99 0.002 250) 0%, oklch(0.96 0.003 250) 100%);
   --shadow-soft: 0 1px 2px oklch(0.2 0 0 / 0.05), 0 8px 24px -14px oklch(0.2 0 0 / 0.14);
   --shadow-elevated: 0 12px 40px -16px oklch(0.2 0 0 / 0.3);
-  --shadow-glow: 0 0 0 1px oklch(0.52 0.13 155 / 0.18), 0 8px 40px -8px oklch(0.52 0.13 155 / 0.35);
+  --shadow-glow: 0 0 0 1px oklch(0.48 0.16 252 / 0.18), 0 8px 40px -8px oklch(0.48 0.16 252 / 0.35);
 }
 
 .dark {
@@ -154,9 +154,9 @@
   --popover: oklch(0.19 0.005 250);
   --popover-foreground: oklch(0.97 0.002 250);
 
-  --primary: oklch(0.68 0.13 155);
+  --primary: oklch(0.74 0.12 252);
   --primary-foreground: oklch(0.14 0.004 250);
-  --primary-glow: oklch(0.58 0.13 155);
+  --primary-glow: oklch(0.62 0.14 252);
 
   --secondary: oklch(0.25 0.005 250);
   --secondary-foreground: oklch(0.97 0.002 250);
@@ -164,11 +164,11 @@
   --muted: oklch(0.25 0.005 250);
   --muted-foreground: oklch(0.74 0.004 250);
 
-  --accent: oklch(0.7 0.13 155);
+  --accent: oklch(0.72 0.14 252);
   --accent-foreground: oklch(0.14 0.004 250);
-  --accent-soft: oklch(0.28 0.06 155);
+  --accent-soft: oklch(0.28 0.06 252);
 
-  --success: oklch(0.7 0.13 155);
+  --success: oklch(0.72 0.14 252);
   --success-foreground: oklch(0.14 0.004 250);
 
   --destructive: oklch(0.62 0.2 27);
@@ -176,9 +176,9 @@
 
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.7 0.13 155);
+  --ring: oklch(0.72 0.14 252);
 
-  --chart-1: oklch(0.72 0.15 155);   /* emerald */
+  --chart-1: oklch(0.72 0.14 252);   /* royal blue */
   --chart-2: oklch(0.68 0.19 27);    /* crimson */
   --chart-3: oklch(0.65 0.15 250);   /* royal blue */
   --chart-4: oklch(0.78 0.17 70);    /* amber */
@@ -192,10 +192,10 @@
   --tooltip-bg: oklch(0.19 0.005 250);
   --tooltip-border: oklch(1 0 0 / 12%);
 
-  --gradient-hero: radial-gradient(1100px 700px at 82% -10%, oklch(0.55 0.14 155 / 0.35), transparent 60%),
+  --gradient-hero: radial-gradient(1100px 700px at 82% -10%, oklch(0.55 0.14 252 / 0.35), transparent 60%),
                    radial-gradient(900px 600px at 5% 110%, oklch(0.5 0.18 27 / 0.3), transparent 60%),
-                   linear-gradient(140deg, oklch(0.12 0.004 250) 0%, oklch(0.16 0.005 250) 60%, oklch(0.2 0.03 155) 100%);
-  --gradient-accent: linear-gradient(135deg, oklch(0.58 0.13 155) 0%, oklch(0.7 0.12 155) 100%);
+                   linear-gradient(140deg, oklch(0.12 0.004 250) 0%, oklch(0.16 0.005 250) 60%, oklch(0.22 0.05 252) 100%);
+  --gradient-accent: linear-gradient(135deg, oklch(0.56 0.14 252) 0%, oklch(0.72 0.13 252) 100%);
   --gradient-surface: linear-gradient(180deg, oklch(0.18 0.005 250) 0%, oklch(0.15 0.004 250) 100%);
   --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px -14px oklch(0 0 0 / 0.5);
   --shadow-elevated: 0 12px 40px -16px oklch(0 0 0 / 0.6);
@@ -299,11 +299,11 @@
   padding: 2px;
   background: conic-gradient(
     from var(--glow-angle),
-    var(--glow-c1, oklch(0.72 0.15 155)),
+    var(--glow-c1, oklch(0.72 0.14 252)),
     var(--glow-c2, oklch(0.65 0.15 250)),
     var(--glow-c3, oklch(0.62 0.17 295)),
     var(--glow-c4, oklch(0.78 0.17 70)),
-    var(--glow-c1, oklch(0.72 0.15 155))
+    var(--glow-c1, oklch(0.72 0.14 252))
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -327,8 +327,8 @@
 
 /* Static vector map of Palestine */
 .static-map-bg {
-  fill: #f2f6f4;
-  stroke: #c3d0c8;
+  fill: #f2f5fb;
+  stroke: #c3cce0;
   stroke-width: 1.6;
   vector-effect: non-scaling-stroke;
 }
@@ -540,7 +540,7 @@ html[data-aa-contrast] {
   --accent: #0051c7;
   --accent-foreground: #ffffff;
   --accent-soft: #dbe7ff;
-  --success: #00692f;
+  --success: #003f9e;
   --success-foreground: #ffffff;
   --destructive: #c00000;
   --destructive-foreground: #ffffff;
@@ -569,7 +569,7 @@ html[data-aa-contrast] .dark {
   --accent: #3f7dff;
   --accent-foreground: #000000;
   --accent-soft: #0d1f40;
-  --success: #33d17a;
+  --success: #7aa7ff;
   --success-foreground: #000000;
   --destructive: #ff4d4d;
   --destructive-foreground: #000000;

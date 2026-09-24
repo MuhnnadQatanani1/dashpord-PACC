@@ -115,7 +115,7 @@ export function ComplaintsByGovernorate() {
                     aria-label={t("home.geoShare")}
                   >
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-green-400 to-green-700"
+                      className="h-full rounded-full bg-gradient-to-r from-blue-300 to-blue-900"
                       style={{
                         width: `${Math.max(2, (selected.complaints / maxCount) * 100)}%`,
                       }}

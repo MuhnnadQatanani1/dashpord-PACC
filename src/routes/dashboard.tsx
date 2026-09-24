@@ -62,10 +62,15 @@ const INDICATORS: IndicatorDef[] = [
     title: "عدد التشريعات أو البنود المعززة للوقاية من الفساد",
     titleKey: "dash2.ind1T",
     subtitle: "توزيعها حسب نوع التشريع عبر السنوات",
-    kpi: "المجموع الكلي: 182",
+    kpi: "بيانات جزئية: 2",
     dataKey: "legislations",
     Chart: LegislationsChart,
     table: () => dashboardData.legislations,
+    note:
+      "يشير تقرير المرصد إلى أن هذا المؤشر غير مرصود بالكامل في التقارير السنوية، وأن الأرقام المتاحة جزئية.",
+    noteEn:
+      "The Marsad report marks this indicator as not fully tracked in the annual reports; available figures are partial.",
+    noteType: "warn",
   },
   {
     id: 2,
@@ -89,7 +94,7 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 3,
-    title: "الشكاوى حسب قطاع المشتكى عليه",
+    title: "الشكاوى والبلاغات حسب قطاع المشتكى عليه",
     titleKey: "dash2.ind3T",
     subtitle: "أعمدة أفقية قابلة للفلترة بالسنة",
     kpi: "إجمالي 2923",
@@ -99,7 +104,7 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 4,
-    title: "الشكاوى حسب طريقة الاستلام",
+    title: "الشكاوى والبلاغات حسب طريقة الاستلام",
     titleKey: "dash2.ind4T",
     subtitle: "توزيع طرق الاستلام حسب السنة",
     kpi: "إجمالي 2923",
@@ -109,7 +114,7 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 14,
-    title: "الشكاوى حسب طريقة الاستلام",
+    title: "الشكاوى والبلاغات حسب طريقة الاستلام",
     titleKey: "dash2.ind14T",
     subtitle: "نسبة كل طريقة من الإجمالي الكلي للفترة",
     kpi: "إجمالي 2923",
@@ -129,7 +134,7 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 6,
-    title: "عدد الشكاوى المنجزة لدى هيئة مكافحة الفساد",
+    title: "عدد الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد",
     titleKey: "dash2.ind6T",
     subtitle: "الإجمالي لدى الهيئة حسب النتيجة (حفظ / عدم اختصاص / إحالة)",
     kpi: "إجمالي 2676",
@@ -174,32 +179,43 @@ const INDICATORS: IndicatorDef[] = [
     title: "المتهمون المحالون لمحكمة جرائم الفساد حسب الجنس",
     titleKey: "dash2.ind10T",
     subtitle: "أفراد ذكر / أنثى",
-    kpi: "إجمالي 310 أفراد",
+    kpi: "إجمالي 308 أفراد",
     dataKey: "defendantsReferredToCourtByGender",
     Chart: DefendantsByGenderChart,
     table: () => dashboardData.defendantsReferredToCourtByGender,
-    note: "شخص معنوي: 2 في 2022، و1 في 2025 (المجموع 3).",
-    noteEn: "Legal persons: 2 in 2022, and 1 in 2025 (total 3).",
+    note: "المجموع المعروض للأفراد حسب تقرير المرصد. أشخاص معنويون: 2 في 2022، و1 في 2025.",
+    noteEn:
+      "The displayed total is for natural persons per the Marsad report. Legal persons: 2 in 2022 and 1 in 2025.",
   },
   {
     id: 11,
     title: "القضايا المفصولة بحكم حسب النتيجة",
     titleKey: "dash2.ind11T",
     subtitle: "إدانة / براءة / عدم اختصاص / انقضاء الدعوى",
-    kpi: "إجمالي 69 قضية",
+    kpi: "إجمالي 66 قضية",
     dataKey: "courtVerdictResults",
     Chart: CourtVerdictsChart,
     table: () => dashboardData.courtVerdictResults,
+    note:
+      "حسب شيت 9 في تقرير المرصد. توجد ملاحظات تدقيق داخل التقرير حول مطابقة هذا المؤشر مع بعض نصوص التقارير السنوية.",
+    noteEn:
+      "Per Sheet 9 in the Marsad report. The report includes audit notes about reconciling this indicator with some annual report text.",
+    noteType: "warn",
   },
   {
     id: 12,
     title: "عدد المحكوم عليهم (المدانين) في محكمة جرائم الفساد",
     titleKey: "dash2.ind12T",
     subtitle: "تطور عدد المدانين حسب السنة",
-    kpi: "إجمالي 45",
+    kpi: "إجمالي 46 مداناً",
     dataKey: "courtVerdictResults-convicted",
     Chart: ConvictedCountChart,
     table: () => dashboardData.courtVerdictResults,
+    note:
+      "حسب شيت 10 في تقرير المرصد. التقرير يتضمن تنبيه تدقيق خاصاً برقم عام 2023.",
+    noteEn:
+      "Per Sheet 10 in the Marsad report. The report includes an audit note about the 2023 figure.",
+    noteType: "warn",
   },
 ];
 
@@ -259,7 +275,7 @@ function SummaryCards({ selected }: { selected: YearFilter }) {
   const { t, locale, dir } = useLocale();
   const colors = [
     "#2563eb",
-    "#16a34a",
+    "#1d4ed8",
     "#d97706",
     "#dc2626",
     "#7c3aed",

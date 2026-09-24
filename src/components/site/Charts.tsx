@@ -35,7 +35,7 @@ const TOOLTIP = {
 } as const;
 
 export const CHART_COLORS = [
-  "#16a34a",
+  "#1d4ed8",
   "#dc2626",
   "#2563eb",
   "#d97706",

@@ -46,7 +46,7 @@ export function OpinionPoll() {
   return (
     <section
       dir={dir}
-      className="rounded-xl border border-primary/15 bg-emerald-50/80 p-4 text-start text-primary shadow-sm"
+      className="rounded-xl border border-primary/15 bg-blue-50/80 p-4 text-start text-primary shadow-sm"
     >
       {submitted ? (
         <div className={`flex items-center gap-3 ${locale === "ar" ? "text-right" : "text-left"}`}>

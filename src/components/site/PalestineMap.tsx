@@ -16,7 +16,7 @@ type HoverEvent = React.MouseEvent<SVGPathElement>;
 
 const VIEWBOX_WIDTH = 294.61548;
 const VIEWBOX_HEIGHT = 792.60669;
-const NO_DATA_FILL = "#e9efec";
+const NO_DATA_FILL = "#e9eef8";
 
 const CENTROIDS: Record<string, [number, number]> = {
   "PS-JEN": [175, 211],
@@ -38,9 +38,9 @@ const CENTROIDS: Record<string, [number, number]> = {
 };
 
 const COLOR_STOPS: Array<[number, [number, number, number]]> = [
-  [0, [191, 232, 210]],
-  [0.5, [43, 170, 117]],
-  [1, [22, 101, 52]],
+  [0, [205, 222, 252]],
+  [0.5, [59, 130, 246]],
+  [1, [15, 46, 100]],
 ];
 
 function lerp(a: number, b: number, t: number) {
@@ -171,7 +171,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
               {locale === "ar" ? area.nameAr : area.nameEn}
               {area.stat
                 ? ` — ${area.stat.complaints.toLocaleString("en-US")} ${
-                    locale === "ar" ? "شكوى" : "complaints"
+                    locale === "ar" ? "شكوى/بلاغ" : "complaints/reports"
                   }`
                 : ` — ${pick("لا توجد بيانات", "No data available")}`}
             </title>
@@ -190,7 +190,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
           <div className="text-xs text-muted-foreground">
             {tip.stat
               ? `${tip.stat.complaints.toLocaleString("en-US")} ${
-                  locale === "ar" ? "شكوى" : "complaints"
+                  locale === "ar" ? "شكوى/بلاغ" : "complaints/reports"
                 }`
               : pick("لا توجد بيانات", "No data available")}
           </div>

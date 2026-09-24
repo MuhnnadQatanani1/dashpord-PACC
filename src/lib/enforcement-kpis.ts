@@ -14,7 +14,7 @@ export function columnTotal(table: SubTable, col: number | string): number {
   return valid.reduce((a, b) => a + b, 0);
 }
 
-/** Total complaints across the period (879 + 587 + 670 + 787). */
+/** Total complaints/reports across the period (879 + 587 + 670 + 787). */
 export const TOTAL_COMPLAINTS = 2923;
 
 /** Summary cards on the dashboard page, updated by the year filter. */
@@ -75,8 +75,8 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "completed",
       value: nf(sumCompleted),
-      label: "إجمالي الشكاوى المنجزة لدى الهيئة",
-      labelEn: "Total complaints completed at the Commission",
+      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة",
+      labelEn: "Total complaints and reports completed at the Commission",
     },
     {
       id: "legislations",
@@ -105,13 +105,13 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "defendants",
       value: nf(sumDefendants),
-      label: "المتهمون المحالون لمحكمة جرائم الفساد",
+      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد",
       labelEn: "Defendants referred to the Corruption Crimes Court",
     },
     {
       id: "verdicts",
       value: nf(sumVerdicts),
-      label: "القضايا المفصولة بحكم",
+      label: "القضايا المفصولة بحكم حسب تقرير المرصد",
       labelEn: "Cases settled by verdict",
     },
   ];
@@ -121,7 +121,7 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
 export interface SpotlightKpi {
   id: string;
   value: string;
-  unit: "%" | "ملف" | "فرد" | "شكوى" | "مشتبه به" | "";
+  unit: "%" | "ملف" | "فرد" | "شكوى/بلاغ" | "مشتبه به" | "";
   label: string;
   labelEn: string;
   note?: string;
@@ -227,13 +227,13 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       );
 
   const toCourtMale = all
-    ? 283
+    ? 292
     : yearArray.reduce(
         (s, y) => s + yrSum(dashboardData.defendantsReferredToCourtByGender, y, 1),
         0,
       );
   const toCourtTotalAll = all
-    ? 310
+    ? 308
     : toCourtMale +
       yearArray.reduce(
         (s, y) => s + yrSum(dashboardData.defendantsReferredToCourtByGender, y, 2),
@@ -261,7 +261,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
     ? 33
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.courtVerdictResults, y, 1), 0);
   const verdictTotal = all
-    ? 69
+    ? 66
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.courtVerdictResults, y, 5), 0);
 
   return [
@@ -273,8 +273,8 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       labelEn: "Share of female complainants among complaints received by the Commission",
       isRatio: true,
       note: all
-        ? "أفراد-أنثى (140) من إجمالي 2923 شكوى"
-        : `أنثى (${nf(femaleSum)}) من إجمالي ${nf(complaintsTotal)} في السنوات المختارة`,
+        ? "أفراد-أنثى (140) من إجمالي 2923 شكوى/بلاغ"
+        : `أنثى (${nf(femaleSum)}) من إجمالي ${nf(complaintsTotal)} شكوى/بلاغ في السنوات المختارة`,
     },
     {
       id: "top-crime",

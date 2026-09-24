@@ -62,7 +62,7 @@ function RouteComponent() {
   return (
     <div className="p-8 font-mono text-sm" dir="ltr">
       <h1 className="text-xl font-bold mb-4">DB Connection Debug</h1>
-      <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-auto whitespace-pre-wrap">
+      <pre className="bg-gray-900 text-blue-300 p-4 rounded overflow-auto whitespace-pre-wrap">
         {JSON.stringify(data, null, 2)}
       </pre>
     </div>
