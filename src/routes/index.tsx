@@ -16,7 +16,6 @@ import {
   Activity,
   ShieldAlert,
   CalendarCheck,
-  CalendarRange,
   LayoutGrid,
   Info,
 } from "lucide-react";
@@ -48,7 +47,6 @@ function Home() {
   const heroStats = [
     { icon: CalendarCheck, label: t("home.heroStatUpdated"), value: d(dq.lastUpdate) },
     { icon: LayoutGrid, label: t("home.heroStatIndicators"), value: "31" },
-    { icon: CalendarRange, label: t("home.heroStatCoverage"), value: dq.coveragePeriod },
   ];
 
   return (
@@ -79,7 +77,7 @@ function Home() {
               </Link>
             </div>
 
-            <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
               {heroStats.map((s) => (
                 <div key={s.label} className="card !p-4">
                   <div className="flex items-center gap-2 text-section-sub">

@@ -228,7 +228,6 @@ export const en: Dict = {
   "home.heroCta": "Dashboard",
   "home.heroStatUpdated": "Last update",
   "home.heroStatIndicators": "Number of indicators",
-  "home.heroStatCoverage": "Covered period",
   "home.launchEyebrow": "The launch of the Observatory",
   "home.launchHeadline": "From measuring perceptions to measuring actual corruption indicators",
   "home.launchDate": "First public report — January 31, 2021",

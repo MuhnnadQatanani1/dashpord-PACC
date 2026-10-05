@@ -221,7 +221,6 @@ export const ar = {
   "home.heroCta": "لوحة البيانات",
   "home.heroStatUpdated": "آخر تحديث",
   "home.heroStatIndicators": "عدد المؤشرات",
-  "home.heroStatCoverage": "الفترة الزمنية المغطاة",
   "home.launchEyebrow": "بداية المرصد الوطني",
   "home.launchHeadline": "من قياس المدركات إلى قياس المؤشرات الفعلية للفساد",
   "home.launchDate": "التقرير العلني الأول — 31 يناير 2021",
