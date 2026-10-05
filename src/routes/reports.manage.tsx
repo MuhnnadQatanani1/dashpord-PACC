@@ -12,6 +12,11 @@ import {
   FileText,
   Database,
   Pencil,
+  MessageSquare,
+  Percent,
+  RefreshCw,
+  Star,
+  Trophy,
 } from "lucide-react";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
 import { useAuth } from "@/lib/use-auth";
@@ -26,6 +31,7 @@ import {
   type DataPoint,
 } from "@/lib/data-points.functions";
 import { deleteReport, getAdminReports, type ReportItem } from "@/lib/reports.functions";
+import { getAdminOpinionPoll } from "@/lib/opinion-poll.functions";
 import { ReportCard } from "@/components/reports/ReportCard";
 import { ReportForm } from "@/components/reports/ReportForm";
 
@@ -418,6 +424,186 @@ function DataPointPanel() {
   );
 }
 
+function OpinionPollPanel() {
+  const { t, locale } = useLocale();
+  const loadOpinionPoll = useServerFn(getAdminOpinionPoll);
+  const { data, isError, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ["admin-opinion-poll"],
+    queryFn: () => loadOpinionPoll({ data: undefined }),
+  });
+
+  const numberLocale = locale === "ar" ? "ar-EG" : "en-US";
+  const formatNumber = (value: number) => value.toLocaleString(numberLocale);
+  const formatPercent = (value: number) =>
+    `${value.toLocaleString(numberLocale, { maximumFractionDigits: 1 })}%`;
+  const formatDate = (value: string | Date) => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime())
+      ? "-"
+      : new Intl.DateTimeFormat(locale === "ar" ? "ar-PS" : "en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(date);
+  };
+
+  const stats = data
+    ? [
+        { label: t("admin.pollTotal"), value: formatNumber(data.total), icon: MessageSquare },
+        {
+          label: t("admin.pollAverage"),
+          value: data.total ? `${data.averageRating.toFixed(1)} / 5` : "-",
+          icon: Star,
+        },
+        {
+          label: t("admin.pollHighestCount"),
+          value: formatNumber(data.highestRatingCount),
+          icon: Trophy,
+        },
+        {
+          label: t("admin.pollHighestPercent"),
+          value: formatPercent(data.highestRatingPercent),
+          icon: Percent,
+        },
+      ]
+    : [];
+
+  return (
+    <section className="mb-8" dir={locale === "ar" ? "rtl" : "ltr"}>
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3 border-b border-border pb-4">
+        <div>
+          <h3 className="flex items-center gap-2 text-lg font-bold text-primary">
+            <MessageSquare className="h-5 w-5 text-accent" />
+            {t("admin.pollTitle")}
+          </h3>
+          <p className="mt-1 text-sm text-muted-foreground">{t("admin.pollDesc")}</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          disabled={isFetching}
+          className="focus-ring inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-secondary disabled:opacity-60"
+        >
+          <RefreshCw className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`} />
+          {t("common.update")}
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          {t("common.loading")}
+        </div>
+      ) : isError || !data ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          <span>{t("admin.pollLoadError")}</span>
+          <button type="button" onClick={() => void refetch()} className="font-semibold underline">
+            {t("common.retry")}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {stats.map(({ label, value, icon: Icon }) => (
+              <div key={label} className="rounded-xl border border-border bg-card p-4 shadow-soft">
+                <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                  <Icon className="h-4 w-4 text-accent" />
+                  {label}
+                </div>
+                <p className="mt-2 text-2xl font-bold text-primary">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-7 grid gap-8 lg:grid-cols-[minmax(260px,0.8fr)_minmax(0,1.2fr)]">
+            <div>
+              <h4 className="mb-4 text-base font-bold text-heading">
+                {t("admin.pollDistribution")}
+              </h4>
+              <div className="space-y-4">
+                {data.distribution.map((item) => (
+                  <div key={item.rating}>
+                    <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
+                      <span className="font-medium text-foreground">
+                        {t("admin.pollRating", { rating: item.rating })}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {formatNumber(item.count)} · {formatPercent(item.percent)}
+                      </span>
+                    </div>
+                    <div
+                      role="progressbar"
+                      aria-label={t("admin.pollRating", { rating: item.rating })}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={item.percent}
+                      className="h-2 overflow-hidden rounded-full bg-secondary"
+                    >
+                      <div
+                        className="h-full rounded-full bg-accent transition-[width]"
+                        style={{ width: `${item.percent}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="min-w-0">
+              <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+                <h4 className="text-base font-bold text-heading">{t("admin.pollResponses")}</h4>
+                <span className="text-xs text-muted-foreground">
+                  {t("admin.pollLatestCount", { count: formatNumber(data.responses.length) })}
+                </span>
+              </div>
+              {data.responses.length === 0 ? (
+                <p className="border-y border-border py-6 text-sm text-muted-foreground">
+                  {t("admin.pollEmpty")}
+                </p>
+              ) : (
+                <ul className="max-h-[560px] divide-y divide-border overflow-y-auto border-y border-border">
+                  {data.responses.map((response) => (
+                    <li key={response.id} className="py-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-primary">
+                            {t("admin.pollRating", { rating: response.rating })}
+                          </span>
+                          <span
+                            aria-hidden="true"
+                            className="flex items-center text-gold"
+                          >
+                            {Array.from({ length: 5 }, (_, index) => (
+                              <Star
+                                key={index}
+                                className={`h-3.5 w-3.5 ${index < response.rating ? "fill-current" : "text-muted-foreground/30"}`}
+                              />
+                            ))}
+                          </span>
+                        </div>
+                        <time className="text-xs text-muted-foreground">
+                          {formatDate(response.created_at)}
+                        </time>
+                      </div>
+                      <p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-foreground/85">
+                        {response.feedback?.trim() || t("admin.pollNoFeedback")}
+                      </p>
+                      {response.page_path && (
+                        <p className="mt-1 truncate text-xs text-muted-foreground" dir="ltr">
+                          {response.page_path}
+                        </p>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
 export function ManageReports() {
   const { t } = useLocale();
   const { session, loading, signIn, signOut } = useAuth();
@@ -528,6 +714,8 @@ export function ManageReports() {
           <p className="mt-2 text-2xl font-bold text-gold-ink">{draftCount}</p>
         </div>
       </div>
+
+      <OpinionPollPanel />
 
       <DataPointPanel />
 

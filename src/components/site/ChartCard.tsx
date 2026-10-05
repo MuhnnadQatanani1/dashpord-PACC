@@ -17,7 +17,11 @@ export function ChartCard({
       <div className="mb-5 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="text-base font-bold text-heading md:text-lg">{title}</h3>
-          {subtitle && <p className="mt-1 text-xs text-muted-foreground md:text-sm">{subtitle}</p>}
+          {subtitle && (
+            <p className="mt-1 text-sm font-medium leading-6 text-muted-foreground md:text-base">
+              {subtitle}
+            </p>
+          )}
         </div>
         {action}
       </div>

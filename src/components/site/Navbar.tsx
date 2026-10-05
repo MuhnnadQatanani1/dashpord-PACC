@@ -229,7 +229,7 @@ function DropdownGroup({ item }: { item: NavGroup }) {
     <div className="relative pb-2" onMouseEnter={show} onMouseLeave={scheduleClose}>
       <button
         ref={btnRef}
-        className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-white/85 transition-colors hover:bg-white/15 hover:text-white"
+        className="focus-ring inline-flex items-center gap-1 whitespace-nowrap rounded-md px-2.5 py-2.5 text-base font-semibold text-white/90 transition-colors hover:bg-white/15 hover:text-white"
       >
         {t(item.label)} <ChevronDown className="h-3.5 w-3.5" />
       </button>
@@ -248,7 +248,7 @@ function DropdownGroup({ item }: { item: NavGroup }) {
                 key={c.to}
                 to={c.to}
                 activeProps={{ className: "bg-accent-soft text-heading" }}
-                className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent-soft hover:text-heading"
+                className="block rounded-md px-3.5 py-2.5 text-[15px] font-medium text-foreground/90 hover:bg-accent-soft hover:text-heading"
                 onClick={() => setOpen(false)}
               >
                 {t(c.label)}
@@ -267,13 +267,28 @@ export function Navbar() {
   return (
     <header className="top fixed inset-x-0 top-0 z-[9999] bg-navy">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
-        <Link to="/" className="focus-ring flex items-center gap-2 rounded-md">
-          <img
-            src="/observatory-logo.png"
-            alt={t("common.logoAlt")}
-            className="h-14 w-auto shrink-0 rounded bg-white object-contain"
-          />
-        </Link>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <a
+            href="https://www.pacc.ps/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t("footer.officialSite")}
+            className="focus-ring flex items-center rounded-md"
+          >
+            <img
+              src="/pacc-logo.png"
+              alt="PACC"
+              className="h-16 w-auto shrink-0 rounded bg-white object-contain"
+            />
+          </a>
+          <Link to="/" className="focus-ring flex items-center rounded-md">
+            <img
+              src="/observatory-logo.png"
+              alt={t("common.logoAlt")}
+              className="h-16 w-auto shrink-0 rounded bg-white object-contain"
+            />
+          </Link>
+        </div>
 
         <nav className="hidden xl:flex items-center gap-1">
           {NAV.map((n) =>
@@ -284,7 +299,7 @@ export function Navbar() {
                 key={n.to}
                 to={n.to}
                 activeProps={{ className: "bg-gold text-navy" }}
-                className="focus-ring rounded-md px-3 py-2 text-sm font-medium text-white/85 transition-colors hover:bg-white/15 hover:text-white"
+                className="focus-ring rounded-md px-4 py-2.5 text-base font-semibold tracking-wide text-white/95 transition-colors hover:bg-white/15 hover:text-white"
               >
                 {t(n.label)}
               </Link>
@@ -309,7 +324,7 @@ export function Navbar() {
             href="https://www.pacc.ps/complaints/create"
             target="_blank"
             rel="noopener noreferrer"
-            className="focus-ring hidden lg:inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy shadow-soft transition-colors hover:bg-gold-light"
+            className="focus-ring hidden shrink-0 whitespace-nowrap lg:inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy shadow-soft transition-colors hover:bg-gold-light"
           >
             <ShieldAlert className="h-4 w-4" /> {t("nav.report")}
           </a>
@@ -336,7 +351,7 @@ export function Navbar() {
                 to={c.to}
                 onClick={() => setOpen(false)}
                 activeProps={{ className: "bg-gold text-navy" }}
-                className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/15 hover:text-white"
+                className="rounded-md px-3.5 py-2.5 text-[15px] font-semibold text-white/95 hover:bg-white/15 hover:text-white"
               >
                 {t(c.label)}
               </Link>
@@ -346,7 +361,7 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-navy"
+              className="mt-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-navy"
             >
               <ShieldAlert className="h-4 w-4" /> {t("nav.report")}
             </a>

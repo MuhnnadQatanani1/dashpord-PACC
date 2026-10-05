@@ -104,7 +104,9 @@ export function ReportCard({
 
       <h3 className="mt-3 text-lg font-bold leading-7 text-primary">{title}</h3>
       {description && (
-        <p className="mt-2 flex-1 text-sm leading-7 text-muted-foreground">{description}</p>
+        <p className="mt-2 flex-1 text-base font-medium leading-7 text-muted-foreground">
+          {description}
+        </p>
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
