@@ -46,7 +46,7 @@ export function OpinionPoll() {
   return (
     <section
       dir={dir}
-      className="rounded-xl border border-primary/15 bg-blue-50/80 p-4 text-start text-primary shadow-sm"
+      className="exec-box text-start text-primary shadow-sm"
     >
       {submitted ? (
         <div className={`flex items-center gap-3 ${locale === "ar" ? "text-right" : "text-left"}`}>
@@ -92,7 +92,7 @@ export function OpinionPoll() {
                       className={`flex h-9 w-10 items-center justify-center rounded-md border text-sm font-bold transition-colors ${
                         active
                           ? "border-primary bg-primary text-primary-foreground"
-                          : "border-primary/15 bg-white text-foreground hover:border-primary/40 hover:bg-primary/5"
+                          : "border-primary/15 bg-card text-foreground hover:border-primary/40 hover:bg-primary/5"
                       }`}
                     >
                       {value}

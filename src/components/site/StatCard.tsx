@@ -34,14 +34,14 @@ export function StatCard({ label, value, trend, suffix, icon: Icon }: Props) {
   const positive = (trend ?? 0) >= 0;
   const fmt = (v: number) => v.toLocaleString(locale === "ar" ? "ar-EG" : "en-US");
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated">
-      <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-accent/8 blur-2xl transition-transform group-hover:scale-125" />
+    <div className="group relative overflow-hidden rounded-xl border border-card-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-gold hover:shadow-elevated">
+      <div className="pointer-events-none absolute -left-10 -top-10 h-32 w-32 rounded-full bg-accent-soft blur-2xl transition-transform group-hover:scale-125" />
       <div className="relative flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {label}
           </div>
-          <div className="mt-3 text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+          <div className="mt-3 text-3xl font-extrabold tracking-tight text-heading md:text-4xl">
             {fmt(n)}
             {suffix && (
               <span className="ms-1 text-sm font-semibold text-muted-foreground">{suffix}</span>
@@ -59,7 +59,7 @@ export function StatCard({ label, value, trend, suffix, icon: Icon }: Props) {
           )}
         </div>
         {Icon && (
-          <div className="shrink-0 rounded-xl bg-accent/12 p-3 text-accent ring-1 ring-inset ring-accent/20">
+          <div className="shrink-0 rounded-xl bg-accent-soft p-3 text-accent ring-1 ring-inset ring-gold/30">
             <Icon className="h-5 w-5" />
           </div>
         )}

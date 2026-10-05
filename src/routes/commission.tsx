@@ -79,10 +79,10 @@ function Commission() {
             ].map((c) => (
               <div
                 key={c.t}
-                className="glow-card rounded-xl border border-border bg-card p-5 shadow-soft"
+                className="rounded-xl border border-card-border bg-card p-5 shadow-soft"
               >
-                <c.icon className="h-6 w-6 text-navy" />
-                <h3 className="mt-3 text-base font-bold text-primary">{c.t}</h3>
+                <c.icon className="h-6 w-6 text-accent" />
+                <h3 className="mt-3 text-base font-bold text-heading">{c.t}</h3>
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">{c.d}</p>
               </div>
             ))}

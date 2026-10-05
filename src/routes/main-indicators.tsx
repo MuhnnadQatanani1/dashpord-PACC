@@ -290,15 +290,16 @@ const BANDS: IndicatorBand[] = [
   },
 ];
 
+/** Single gold band for every indicator card — one colour, not a rainbow. */
 const INDICATOR_COLORS = [
-  "#2563eb",
-  "#1d4ed8",
-  "#d97706",
-  "#dc2626",
-  "#7c3aed",
-  "#0d9488",
-  "#e11d48",
-  "#ca8a04",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
+  "#c5a06c",
 ];
 
 function IndicatorCard({
@@ -320,20 +321,18 @@ function IndicatorCard({
   return (
     <article
       dir={isArabic ? "rtl" : "ltr"}
-      className="relative flex min-h-[170px] flex-col items-start justify-start overflow-hidden rounded-lg border border-border bg-card p-6 pt-7 shadow-sm transition-colors hover:border-primary/25"
+      className="relative flex min-h-[170px] flex-col items-start justify-start overflow-hidden rounded-xl border border-card-border bg-card p-6 pt-7 shadow-soft transition-colors hover:border-gold"
     >
       <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: color }} />
-      <span className="mb-3 text-sm font-semibold leading-5" style={{ color }}>
+      <span className="mb-3 text-sm font-semibold leading-5 text-accent">
         {t("mainInd.cardNumber", { num: indicatorNumber })}
       </span>
 
-      <h3 className="text-[19px] font-semibold leading-[1.7] text-foreground">{title}</h3>
+      <h3 className="text-[19px] font-semibold leading-[1.7] text-heading">{title}</h3>
 
       <div className="mt-3 text-sm font-medium leading-6 text-muted-foreground">
         <span>{t("mainInd.colUnit")}: </span>
-        <span className="font-semibold" style={{ color }}>
-          {unit}
-        </span>
+        <span className="font-semibold text-accent">{unit}</span>
       </div>
     </article>
   );

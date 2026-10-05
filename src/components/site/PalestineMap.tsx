@@ -16,7 +16,7 @@ type HoverEvent = React.MouseEvent<SVGPathElement>;
 
 const VIEWBOX_WIDTH = 294.61548;
 const VIEWBOX_HEIGHT = 792.60669;
-const NO_DATA_FILL = "#e9eef8";
+const NO_DATA_FILL = "#fbf8f1";
 
 const CENTROIDS: Record<string, [number, number]> = {
   "PS-JEN": [175, 211],
@@ -37,10 +37,11 @@ const CENTROIDS: Record<string, [number, number]> = {
   "PS-RFH": [10, 435],
 };
 
+/** Sequential scale from pale gold through gold to deep navy. */
 const COLOR_STOPS: Array<[number, [number, number, number]]> = [
-  [0, [205, 222, 252]],
-  [0.5, [59, 130, 246]],
-  [1, [15, 46, 100]],
+  [0, [230, 211, 172]],
+  [0.5, [197, 160, 108]],
+  [1, [19, 47, 86]],
 ];
 
 function lerp(a: number, b: number, t: number) {

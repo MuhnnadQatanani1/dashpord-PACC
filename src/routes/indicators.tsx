@@ -21,16 +21,16 @@ export const Route = createFileRoute("/indicators")({
 
 const ALL = new Set<number>(YEARS) as YearFilter;
 
-/** Soft light backgrounds + matching strong number/band colors, cycled for the 11 slots. */
+/** Single-colour band + AA-safe number color for every spotlight slot. */
 const SPOTLIGHT_COLORS = [
-  { bg: "#e7efff", band: "#3b82f6", number: "#274dbd" },
-  { bg: "#fdebe0", band: "#f97316", number: "#c44d0f" },
-  { bg: "#fdf3d8", band: "#eab308", number: "#966d04" },
-  { bg: "#e8ecf4", band: "#64748b", number: "#3f4a5c" },
-  { bg: "#eef2f7", band: "#94a3b8", number: "#526071" },
-  { bg: "#ddf4f1", band: "#0d9488", number: "#0b6f66" },
-  { bg: "#fbeaf0", band: "#e11d48", number: "#b90f38" },
-  { bg: "#eceffe", band: "#6366f1", number: "#4338ca" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
+  { bg: "#fbf8f1", band: "#c5a06c", number: "#8a6a35" },
 ];
 
 function YearFilterBar({

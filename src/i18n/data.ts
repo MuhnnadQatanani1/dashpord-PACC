@@ -94,8 +94,8 @@ export const dataEn: Record<string, string> = {
   "اعتماد الاستراتيجية الوطنية عبر القطاعية لتعزيز النزاهة ومكافحة الفساد التي حدّدت المرصد كأحد أعمدتها.":
     "Adoption of the cross-sectoral national strategy to promote integrity and combat corruption, which identified the Observatory as one of its pillars.",
   "إطلاق التقرير العلني الأول": "Launch of the first public report",
-  "أطلقت هيئة مكافحة الفساد الفلسطينية التقرير العلني الأول للمرصد الوطني لمؤشرات الفساد بحضور رسمي واسع.":
-    "The Palestinian Anti-Corruption Commission launched the first public report of the National Observatory for Corruption Indicators with wide official attendance.",
+  "أطلقت هيئة مكافحة الفساد الفلسطينية التقرير العلني الأول للمرصد الوطني لمؤشرات النزاهة ومكافحة الفساد بحضور رسمي واسع.":
+    "The Palestinian Anti-Corruption Commission launched the first public report of the National Observatory for Integrity and Anti-Corruption Indicators with wide official attendance.",
   "ترسيخ منظومة البيانات": "Consolidating the data system",
   "تسجيل 234 ملفاً تحقيقياً و879 شكوى وبلاغاً؛ اعتماد الجداول الإحصائية الموحّدة لأول مرة.":
     "Recording 234 investigation files and 879 complaints; unified statistical tables adopted for the first time.",
@@ -152,12 +152,12 @@ export const dataEn: Record<string, string> = {
     "of all complaints received through electronic means",
   "المشتبه بهم المحالون من الهيئة إلى النيابة":
     "Suspects referred by the Commission to the Prosecution",
-  "بلغ إجمالي المشتبه بهم المحالين من الهيئة إلى نيابة جرائم الفساد خلال الفترة 2022 – 2025 نحو 294 مشتبهاً به، مع تذبذب الأرقام بين الأعوام.":
-    "A total of about 294 suspects were referred by the Commission to the Corruption Crimes Prosecution during 2022–2025, with figures fluctuating between years.",
+  "بلغ إجمالي المشتبه بهم المحالين من الهيئة إلى نيابة جرائم الفساد خلال الفترة 2022 – 2025 نحو 427 مشتبهاً به، مع تذبذب الأرقام بين الأعوام.":
+    "A total of about 427 suspects were referred by the Commission to the Corruption Crimes Prosecution during 2022–2025, with figures fluctuating between years.",
   "مشتبهاً به محالاً خلال الفترة 2022 – 2025": "suspects referred during 2022–2025",
   "أحكام الإدانة في محكمة جرائم الفساد": "Conviction verdicts in the Corruption Crimes Court",
-  "فصلت محكمة جرائم الفساد 66 قضية بحكم خلال الفترة 2022 – 2025، ومثّلت أحكام الإدانة نحو 33 قضية، مع تسجيل عام 2025 أعلى عدد من الأحكام.":
-    "The Corruption Crimes Court concluded 66 cases with verdicts during 2022–2025, with conviction verdicts covering about 33 cases and 2025 recording the highest number of verdicts.",
+  "فصلت محكمة جرائم الفساد 69 قضية بحكم خلال الفترة 2022 – 2025، ومثّلت أحكام الإدانة نحو 33 قضية، مع تسجيل عام 2025 أعلى عدد من الأحكام.":
+    "The Corruption Crimes Court concluded 69 cases with verdicts during 2022–2025, with conviction verdicts covering about 33 cases and 2025 recording the highest number of verdicts.",
   "قضية إدانة من إجمالي القضايا المفصولة بحكم خلال الفترة":
     "conviction cases out of all cases concluded with a verdict during the period",
 

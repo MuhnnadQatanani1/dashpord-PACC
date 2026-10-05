@@ -70,7 +70,7 @@ export function ComplaintsByGovernorate() {
             <div className="mt-3 flex items-center justify-center gap-3 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <span
-                  className="h-3 w-24 rounded-sm bg-gradient-to-r from-[#bfe8d2] via-[#2baa75] to-[#166534]"
+                  className="h-3 w-24 rounded-sm bg-gradient-to-r from-[#e6d3ac] via-[#c5a06c] to-[#132f56]"
                   aria-hidden="true"
                 />
                 <span>{t("home.geoLegendColor")}</span>
@@ -115,7 +115,7 @@ export function ComplaintsByGovernorate() {
                     aria-label={t("home.geoShare")}
                   >
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-blue-300 to-blue-900"
+                      className="h-full rounded-full bg-gradient-to-r from-[#c5a06c] to-[#132f56]"
                       style={{
                         width: `${Math.max(2, (selected.complaints / maxCount) * 100)}%`,
                       }}

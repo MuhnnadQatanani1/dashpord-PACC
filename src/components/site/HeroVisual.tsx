@@ -12,7 +12,7 @@ const WEST_BANK =
 export function HeroVisual() {
   const linePoints = "0,46 26,34 52,38 78,22 104,26 130,10";
   const bars = [14, 26, 20, 34, 44];
-  const BAR_COLORS = ["#34d399", "#60a5fa", "#fbbf24", "#a78bfa", "#f87171"];
+  const BAR_COLORS = ["#132f56", "#c5a06c", "#a8875a", "#2a4d7d", "#d9bd93"];
 
   return (
     <div className="w-full max-w-[420px]">
@@ -23,7 +23,7 @@ export function HeroVisual() {
         aria-label="رسم توضيحي: خريطة فلسطين ومؤشرات بيانية"
       >
         {/* soft network lines */}
-        <g stroke="#e6f7ef" strokeOpacity="0.28" strokeWidth="0.75" fill="none">
+        <g stroke="#e6d3ac" strokeOpacity="0.28" strokeWidth="0.75" fill="none">
           {Array.from({ length: 7 }).map((_, i) => (
             <path
               key={`h${i}`}
@@ -31,7 +31,7 @@ export function HeroVisual() {
             />
           ))}
         </g>
-        <g fill="#ffffff" fillOpacity="0.35">
+        <g fill="#132f56" fillOpacity="0.22">
           {Array.from({ length: 22 }).map((_, i) => (
             <circle key={`d${i}`} cx={16 + ((i * 61) % 296)} cy={30 + ((i * 83) % 330)} r="1.6" />
           ))}
@@ -41,18 +41,18 @@ export function HeroVisual() {
         <g transform="translate(90 20) scale(0.4)">
           <path
             d={HISTORIC_PALESTINE}
-            fill="#ffffff"
-            fillOpacity="0.08"
-            stroke="#ffffff"
+            fill="#132f56"
+            fillOpacity="0.06"
+            stroke="#132f56"
             strokeOpacity="0.5"
             strokeWidth="5"
             strokeLinejoin="round"
           />
           <path
             d={WEST_BANK}
-            fill="#34d399"
+            fill="#c5a06c"
             fillOpacity="0.4"
-            stroke="#34d399"
+            stroke="#c5a06c"
             strokeOpacity="0.95"
             strokeWidth="6"
             strokeLinejoin="round"
@@ -63,7 +63,7 @@ export function HeroVisual() {
           y="137"
           fontSize="7"
           fontWeight="700"
-          fill="#ffffff"
+          fill="#132f56"
           fillOpacity="0.85"
           textAnchor="middle"
         >
@@ -77,18 +77,18 @@ export function HeroVisual() {
             width="160"
             height="70"
             rx="10"
-            fill="#ffffff"
-            fillOpacity="0.08"
-            stroke="#ffffff"
-            strokeOpacity="0.25"
+            fill="#fbf8f1"
+            fillOpacity="0.9"
+            stroke="#eadfc4"
+            strokeOpacity="1"
           />
           <g transform="translate(14 12)">
-            <line x1="0" y1="46" x2="132" y2="46" stroke="#ffffff" strokeOpacity="0.25" />
+            <line x1="0" y1="46" x2="132" y2="46" stroke="#eadfc4" strokeOpacity="1" />
             <polyline
               className="chart-line-draw"
               points={linePoints}
               fill="none"
-              stroke="#34d399"
+              stroke="#c5a06c"
               strokeOpacity="0.95"
               strokeWidth="2.5"
               strokeLinecap="round"
@@ -105,13 +105,13 @@ export function HeroVisual() {
             width="120"
             height="70"
             rx="10"
-            fill="#ffffff"
-            fillOpacity="0.08"
-            stroke="#ffffff"
-            strokeOpacity="0.25"
+            fill="#fbf8f1"
+            fillOpacity="0.9"
+            stroke="#eadfc4"
+            strokeOpacity="1"
           />
           <g transform="translate(16 12)">
-            <line x1="0" y1="46" x2="90" y2="46" stroke="#ffffff" strokeOpacity="0.25" />
+            <line x1="0" y1="46" x2="90" y2="46" stroke="#eadfc4" strokeOpacity="1" />
             {bars.map((h, i) => (
               <rect
                 key={i}

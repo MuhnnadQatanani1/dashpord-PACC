@@ -70,7 +70,7 @@ export function ReportCard({
               "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold",
               report.is_published
                 ? "border-success/30 bg-success/10 text-success"
-                : "border-amber-400/40 bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300",
+                : "border-gold/40 bg-accent-soft text-gold-ink",
             )}
           >
             {report.is_published ? t("reports.published") : t("reports.draft")}

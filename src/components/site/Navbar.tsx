@@ -229,7 +229,7 @@ function DropdownGroup({ item }: { item: NavGroup }) {
     <div className="relative pb-2" onMouseEnter={show} onMouseLeave={scheduleClose}>
       <button
         ref={btnRef}
-        className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary hover:bg-secondary"
+        className="focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-white/85 transition-colors hover:bg-white/15 hover:text-white"
       >
         {t(item.label)} <ChevronDown className="h-3.5 w-3.5" />
       </button>
@@ -247,8 +247,8 @@ function DropdownGroup({ item }: { item: NavGroup }) {
               <Link
                 key={c.to}
                 to={c.to}
-                activeProps={{ className: "text-primary bg-secondary" }}
-                className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-primary"
+                activeProps={{ className: "bg-accent-soft text-heading" }}
+                className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent-soft hover:text-heading"
                 onClick={() => setOpen(false)}
               >
                 {t(c.label)}
@@ -265,13 +265,13 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const { t, toggle } = useLocale();
   return (
-    <header className="fixed inset-x-0 top-0 z-[9999] border-b border-border/70 bg-background/90 backdrop-blur-xl">
+    <header className="top fixed inset-x-0 top-0 z-[9999] bg-navy">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
         <Link to="/" className="focus-ring flex items-center gap-2 rounded-md">
           <img
             src="/observatory-logo.png"
             alt={t("common.logoAlt")}
-            className="h-14 w-auto shrink-0 object-contain"
+            className="h-14 w-auto shrink-0 rounded bg-white object-contain"
           />
         </Link>
 
@@ -283,8 +283,8 @@ export function Navbar() {
               <Link
                 key={n.to}
                 to={n.to}
-                activeProps={{ className: "text-primary bg-secondary" }}
-                className="focus-ring rounded-md px-3 py-2 text-sm font-medium text-foreground/75 transition-colors hover:text-primary hover:bg-secondary"
+                activeProps={{ className: "bg-gold text-navy" }}
+                className="focus-ring rounded-md px-3 py-2 text-sm font-medium text-white/85 transition-colors hover:bg-white/15 hover:text-white"
               >
                 {t(n.label)}
               </Link>
@@ -299,7 +299,7 @@ export function Navbar() {
           <button
             onClick={toggle}
             aria-label={t("nav.switchLang")}
-            className="focus-ring inline-flex h-10 items-center gap-1.5 rounded-lg border border-border bg-card px-3 text-sm font-semibold text-foreground/80 transition-colors hover:bg-secondary hover:text-primary"
+            className="focus-ring inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/25 bg-white/10 px-3 text-sm font-semibold text-white transition-colors hover:bg-white/20"
           >
             <Languages className="h-4 w-4" />
             {t("nav.langLabel")}
@@ -309,12 +309,12 @@ export function Navbar() {
             href="https://www.pacc.ps/complaints/create"
             target="_blank"
             rel="noopener noreferrer"
-            className="focus-ring hidden lg:inline-flex items-center gap-2 rounded-lg gradient-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-soft transition-transform hover:-translate-y-0.5"
+            className="focus-ring hidden lg:inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy shadow-soft transition-colors hover:bg-gold-light"
           >
             <ShieldAlert className="h-4 w-4" /> {t("nav.report")}
           </a>
           <button
-            className="focus-ring xl:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-foreground"
+            className="focus-ring xl:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/25 bg-white/10 text-white"
             onClick={() => setOpen((v) => !v)}
             aria-label={t("common.menu")}
             aria-expanded={open}
@@ -325,7 +325,7 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="xl:hidden border-t border-border bg-background">
+        <div className="xl:hidden border-t border-gold/40 bg-navy">
           <nav className="mx-auto grid max-w-7xl gap-1 px-4 py-3">
             <div className="mb-2 lg:hidden">
               <SiteSearch id="site-search-mobile" onNavigate={() => setOpen(false)} />
@@ -335,8 +335,8 @@ export function Navbar() {
                 key={c.to}
                 to={c.to}
                 onClick={() => setOpen(false)}
-                activeProps={{ className: "text-primary bg-secondary" }}
-                className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-secondary"
+                activeProps={{ className: "bg-gold text-navy" }}
+                className="rounded-md px-3 py-2 text-sm font-medium text-white/85 hover:bg-white/15 hover:text-white"
               >
                 {t(c.label)}
               </Link>
@@ -346,7 +346,7 @@ export function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-navy"
             >
               <ShieldAlert className="h-4 w-4" /> {t("nav.report")}
             </a>

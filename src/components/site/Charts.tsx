@@ -35,15 +35,21 @@ const TOOLTIP = {
 } as const;
 
 export const CHART_COLORS = [
-  "#1d4ed8",
-  "#dc2626",
-  "#2563eb",
-  "#d97706",
-  "#7c3aed",
-  "#0d9488",
-  "#e11d48",
-  "#ca8a04",
+  "#132f56",
+  "#c5a06c",
+  "#2a4d7d",
+  "#a8875a",
+  "#1f4477",
+  "#d9bd93",
+  "#16345f",
+  "#b8935f",
 ];
+
+/** Transparent fills for area/hover overlays. */
+export const CHART_FILLS = ["#132f5622", "#c5a06c33"];
+
+/** Legend pinned to the bottom, RTL-aligned, navy text. */
+const LEGEND = { align: "center", verticalAlign: "bottom" } as const;
 
 const YEAR_KEYS = ["y2022", "y2023", "y2024", "y2025"] as const;
 const YEAR_LABELS = ["2022", "2023", "2024", "2025"] as const;
@@ -110,7 +116,7 @@ export function TimelineArea({ data }: { data: TimePoint[] }) {
         <XAxis dataKey="year" tick={AXIS} reversed />
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip contentStyle={TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         <Area
           type="monotone"
           dataKey="complaints"
@@ -142,7 +148,7 @@ export function VerdictsLine({ data }: { data: TimePoint[] }) {
         <XAxis dataKey="year" tick={AXIS} reversed />
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip contentStyle={TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         <Line
           type="monotone"
           dataKey="referrals"
@@ -206,7 +212,7 @@ export function SectorsPie({ data }: { data: SectorSlice[] }) {
           ))}
         </Pie>
         <Tooltip contentStyle={TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -232,7 +238,7 @@ export function ShareDonut({ data }: { data: { name: string; value: number }[] }
           ))}
         </Pie>
         <Tooltip contentStyle={TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
       </PieChart>
     </ResponsiveContainer>
   );
@@ -289,7 +295,7 @@ export function YearGroupedBar({
           contentStyle={TOOLTIP}
           cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
         />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {YEAR_LABELS.map((y, i) => (
           <Bar
             key={y}
@@ -325,7 +331,7 @@ export function MultiBar({
           contentStyle={TOOLTIP}
           cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
         />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {keys.map((k, i) => (
           <Bar
             key={k.key}
@@ -358,7 +364,7 @@ export function MultiLine({
         <XAxis dataKey="year" tick={AXIS} reversed />
         <YAxis tick={AXIS} orientation="right" />
         <Tooltip contentStyle={TOOLTIP} />
-        <Legend wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
+        <Legend {...LEGEND} wrapperStyle={{ fontSize: 12, paddingTop: 8 }} />
         {keys.map((k, i) => (
           <Line
             key={k.key}

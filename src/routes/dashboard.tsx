@@ -51,9 +51,14 @@ interface IndicatorDef {
   dataKey: string;
   Chart: (p: { selected: YearFilter }) => ReactElement;
   table: () => SubTable;
-  note?: string;
-  noteEn?: string;
-  noteType?: "info" | "warn";
+  /** One entry per line inside the shared note box; `label` is rendered bold. */
+  note?: TableNote[];
+  noteEn?: TableNote[];
+}
+
+interface TableNote {
+  label: string;
+  text: string;
 }
 
 const INDICATORS: IndicatorDef[] = [
@@ -62,15 +67,9 @@ const INDICATORS: IndicatorDef[] = [
     title: "عدد التشريعات أو البنود المعززة للوقاية من الفساد",
     titleKey: "dash2.ind1T",
     subtitle: "توزيعها حسب نوع التشريع عبر السنوات",
-    kpi: "بيانات جزئية: 2",
     dataKey: "legislations",
     Chart: LegislationsChart,
     table: () => dashboardData.legislations,
-    note:
-      "يشير تقرير المرصد إلى أن هذا المؤشر غير مرصود بالكامل في التقارير السنوية، وأن الأرقام المتاحة جزئية.",
-    noteEn:
-      "The Marsad report marks this indicator as not fully tracked in the annual reports; available figures are partial.",
-    noteType: "warn",
   },
   {
     id: 2,
@@ -81,6 +80,8 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "complaintsBySource",
     Chart: ComplaintsBySourceChart,
     table: () => dashboardData.complaintsBySource,
+    note: [{ label: "*", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
+    noteEn: [{ label: "*", text: "Complaint or report submitted jointly by a male and a female" }],
   },
   {
     id: 13,
@@ -91,6 +92,8 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "complaintsBySource",
     Chart: ComplaintsBySourcePeriodChart,
     table: () => dashboardData.complaintsBySource,
+    note: [{ label: "*", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
+    noteEn: [{ label: "*", text: "Complaint or report submitted jointly by a male and a female" }],
   },
   {
     id: 3,
@@ -131,6 +134,12 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "investigationFilesByQualification",
     Chart: InvestigationFilesChart,
     table: () => dashboardData.investigationFilesByQualification,
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include investigation files carried over from previous years" },
+    ],
   },
   {
     id: 6,
@@ -141,8 +150,14 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "completedComplaints",
     Chart: CompletedComplaintsChart,
     table: () => dashboardData.completedComplaints.totalAtCommission,
-    note: "يتوفر تفصيلان إضافيان: قبل التحقيق وبعد التحقيق.",
-    noteEn: "Two additional breakdowns are available: before and after investigation.",
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل شكاوى وبلاغات مدورة من سنوات سابقة" },
+      { label: "", text: "يتوفر تفصيلان إضافيان: قبل التحقيق وبعد التحقيق." },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include complaints and reports carried over from previous years" },
+      { label: "", text: "Two additional breakdowns are available: before and after investigation." },
+    ],
   },
   {
     id: 7,
@@ -153,6 +168,12 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "filesReferredToProsecutionBySource",
     Chart: FilesReferredBySourceChart,
     table: () => dashboardData.filesReferredToProsecutionBySource,
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include investigation files carried over from previous years" },
+    ],
   },
   {
     id: 8,
@@ -163,6 +184,12 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "prosecutionFilesReferredToCourtByCrime",
     Chart: CourtByCrimeChart,
     table: () => dashboardData.prosecutionFilesReferredToCourtByCrime,
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include investigation files carried over from previous years" },
+    ],
   },
   {
     id: 9,
@@ -173,49 +200,54 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "prosecutionFilesCompletedByProcedure",
     Chart: FilesCompletedByProcedureChart,
     table: () => dashboardData.prosecutionFilesCompletedByProcedure,
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include investigation files carried over from previous years" },
+    ],
   },
   {
     id: 10,
     title: "المتهمون المحالون لمحكمة جرائم الفساد حسب الجنس",
     titleKey: "dash2.ind10T",
     subtitle: "أفراد ذكر / أنثى",
-    kpi: "إجمالي 308 أفراد",
+    kpi: "إجمالي 310 أفراد",
     dataKey: "defendantsReferredToCourtByGender",
     Chart: DefendantsByGenderChart,
     table: () => dashboardData.defendantsReferredToCourtByGender,
-    note: "المجموع المعروض للأفراد حسب تقرير المرصد. أشخاص معنويون: 2 في 2022، و1 في 2025.",
-    noteEn:
-      "The displayed total is for natural persons per the Marsad report. Legal persons: 2 in 2022 and 1 in 2025.",
+    note: [
+      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
+      { label: "", text: "أشخاص معنويون: 2 في 2022، و1 في 2025." },
+    ],
+    noteEn: [
+      { label: "Note:", text: "May include investigation files carried over from previous years" },
+      { label: "", text: "Legal persons: 2 in 2022 and 1 in 2025." },
+    ],
   },
   {
     id: 11,
     title: "القضايا المفصولة بحكم حسب النتيجة",
     titleKey: "dash2.ind11T",
     subtitle: "إدانة / براءة / عدم اختصاص / انقضاء الدعوى",
-    kpi: "إجمالي 66 قضية",
+    kpi: "إجمالي 69 قضية",
     dataKey: "courtVerdictResults",
     Chart: CourtVerdictsChart,
     table: () => dashboardData.courtVerdictResults,
-    note:
-      "حسب شيت 9 في تقرير المرصد. توجد ملاحظات تدقيق داخل التقرير حول مطابقة هذا المؤشر مع بعض نصوص التقارير السنوية.",
-    noteEn:
-      "Per Sheet 9 in the Marsad report. The report includes audit notes about reconciling this indicator with some annual report text.",
-    noteType: "warn",
+    note: [{ label: "ملاحظة:", text: "قد تشمل قضايا مدورة من سنوات سابقة" }],
+    noteEn: [{ label: "Note:", text: "May include cases carried over from previous years" }],
   },
   {
     id: 12,
     title: "عدد المحكوم عليهم (المدانين) في محكمة جرائم الفساد",
     titleKey: "dash2.ind12T",
     subtitle: "تطور عدد المدانين حسب السنة",
-    kpi: "إجمالي 46 مداناً",
+    kpi: "إجمالي 45 مداناً",
     dataKey: "courtVerdictResults-convicted",
     Chart: ConvictedCountChart,
     table: () => dashboardData.courtVerdictResults,
-    note:
-      "حسب شيت 10 في تقرير المرصد. التقرير يتضمن تنبيه تدقيق خاصاً برقم عام 2023.",
-    noteEn:
-      "Per Sheet 10 in the Marsad report. The report includes an audit note about the 2023 figure.",
-    noteType: "warn",
+    note: [{ label: "ملاحظة:", text: "قد تشمل قضايا مدورة من سنوات سابقة" }],
+    noteEn: [{ label: "Note:", text: "May include cases carried over from previous years" }],
   },
 ];
 
@@ -273,46 +305,21 @@ function YearFilterBar({
 function SummaryCards({ selected }: { selected: YearFilter }) {
   const items = getDashboardSummary(selected);
   const { t, locale, dir } = useLocale();
-  const colors = [
-    "#2563eb",
-    "#1d4ed8",
-    "#d97706",
-    "#dc2626",
-    "#7c3aed",
-    "#0d9488",
-    "#e11d48",
-    "#ca8a04",
-  ];
   return (
     <section className="mx-auto max-w-7xl px-4 lg:px-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((k, i) => (
-          <div
-            key={k.id}
-            dir={dir}
-            className="relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
-          >
-            <span
-              className="absolute inset-x-0 top-0 h-1.5"
-              style={{ background: colors[i % colors.length] }}
-            />
-            <div className="flex flex-col gap-1 p-5 pt-4">
-              <div className="flex items-center">
-                <span className="text-[13px] font-semibold leading-5 text-muted-foreground">
-                  {locale === "ar" ? k.label : k.labelEn}
-                </span>
-              </div>
-              <div
-                className={`mt-1 text-4xl font-black tracking-tight text-foreground ${
-                  locale === "ar" ? "text-right" : "text-left"
-                }`}
-                dir={dir}
-              >
-                {k.value}
-              </div>
+      <div className="kpi-row">
+        {items.map((k) => (
+          <div key={k.id} dir={dir} className="kpi">
+            <div className="lbl">{locale === "ar" ? k.label : k.labelEn}</div>
+            <div className="num" dir={dir}>
+              {k.value}
             </div>
           </div>
         ))}
+      </div>
+      <div className="note mt-3">
+        <Info className="note-icon" />
+        <p className="note-line">{t("dash2.carryOverNote")}</p>
       </div>
       {selected.size !== YEARS.length && (
         <p className="mt-3 text-xs text-muted-foreground">
@@ -327,6 +334,7 @@ function IndicatorCard({ ind, selected }: { ind: IndicatorDef; selected: YearFil
   const [showData, setShowData] = useState(false);
   const C = ind.Chart;
   const { t, locale } = useLocale();
+  const notes = locale === "ar" ? (ind.note ?? []) : (ind.noteEn ?? ind.note ?? []);
   const translateKpi = (kpi: string): string => {
     if (locale === "ar") return kpi;
     const n = kpi.replace(/[^0-9,.\s]/g, "").trim();
@@ -374,20 +382,21 @@ function IndicatorCard({ ind, selected }: { ind: IndicatorDef; selected: YearFil
             </div>
           </div>
         )}
+        {notes.length > 0 && (
+          <div className="note mt-3">
+            <Info className="note-icon" />
+            <div>
+              {notes.map((n, i) => (
+                <p key={i} className="note-line">
+                  {n.label ? <strong>{n.label}</strong> : null}
+                  {n.label ? " " : null}
+                  {n.text}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-
-      {ind.note && (
-        <p
-          className={`mx-4 mb-4 flex items-start gap-1.5 rounded-lg px-3 py-2 text-[11px] leading-5 ${
-            ind.noteType === "warn"
-              ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
-              : "bg-muted/60 text-muted-foreground"
-          }`}
-        >
-          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />{" "}
-          {locale === "ar" ? ind.note : (ind.noteEn ?? ind.note)}
-        </p>
-      )}
     </article>
   );
 }

@@ -6,7 +6,6 @@ import { dataSource } from "@/lib/mock-data";
 import { getDashboardSummary } from "@/lib/enforcement-kpis";
 import { YEARS as ENFORCEMENT_YEARS } from "@/components/site/EnforcementCharts";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
-import hqImage from "@/assets/pacc-headquarters.png.asset.json";
 import {
   BarChart3,
   ArrowLeft,
@@ -19,6 +18,7 @@ import {
   CalendarCheck,
   CalendarRange,
   LayoutGrid,
+  Info,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -45,16 +45,6 @@ function Home() {
   const { t, d, pick, dir, locale } = useLocale();
   const dq = dataSource.getDataQuality();
   const summaryKpis = getDashboardSummary(new Set<number>(ENFORCEMENT_YEARS));
-  const summaryColors = [
-    "#2563eb",
-    "#1d4ed8",
-    "#d97706",
-    "#dc2626",
-    "#7c3aed",
-    "#0d9488",
-    "#e11d48",
-    "#ca8a04",
-  ];
   const heroStats = [
     { icon: CalendarCheck, label: t("home.heroStatUpdated"), value: d(dq.lastUpdate) },
     { icon: LayoutGrid, label: t("home.heroStatIndicators"), value: "31" },
@@ -63,37 +53,27 @@ function Home() {
 
   return (
     <SiteLayout>
-      {/* HERO — full-width headquarters photograph with navy overlay */}
-      <section className="relative isolate overflow-hidden">
-        <img
-          src={hqImage.url}
-          alt={pick(
-            "مقر هيئة مكافحة الفساد الفلسطينية",
-            "Palestinian Anti-Corruption Commission headquarters",
-          )}
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-[oklch(0.16_0.06_258)]/88" />
-        <div className="absolute inset-0 bg-gradient-to-l from-[oklch(0.14_0.05_258)]/70 via-transparent to-[oklch(0.14_0.05_258)]/60" />
+      {/* HERO — light cover page, same background as the rest of the site */}
+      <section className="cover relative isolate overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-dots opacity-60" />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-24 text-white lg:grid-cols-2 lg:px-8 lg:py-32">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-24 text-start lg:grid-cols-2 lg:px-8 lg:py-28">
           <div className="reveal">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white/85">
-              <span className="h-1.5 w-1.5 rounded-full bg-white/70" />
+            <div className="badge mb-6 inline-flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-gold" />
               {t("home.heroBadge")}
             </div>
-            <h1 className="text-balance text-4xl font-extrabold leading-[1.15] md:text-5xl lg:text-[3.4rem]">
+            <h1 className="section-title !border-0 !p-0 text-balance text-3xl font-extrabold md:text-4xl lg:text-[2.75rem]">
               {t("home.heroTitle")}
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-9 text-white/80 md:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-8 text-muted-foreground md:text-lg">
               {t("home.heroDesc")}
             </p>
 
             <div className="mt-10">
               <Link
                 to="/dashboard"
-                className="focus-ring inline-flex items-center gap-3 rounded-xl gradient-accent px-10 py-5 text-base font-extrabold text-accent-foreground shadow-glow transition-transform hover:-translate-y-0.5 hover:opacity-95"
+                className="focus-ring inline-flex items-center gap-3 rounded-lg bg-navy px-8 py-4 text-base font-bold text-white shadow-soft transition-colors hover:bg-navy-dark"
               >
                 {t("home.heroCta")} <ArrowLeft className="h-5 w-5" />
               </Link>
@@ -101,15 +81,12 @@ function Home() {
 
             <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3">
               {heroStats.map((s) => (
-                <div
-                  key={s.label}
-                  className="rounded-xl border border-white/15 bg-white/10 p-4 backdrop-blur"
-                >
-                  <div className="flex items-center gap-2 text-white/75">
+                <div key={s.label} className="card !p-4">
+                  <div className="flex items-center gap-2 text-section-sub">
                     <s.icon className="h-4 w-4 text-accent" />
                     <span className="text-[11px] font-semibold">{s.label}</span>
                   </div>
-                  <div className="mt-2 text-lg font-extrabold text-white" dir={dir}>
+                  <div className="mt-2 text-lg font-extrabold text-heading" dir={dir}>
                     {s.value}
                   </div>
                 </div>
@@ -117,10 +94,7 @@ function Home() {
             </div>
           </div>
 
-          <div
-            className="reveal flex justify-center text-white/85 lg:justify-end"
-            style={{ animationDelay: "140ms" }}
-          >
+          <div className="reveal flex justify-center lg:justify-end" style={{ animationDelay: "140ms" }}>
             <HeroVisual />
           </div>
         </div>
@@ -129,36 +103,21 @@ function Home() {
       {/* KPI CARDS */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
         <div className="mb-10 max-w-2xl">
-          <h2 className="text-3xl font-bold text-primary md:text-4xl">{t("home.kpiTitle")}</h2>
+          <h2 className="section-title text-3xl md:text-4xl">{t("home.kpiTitle")}</h2>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {summaryKpis.map((k, i) => (
-            <div
-              key={k.id}
-              dir={dir}
-              className="relative overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-shadow hover:shadow-elevated"
-            >
-              <span
-                className="absolute inset-x-0 top-0 h-1.5"
-                style={{ background: summaryColors[i % summaryColors.length] }}
-              />
-              <div className="flex flex-col gap-1 p-5 pt-4">
-                <div className="flex items-center">
-                  <span className="text-[13px] font-semibold leading-5 text-muted-foreground">
-                    {locale === "ar" ? k.label : k.labelEn}
-                  </span>
-                </div>
-                <div
-                  className={`mt-1 text-4xl font-black tracking-tight text-foreground ${
-                    locale === "ar" ? "text-right" : "text-left"
-                  }`}
-                  dir={dir}
-                >
-                  {k.value}
-                </div>
+        <div className="kpi-row">
+          {summaryKpis.map((k) => (
+            <div key={k.id} dir={dir} className="kpi">
+              <div className="lbl">{locale === "ar" ? k.label : k.labelEn}</div>
+              <div className="num" dir={dir}>
+                {k.value}
               </div>
             </div>
           ))}
+        </div>
+        <div className="note mt-3">
+          <Info className="note-icon" />
+          <p className="note-line">{t("dash2.carryOverNote")}</p>
         </div>
       </section>
 
@@ -166,9 +125,9 @@ function Home() {
       <ComplaintsByGovernorate />
 
       {/* QUICK NAV CARDS */}
-      <section className="bg-surface py-20">
+      <section className="bg-warm py-20">
         <div className="mx-auto max-w-7xl px-4 lg:px-8">
-          <h2 className="mb-10 text-center text-3xl font-bold text-foreground md:text-4xl">
+          <h2 className="section-title mb-10 border-0 text-center text-3xl md:text-4xl">
             {t("home.exploreTitle")}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -213,12 +172,12 @@ function Home() {
               <Link
                 key={c.to}
                 to={c.to}
-                className="focus-ring glow-card group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-elevated"
+                className="focus-ring group rounded-xl border border-card-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:border-gold hover:shadow-elevated"
               >
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent ring-1 ring-inset ring-accent/20">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft text-accent ring-1 ring-inset ring-gold/30">
                   <c.icon className="h-5 w-5" />
                 </div>
-                <h3 className="mt-4 text-lg font-bold text-foreground">{c.title}</h3>
+                <h3 className="mt-4 text-lg font-bold text-heading">{c.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{c.desc}</p>
                 <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
                   {t("home.exploreOpen")}{" "}
@@ -232,14 +191,14 @@ function Home() {
 
       {/* REPORT CORRUPTION CTA */}
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl bg-primary p-10 text-white md:p-14">
+        <div className="relative overflow-hidden rounded-xl bg-navy p-10 text-white md:p-14">
           <div className="absolute inset-0 bg-grid opacity-20" />
           <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
             <div>
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold backdrop-blur">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-light">
                 <ShieldAlert className="h-3.5 w-3.5" /> {t("home.ctaBadge")}
               </div>
-              <h2 className="text-3xl font-extrabold md:text-4xl">{t("home.ctaTitle")}</h2>
+              <h2 className="text-3xl font-extrabold text-white md:text-4xl">{t("home.ctaTitle")}</h2>
               <p className="mt-3 text-base leading-8 text-white/85">{t("home.ctaDesc")}</p>
             </div>
             <div className="flex flex-wrap justify-start gap-3 md:justify-end">
@@ -247,7 +206,7 @@ function Home() {
                 href="https://www.pacc.ps/complaints/create"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-xl bg-white px-5 py-3 text-sm font-bold text-primary shadow-soft hover:-translate-y-0.5 transition-transform"
+                className="rounded-lg bg-white px-5 py-3 text-sm font-bold text-navy transition-transform hover:-translate-y-0.5"
               >
                 {t("nav.report")}
               </a>
@@ -255,7 +214,7 @@ function Home() {
                 href="https://www.pacc.ps/WitnessProtection"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg bg-accent px-5 py-3 text-sm font-bold text-accent-foreground transition-opacity hover:opacity-90"
+                className="rounded-lg bg-gold px-5 py-3 text-sm font-bold text-navy transition-colors hover:bg-gold-light"
               >
                 {t("home.ctaProtection")}
               </a>
@@ -263,7 +222,7 @@ function Home() {
                 href="https://www.pacc.ps/ContactUs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-xl border border-white/25 bg-white/10 px-5 py-3 text-sm font-semibold backdrop-blur hover:bg-white/20"
+                className="rounded-lg border border-gold/50 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/20"
               >
                 {t("home.ctaContact")}
               </a>

@@ -19,8 +19,11 @@ import { dashboardData, type SubTable } from "@/data/dashboardData";
 import { useLocale } from "@/i18n";
 import { DATA_EN } from "@/lib/enforcement-data-en";
 
-/** Brand palette for dashboard charts. */
-const CHART_COLORS = ["#3b82f6", "#f97316", "#eab308", "#64748b", "#cbd5e1"];
+/** Brand palette for dashboard charts — navy first, gold second. */
+const CHART_COLORS = ["#132f56", "#c5a06c", "#2a4d7d", "#a8875a", "#d9bd93"];
+
+/** Legend pinned to the bottom, RTL-aligned. */
+const LEGEND = { align: "center", verticalAlign: "bottom" } as const;
 
 export const YEARS = [2022, 2023, 2024, 2025] as const;
 
@@ -107,6 +110,7 @@ function sumValid(values: Array<number | null | undefined>): number {
 function LegendBlock({ items, format }: { items: string[]; format: (s: string) => string }) {
   return (
     <Legend
+      {...LEGEND}
       wrapperStyle={{ fontSize: 11, paddingTop: 8 }}
       formatter={(value: string) => format(String(value))}
     />
@@ -140,7 +144,7 @@ function StackedRows({
             content={<YearTooltip />}
             cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
           />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+          <Legend {...LEGEND} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
           {cats.map((c, i) => (
             <Bar
               key={c}
@@ -185,7 +189,7 @@ function GroupedRows({
             content={<YearTooltip />}
             cursor={{ fill: "var(--color-accent)", fillOpacity: 0.08 }}
           />
-          <Legend wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
+          <Legend {...LEGEND} wrapperStyle={{ fontSize: 11, paddingTop: 8 }} />
           {cats.map((c, i) => (
             <Bar
               key={c}

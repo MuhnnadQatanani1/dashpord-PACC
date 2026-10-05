@@ -217,15 +217,15 @@ export const en: Dict = {
   "tts.voiceAuto": "Server voice",
 
   "meta.homeTitle":
-    "National Observatory for Corruption Indicators | Palestinian Anti-Corruption Commission",
+    "National Observatory for Integrity and Anti-Corruption Indicators | Palestinian Anti-Corruption Commission",
   "meta.homeDesc":
     "A Palestinian national platform for monitoring, analyzing and publishing integrity, transparency and anti-corruption indicators, supporting decision-making and enhancing access to official data.",
 
   "home.heroBadge": "Palestinian Anti-Corruption Commission",
-  "home.heroTitle": "National Observatory for Corruption Indicators",
+  "home.heroTitle": "National Observatory for Integrity and Anti-Corruption Indicators",
   "home.heroDesc":
     "A national platform for monitoring and analyzing integrity, transparency and anti-corruption indicators based on official data.",
-  "home.heroCta": "Explore the Observatory",
+  "home.heroCta": "Dashboard",
   "home.heroStatUpdated": "Last update",
   "home.heroStatIndicators": "Number of indicators",
   "home.heroStatCoverage": "Covered period",
@@ -233,7 +233,7 @@ export const en: Dict = {
   "home.launchHeadline": "From measuring perceptions to measuring actual corruption indicators",
   "home.launchDate": "First public report — January 31, 2021",
   "home.launchP1":
-    "The National Observatory for Corruption Indicators was launched to be the official Palestinian reference for monitoring and analyzing integrity and anti-corruption data, relying on the official records of the Commission, the Public Prosecution and the Corruption Crimes Court instead of perception surveys.",
+    "The National Observatory for Integrity and Anti-Corruption Indicators was launched to be the official Palestinian reference for monitoring and analyzing integrity and anti-corruption data, relying on the official records of the Commission, the Public Prosecution and the Corruption Crimes Court instead of perception surveys.",
   "home.launchP2":
     "The data published on this platform covers the period 2022 – 2025 and includes complaints and reports, investigation files, referrals to the Attorney General, court verdicts, financial disclosure declarations, and protection requests.",
   "home.kpiEyebrow": "Cumulative indicators",
@@ -325,13 +325,13 @@ export const en: Dict = {
   "home.ctaContact": "Contact the Commission",
 
   "meta.journeyTitle":
-    "The Journey of the Observatory | National Observatory for Corruption Indicators",
+    "The Journey of the Observatory | National Observatory for Integrity and Anti-Corruption Indicators",
   "meta.journeyDesc":
-    "The interactive timeline of the journey of establishing the National Observatory for Corruption Indicators.",
+    "The interactive timeline of the journey of establishing the National Observatory for Integrity and Anti-Corruption Indicators.",
   "journey.eyebrow": "The Journey",
   "journey.title": "From an idea to a national data system",
   "journey.desc":
-    "An interactive timeline highlighting the main phases of establishing the National Observatory for Corruption Indicators.",
+    "An interactive timeline highlighting the main phases of establishing the National Observatory for Integrity and Anti-Corruption Indicators.",
   "journey.timelineTitle": "The Observatory Timeline",
 
   "meta.storiesTitle": "Data Stories | National Observatory",
@@ -349,7 +349,7 @@ export const en: Dict = {
   "indicators.desc":
     "Ratios derived from the official statistical file for 2022-2025, highlighting notable patterns in corruption complaints, investigation files and court verdicts.",
 
-  "meta.methodTitle": "Methodology | National Observatory for Corruption Indicators",
+  "meta.methodTitle": "Methodology | National Observatory for Integrity and Anti-Corruption Indicators",
   "meta.methodDesc":
     "Data collection methodology, indicator calculation, confidentiality safeguards and whistleblower protection.",
   "method.eyebrow": "Methodology",
@@ -471,7 +471,7 @@ export const en: Dict = {
   "comm.struct4": "• General Administration for Legal Affairs and Financial Disclosures.",
   "comm.struct5": "• Witness and Whistleblower Protection Unit.",
   "comm.struct6":
-    "• The National Observatory for Corruption Indicators — an independent administrative unit.",
+    "• The National Observatory for Integrity and Anti-Corruption Indicators — an independent administrative unit.",
 
   "meta.aboutTitle":
     "About the Observatory | National Observatory for Integrity, Governance and Anti-Corruption Indicators",
@@ -668,7 +668,7 @@ export const en: Dict = {
 
   "meta.reportsTitle": "Reports | National Corruption Indicators Observatory",
   "meta.reportsDesc":
-    "Reports of the National Observatory for Corruption Indicators - Palestinian Anti-Corruption Commission.",
+    "Reports of the National Observatory for Integrity and Anti-Corruption Indicators - Palestinian Anti-Corruption Commission.",
   "meta.annualTitle": "Annual Reports | National Corruption Indicators Observatory",
   "meta.annualDesc": "Annual and periodic reports on integrity and anti-corruption indicators.",
   "meta.specializedTitle": "Specialized Reports | National Corruption Indicators Observatory",
@@ -704,6 +704,8 @@ export const en: Dict = {
   "dash2.filterTitle": "Year filter:",
   "dash2.allYears": "All years",
   "dash2.summaryNote": "The summary reflects the selected years only ({years}).",
+  "dash2.carryOverNote":
+    "* May include complaints, reports, files and cases carried over from previous years",
   "dash2.sectionTitle": "Data Dashboard",
   "dash2.hoverHint": "Hover over any chart to see its value and share",
   "dash2.spotlight": "Numbers under the Spotlight",

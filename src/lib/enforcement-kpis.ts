@@ -75,8 +75,8 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "completed",
       value: nf(sumCompleted),
-      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة",
-      labelEn: "Total complaints and reports completed at the Commission",
+      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة *",
+      labelEn: "Total complaints and reports completed at the Commission *",
     },
     {
       id: "legislations",
@@ -87,32 +87,32 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "referred",
       value: nf(sumReferred),
-      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد",
-      labelEn: "Investigation files received by the Corruption Crimes Prosecution",
+      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد *",
+      labelEn: "Investigation files received by the Corruption Crimes Prosecution *",
     },
     {
       id: "convicted",
       value: nf(sumConvicted),
-      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد",
-      labelEn: "Total convicted persons in the Corruption Crimes Court",
+      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد *",
+      labelEn: "Total convicted persons in the Corruption Crimes Court *",
     },
     {
       id: "procedures",
       value: nf(sumProcedures),
-      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد",
-      labelEn: "Investigation files completed by the Corruption Crimes Prosecution",
+      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد *",
+      labelEn: "Investigation files completed by the Corruption Crimes Prosecution *",
     },
     {
       id: "defendants",
       value: nf(sumDefendants),
-      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد",
-      labelEn: "Defendants referred to the Corruption Crimes Court",
+      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد *",
+      labelEn: "Defendants referred to the Corruption Crimes Court *",
     },
     {
       id: "verdicts",
       value: nf(sumVerdicts),
-      label: "القضايا المفصولة بحكم حسب تقرير المرصد",
-      labelEn: "Cases settled by verdict",
+      label: "القضايا المفصولة بحكم حسب تقرير المرصد *",
+      labelEn: "Cases settled by verdict *",
     },
   ];
 }
@@ -207,11 +207,11 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
         0,
       );
 
-  const suspects = all
-    ? 226
-    : dashboardData.suspectsReferredToProsecution.data
-        .filter((r) => yearArray.includes(Number(r[0])))
-        .reduce((s, r) => s + (typeof r[3] === "number" ? (r[3] as number) : 0), 0);
+  const suspectsByYear = (year: number): number =>
+    yrSum(dashboardData.filesReferredToProsecutionBySource, year, 6) +
+    yrSum(dashboardData.filesReferredToProsecutionBySource, year, 7);
+  const suspects = yearArray.reduce((s, y) => s + suspectsByYear(y), 0);
+  const suspectsNote = yearArray.map((y) => `${y}: ${nf(suspectsByYear(y))}`).join(" · ");
 
   const paccSrc = all
     ? 165
@@ -227,13 +227,13 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       );
 
   const toCourtMale = all
-    ? 292
+    ? 283
     : yearArray.reduce(
         (s, y) => s + yrSum(dashboardData.defendantsReferredToCourtByGender, y, 1),
         0,
       );
   const toCourtTotalAll = all
-    ? 308
+    ? 310
     : toCourtMale +
       yearArray.reduce(
         (s, y) => s + yrSum(dashboardData.defendantsReferredToCourtByGender, y, 2),
@@ -261,7 +261,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
     ? 33
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.courtVerdictResults, y, 1), 0);
   const verdictTotal = all
-    ? 66
+    ? 69
     : yearArray.reduce((s, y) => s + yrSum(dashboardData.courtVerdictResults, y, 5), 0);
 
   return [
@@ -320,9 +320,9 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "suspects",
       value: nf(suspects),
       unit: "",
-      label: "عدد المشتبه بهم المحالين إلى النيابة العامة (المجموع الكلي)",
-      labelEn: "Number of suspects referred to the Public Prosecution (total)",
-      note: "2022: 93 · 2023: 58 · 2024: 75 (يُستثنى صف 68 المكرّر) - المجموع 226",
+      label: "عدد المحالين من الهيئة لنيابة",
+      labelEn: "Number referred by the Commission to the Prosecution",
+      note: suspectsNote,
     },
     {
       id: "pacc-source",

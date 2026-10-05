@@ -5,8 +5,8 @@ import { useLocale } from "@/i18n";
 export function Footer() {
   const { t } = useLocale();
   return (
-    <footer className="mt-24 border-t border-border bg-primary text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
+    <footer className="mt-24 border-t-[3px] border-gold bg-navy text-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 text-start lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <div className="inline-flex rounded-xl bg-white p-3 shadow-elevated">
@@ -16,13 +16,13 @@ export function Footer() {
                 className="h-24 w-auto object-contain"
               />
             </div>
-            <p className="mt-5 max-w-md text-sm leading-8 text-primary-foreground md:text-base">
+            <p className="mt-5 max-w-md text-sm leading-8 text-white/85 md:text-base">
               {t("footer.aboutText")}
             </p>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">{t("footer.quickLinks")}</h4>
+            <h4 className="text-sm font-semibold text-gold-light">{t("footer.quickLinks")}</h4>
             <ul className="mt-4 space-y-2 text-sm opacity-85">
               <li>
                 <Link to="/about" className="hover:opacity-100">
@@ -68,7 +68,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold">{t("footer.contact")}</h4>
+            <h4 className="text-sm font-semibold text-gold-light">{t("footer.contact")}</h4>
             <ul className="mt-4 space-y-3 text-sm opacity-85">
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" /> {t("footer.contactLocation")}
@@ -94,7 +94,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs opacity-75 md:flex-row">
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-gold/30 pt-6 text-xs text-gold-light/80 md:flex-row">
           <div>{t("footer.rights", { year: new Date().getFullYear() })}</div>
           <div>{t("footer.note")}</div>
         </div>

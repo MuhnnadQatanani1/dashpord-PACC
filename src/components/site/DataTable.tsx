@@ -21,14 +21,17 @@ export function DataTable({ table }: { table: SubTable }) {
     locale !== "en" ? ar : (DATA_EN[ar] ?? DATA_EN[ar.replace(/\*+$/, "")] ?? ar);
   const isRtl = locale === "ar";
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-border bg-card">
-      <table dir={isRtl ? "rtl" : "ltr"} className="w-full min-w-[520px] border-collapse text-sm">
+    <div className="w-full overflow-x-auto rounded-xl border border-card-border bg-card">
+      <table
+        dir={isRtl ? "rtl" : "ltr"}
+        className="w-full min-w-[520px] border-collapse text-[13px]"
+      >
         <thead>
-          <tr className="border-b border-border bg-surface/80">
+          <tr>
             {table.columns.map((c) => (
               <th
                 key={c}
-                className="whitespace-nowrap px-3 py-2.5 text-xs font-bold text-foreground"
+                className="whitespace-nowrap border border-table-border bg-navy px-3 py-2.5 text-xs font-semibold text-white"
               >
                 {tr(c)}
               </th>
@@ -39,12 +42,17 @@ export function DataTable({ table }: { table: SubTable }) {
           {table.data.map((row, ri) => (
             <tr
               key={ri}
-              className={`border-b border-border/60 ${
-                isTotalRow(row) ? "bg-accent/5 font-bold" : "odd:bg-surface/40"
+              className={`border-b border-table-border ${
+                isTotalRow(row) ? "bg-accent-soft font-bold" : ""
               }`}
             >
               {table.columns.map((c, ci) => (
-                <td key={c} className="whitespace-nowrap px-3 py-2 text-foreground/85">
+                <td
+                  key={c}
+                  className={`whitespace-nowrap border border-table-border px-3 py-2 ${
+                    ci === 0 ? "text-right font-semibold text-heading" : "text-center"
+                  }`}
+                >
                   <span dir={ci === 0 && !isRtl ? "ltr" : isRtl ? "rtl" : "ltr"}>
                     {ci === 0 && typeof row[ci] === "string" ? tr(String(row[ci])) : fmt(row[ci])}
                   </span>
@@ -53,9 +61,14 @@ export function DataTable({ table }: { table: SubTable }) {
             </tr>
           ))}
           {table.total_row && (
-            <tr className="border-t-2 border-border bg-accent/10 font-bold">
+            <tr className="border-t-2 border-navy bg-warm font-bold">
               {table.columns.map((c, ci) => (
-                <td key={c} className="whitespace-nowrap px-3 py-2.5 text-primary">
+                <td
+                  key={c}
+                  className={`whitespace-nowrap border border-table-border px-3 py-2.5 text-heading ${
+                    ci === 0 ? "text-right" : "text-center"
+                  }`}
+                >
                   <span dir={ci === 0 ? "ltr" : "ltr"}>
                     {ci === 0 && typeof table.total_row![ci] === "string"
                       ? tr(String(table.total_row![ci]))

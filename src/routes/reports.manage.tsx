@@ -525,7 +525,7 @@ export function ManageReports() {
         </div>
         <div className="rounded-xl border border-border bg-card p-4 shadow-soft">
           <div className="text-sm font-semibold text-muted-foreground">{t("reports.draft")}</div>
-          <p className="mt-2 text-2xl font-bold text-amber-700 dark:text-amber-300">{draftCount}</p>
+          <p className="mt-2 text-2xl font-bold text-gold-ink">{draftCount}</p>
         </div>
       </div>
 
