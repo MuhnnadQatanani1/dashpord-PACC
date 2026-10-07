@@ -18,8 +18,8 @@ import {
 import type { TimePoint, SectorSlice, CrimeSlice, YearSeries } from "@/lib/mock-data";
 
 /**
- * Chart tokens — driven by CSS custom properties so charts adapt to
- * both light and dark themes.
+ * Chart tokens — driven by CSS custom properties so charts stay
+ * in sync with the design system.
  */
 const V = (name: string) => `var(--${name})`;
 

@@ -3,7 +3,6 @@ import { Menu, X, ChevronDown, ShieldAlert, Languages, Search } from "lucide-rea
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
 
-import { ThemeToggle } from "./ThemeToggle";
 import { useLocale } from "@/i18n";
 import type { Dict } from "@/i18n/ar";
 
@@ -319,7 +318,6 @@ export function Navbar() {
             <Languages className="h-4 w-4" />
             {t("nav.langLabel")}
           </button>
-          <ThemeToggle />
           <a
             href="https://www.pacc.ps/complaints/create"
             target="_blank"

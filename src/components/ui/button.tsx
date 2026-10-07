@@ -9,8 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /* Primary = navy, hover navy-dark — fixed navy in both themes
-           so the white label never inverts into dark-on-dark. */
+        /* Primary = navy, hover navy-dark */
         default: "bg-navy text-white shadow hover:bg-navy-dark",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         /* Secondary = gold */

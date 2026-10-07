@@ -116,8 +116,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-const THEME_INIT = `(function(){try{var s=localStorage.getItem('pacc-theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=(s==='light'||s==='dark')?s:(m?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark');document.documentElement.style.colorScheme=t;}catch(e){}})();`;
-
 const LOCALE_INIT = `(function(){try{var l=localStorage.getItem('pacc-locale');var v=(l==='ar'||l==='en')?l:'ar';window.__PACC_LOCALE__=v;document.documentElement.lang=v;document.documentElement.dir=(v==='ar')?'rtl':'ltr';}catch(e){}})();`;
 
 function RootShell({ children }: { children: ReactNode }) {
@@ -127,7 +125,6 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: LOCALE_INIT }} />
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
       </head>
       <body>
         {children}
