@@ -94,8 +94,8 @@ export const dataEn: Record<string, string> = {
   "اعتماد الاستراتيجية الوطنية عبر القطاعية لتعزيز النزاهة ومكافحة الفساد التي حدّدت المرصد كأحد أعمدتها.":
     "Adoption of the cross-sectoral national strategy to promote integrity and combat corruption, which identified the Observatory as one of its pillars.",
   "إطلاق التقرير العلني الأول": "Launch of the first public report",
-  "أطلقت هيئة مكافحة الفساد الفلسطينية التقرير العلني الأول للمرصد الوطني لمؤشرات النزاهة ومكافحة الفساد بحضور رسمي واسع.":
-    "The Palestinian Anti-Corruption Commission launched the first public report of the National Observatory for Integrity and Anti-Corruption Indicators with wide official attendance.",
+  "أطلقت هيئة مكافحة الفساد التقرير العلني الأول للمرصد الوطني لمؤشرات النزاهة ومكافحة الفساد بحضور رسمي واسع.":
+    "The Anti-Corruption Commission launched the first public report of the National Observatory for Integrity and Anti-Corruption Indicators with wide official attendance.",
   "ترسيخ منظومة البيانات": "Consolidating the data system",
   "تسجيل 234 ملفاً تحقيقياً و879 شكوى وبلاغاً؛ اعتماد الجداول الإحصائية الموحّدة لأول مرة.":
     "Recording 234 investigation files and 879 complaints; unified statistical tables adopted for the first time.",

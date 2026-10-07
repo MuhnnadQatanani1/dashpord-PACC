@@ -28,7 +28,7 @@ function normalizeArabicForSpeech(text: string) {
   return text
     .replace(/[\u064B-\u065F\u0670]/g, "")
     .replace(/\u0640/g, "")
-    .replace(/PACC/gi, "هيئة مكافحة الفساد الفلسطينية")
+    .replace(/PACC/gi, "هيئة مكافحة الفساد")
     .replace(/KPIs?/gi, "مؤشرات الأداء الرئيسية")
     .replace(/UNCAC/gi, "اتفاقية الأمم المتحدة لمكافحة الفساد")
     .replace(/\b(\d{4})\s*[–—-]\s*(\d{4})\b/g, "من $1 إلى $2")

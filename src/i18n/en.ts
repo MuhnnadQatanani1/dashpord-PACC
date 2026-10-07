@@ -59,7 +59,7 @@ export const en: Dict = {
   "footer.officialSite": "Commission Website",
   "footer.contact": "Contact",
   "footer.contactLocation": "Ramallah - Palestine",
-  "footer.rights": "© {year} Palestinian Anti-Corruption Commission - All rights reserved.",
+  "footer.rights": "© {year} Anti-Corruption Commission - All rights reserved.",
   "footer.note":
     "Published data is statistical and aggregated under Anti-Corruption Law No. 1 of 2005 and its amendments.",
 
@@ -254,11 +254,11 @@ export const en: Dict = {
   "tts.voiceAuto": "Server voice",
 
   "meta.homeTitle":
-    "National Observatory for Integrity and Anti-Corruption Indicators | Palestinian Anti-Corruption Commission",
+    "National Observatory for Integrity and Anti-Corruption Indicators | Anti-Corruption Commission",
   "meta.homeDesc":
     "A Palestinian national platform for monitoring, analyzing and publishing integrity, transparency and anti-corruption indicators, supporting decision-making and enhancing access to official data.",
 
-  "home.heroBadge": "Palestinian Anti-Corruption Commission",
+  "home.heroBadge": "Anti-Corruption Commission",
   "home.heroTitle": "National Observatory for Integrity and Anti-Corruption Indicators",
   "home.heroDesc":
     "A national platform for monitoring and analyzing integrity, transparency and anti-corruption indicators based on official data.",
@@ -278,7 +278,7 @@ export const en: Dict = {
   "home.aboutBadge": "About the Observatory",
   "home.aboutTitle": "From impressions to real numbers",
   "home.aboutDescA":
-    "The Palestinian Anti-Corruption Commission launched the Observatory as a pioneering tool to move from measuring",
+    "The Anti-Corruption Commission launched the Observatory as a pioneering tool to move from measuring",
   "home.aboutDescB": "based on impressions, to",
   "home.aboutDescC": "based on documents, files and accurate judicial figures.",
   "home.aboutPerc": "corruption perceptions",
@@ -419,7 +419,7 @@ export const en: Dict = {
 
   "meta.contactTitle": "Report / Contact | National Observatory",
   "meta.contactDesc":
-    "Channels for submitting reports, requesting protection and contacting the Palestinian Anti-Corruption Commission.",
+    "Channels for submitting reports, requesting protection and contacting the Anti-Corruption Commission.",
   "contact.eyebrow": "Contact us",
   "contact.title": "Do you have a corruption report?",
   "contact.desc":
@@ -448,14 +448,14 @@ export const en: Dict = {
   "contact.protectNote":
     "Palestinian law protects the identity of reporters and witnesses, and the Commission treats every report with full confidentiality.",
 
-  "meta.commTitle": "Palestinian Anti-Corruption Commission | Overview",
+  "meta.commTitle": "Anti-Corruption Commission | Overview",
   "meta.commDesc":
-    "An overview of the Palestinian Anti-Corruption Commission: establishment, vision, mission, and competencies.",
-  "meta.commOgTitle": "Palestinian Anti-Corruption Commission",
+    "An overview of the Anti-Corruption Commission: establishment, vision, mission, and competencies.",
+  "meta.commOgTitle": "Anti-Corruption Commission",
   "meta.commOgDesc":
     "The independent official institution mandated to fight corruption in Palestine.",
   "comm.badge": "Official overview",
-  "comm.title": "Palestinian Anti-Corruption Commission",
+  "comm.title": "Anti-Corruption Commission",
   "comm.intro":
     "An independent official institution established under the Palestinian Anti-Corruption Law No. (1) of 2005 and its amendments, enjoying full legal personality and capacity, and affiliated with the President of the State of Palestine.",
   "comm.visionT": "Vision",
@@ -517,7 +517,7 @@ export const en: Dict = {
   "about.eyebrow": "About the Observatory",
   "about.title": "National Observatory for Integrity, Governance and Anti-Corruption Indicators",
   "about.desc":
-    "A pioneering national initiative launched by the Palestinian Anti-Corruption Commission to monitor integrity, governance and anti-corruption indicators based on official figures and data.",
+    "A pioneering national initiative launched by the Anti-Corruption Commission to monitor integrity, governance and anti-corruption indicators based on official figures and data.",
   "about.intro":
     "The Anti-Corruption Commission sought to establish an effective, reliable and highly credible national observatory for integrity, governance and anti-corruption indicators, based on the Anti-Corruption Law No. 1 of 2005 and its amendments, and in commitment to the cross-sectoral national strategy to promote integrity and combat corruption 2020-2023, which is concerned with collecting and providing information on manifestations of corruption and its prevention, by preparing national and sectoral indicators, monitoring and analyzing them, in a way that serves the development of integrity and governance policies and corruption prevention measures in the state, and working to establish a database and information systems, and exchanging them with relevant bodies and entities in corruption cases at home and abroad.",
   "about.refTitle": "Reference framework",
@@ -705,7 +705,7 @@ export const en: Dict = {
 
   "meta.reportsTitle": "Reports | National Corruption Indicators Observatory",
   "meta.reportsDesc":
-    "Reports of the National Observatory for Integrity and Anti-Corruption Indicators - Palestinian Anti-Corruption Commission.",
+    "Reports of the National Observatory for Integrity and Anti-Corruption Indicators - Anti-Corruption Commission.",
   "meta.annualTitle": "Annual Reports | National Corruption Indicators Observatory",
   "meta.annualDesc": "Annual and periodic reports on integrity and anti-corruption indicators.",
   "meta.specializedTitle": "Specialized Reports | National Corruption Indicators Observatory",
@@ -723,10 +723,10 @@ export const en: Dict = {
     "Control panel for managing National Corruption Indicators Observatory content and reports.",
 
   "meta.siteTitle":
-    "National Corruption Indicators Observatory | Palestinian Anti-Corruption Commission",
+    "National Corruption Indicators Observatory | Anti-Corruption Commission",
   "meta.siteDesc":
     "A Palestinian national platform for monitoring, analyzing and publishing integrity, transparency and anti-corruption indicators, supporting decision-making and enhancing access to official data.",
-  "meta.siteAuthor": "Palestinian Anti-Corruption Commission",
+  "meta.siteAuthor": "Anti-Corruption Commission",
   "meta.notFoundTitle": "Page Not Found",
   "meta.notFoundDesc": "The page you are looking for is unavailable or has been moved.",
   "meta.notFoundBack": "Back to Home",

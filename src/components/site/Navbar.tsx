@@ -56,7 +56,7 @@ const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
   {
     to: "/commission",
     label: "nav.commission",
-    keywords: "هيئة مكافحة الفساد الفلسطينية commission pacc اختصاصات",
+    keywords: "هيئة مكافحة الفساد commission pacc اختصاصات",
   },
   {
     to: "/about",
