@@ -17,7 +17,7 @@ export function ReadAloud() {
         onClick={() => setOpen((v) => !v)}
         aria-label={t("tts.open")}
         aria-expanded={open}
-        className="focus-ring fixed bottom-4 end-4 z-[70] flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-elevated transition-transform hover:scale-105"
+        className="focus-ring fixed bottom-4 end-4 z-[70] flex h-12 w-12 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-elevated transition-transform hover:scale-105 print:hidden"
       >
         <AudioLines className="h-6 w-6" />
       </button>
@@ -26,7 +26,7 @@ export function ReadAloud() {
         <div
           role="dialog"
           aria-label={t("tts.open")}
-          className="fixed bottom-20 end-4 z-[70] w-[19rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-border bg-background shadow-elevated"
+          className="fixed bottom-20 end-4 z-[70] w-[19rem] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-border bg-background shadow-elevated print:hidden"
         >
           <div className="flex items-center justify-between border-b border-border bg-surface px-4 py-3">
             <div className="flex items-center gap-2">
