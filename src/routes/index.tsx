@@ -79,12 +79,12 @@ function Home() {
 
             <div className="mt-10 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
               {heroStats.map((s) => (
-                <div key={s.label} className="card !p-4">
+                <div key={s.label} className="card !p-5">
                   <div className="flex items-center gap-2 text-section-sub">
-                    <s.icon className="h-4 w-4 text-accent" />
-                    <span className="text-[11px] font-semibold">{s.label}</span>
+                    <s.icon className="h-5 w-5 text-accent" />
+                    <span className="text-sm font-semibold">{s.label}</span>
                   </div>
-                  <div className="mt-2 text-lg font-extrabold text-heading" dir={dir}>
+                  <div className="mt-2 text-2xl font-extrabold text-heading" dir={dir}>
                     {s.value}
                   </div>
                 </div>
