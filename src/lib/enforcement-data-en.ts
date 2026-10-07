@@ -32,7 +32,6 @@ export const DATA_EN: Record<string, string> = {
 
   // ---- receipt method ----
   "الحضور الشخصي وتسليم باليد": "In-person attendance & hand delivery",
-  "الحضور الشخصي وتسليم باليد*": "In-person attendance & hand delivery",
   "جهات ومؤسسات رسمية": "Official bodies & institutions",
   الرصد: "Monitoring",
   "الوسائل والتطبيقات الإلكترونية": "Electronic means & applications",
@@ -97,7 +96,6 @@ export const DATA_EN: Record<string, string> = {
   "المتاجرة بالنفوذ": "Trading in influence",
   "إعاقة سير العدالة": "Obstructing justice",
   "عدم اختصاص قبل مرحلة التحري": "Lack of jurisdiction before the investigation stage",
-  "عدم الاختصاص*": "Lack of jurisdiction",
   "جرائم لا تشكل فساد": "Crimes not constituting corruption",
 
   // ---- referred-to-prosecution by sector ----

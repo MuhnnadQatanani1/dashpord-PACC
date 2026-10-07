@@ -441,7 +441,7 @@ export const en: Dict = {
   "contact.details": "Details",
   "contact.submit": "Send",
   "contact.formNote":
-    "* Demo form — will be connected to the official reports management system later.",
+    "Demo form — will be connected to the official reports management system later.",
   "contact.officialTitle": "Official contact channels",
   "contact.hq": "Headquarters",
   "contact.hotline": "Hotline",
@@ -624,7 +624,7 @@ export const en: Dict = {
   "map.governoratesTitle": "Distribution of complaints and reports by governorate",
   "map.complaintsUnit": "complaints/reports",
   "map.governoratesNote":
-    "* Illustrative figures based on the expected distribution of complaints and reports across governorates.",
+    "Illustrative figures based on the expected distribution of complaints and reports across governorates.",
   "map.filterTitle": "Year filter:",
   "map.allYears": "All years",
   "map.loading": "Loading map…",
@@ -742,7 +742,7 @@ export const en: Dict = {
   "dash2.allYears": "All years",
   "dash2.summaryNote": "The summary reflects the selected years only ({years}).",
   "dash2.carryOverNote":
-    "* May include complaints, reports, files and cases carried over from previous years",
+    "May include complaints, reports, files and cases carried over from previous years",
   "dash2.sectionTitle": "Data Dashboard",
   "dash2.hoverHint": "Hover over any chart to see its value and share",
   "dash2.spotlight": "Numbers under the Spotlight",

@@ -416,7 +416,7 @@ export const ar = {
   "contact.subject": "الموضوع",
   "contact.details": "التفاصيل",
   "contact.submit": "إرسال",
-  "contact.formNote": "* نموذج تجريبي — سيُربط بنظام إدارة البلاغات الرسمي لاحقاً.",
+  "contact.formNote": "نموذج تجريبي — سيُربط بنظام إدارة البلاغات الرسمي لاحقاً.",
   "contact.officialTitle": "قنوات التواصل الرسمية",
   "contact.hq": "المقر",
   "contact.hotline": "الخط الساخن",
@@ -578,7 +578,7 @@ export const ar = {
   "map.governoratesTitle": "توزيع الشكاوى والبلاغات حسب المحافظات",
   "map.complaintsUnit": "شكوى/بلاغ",
   "map.governoratesNote":
-    "* أرقام توضيحية مبنية على التوزيع المتوقع للشكاوى والبلاغات حسب المحافظات.",
+    "أرقام توضيحية مبنية على التوزيع المتوقع للشكاوى والبلاغات حسب المحافظات.",
   "map.loading": "جارٍ تحميل الخريطة…",
   "map.filterTitle": "فلترة حسب السنة:",
   "map.allYears": "الكُل",
@@ -687,7 +687,7 @@ export const ar = {
   "dash2.allYears": "الكل",
   "dash2.summaryNote": "الملخص يعكس السنوات المختارة فقط ({years}).",
   "dash2.carryOverNote":
-    "* قد تشمل شكاوى وبلاغات وملفات وقضايا مدورة من سنوات سابقة",
+    "قد تشمل شكاوى وبلاغات وملفات وقضايا مدورة من سنوات سابقة",
   "dash2.sectionTitle": "لوحة البيانات",
   "dash2.hoverHint": "مرّر فوق أي رسم لعرض القيمة ونسبتها",
   "dash2.spotlight": "أرقام تحت الضوء",

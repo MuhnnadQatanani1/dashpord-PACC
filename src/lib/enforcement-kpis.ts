@@ -75,8 +75,8 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "completed",
       value: nf(sumCompleted),
-      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة *",
-      labelEn: "Total complaints and reports completed at the Commission *",
+      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة",
+      labelEn: "Total complaints and reports completed at the Commission",
     },
     {
       id: "legislations",
@@ -87,32 +87,32 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "referred",
       value: nf(sumReferred),
-      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد *",
-      labelEn: "Investigation files received by the Corruption Crimes Prosecution *",
+      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد",
+      labelEn: "Investigation files received by the Corruption Crimes Prosecution",
     },
     {
       id: "convicted",
       value: nf(sumConvicted),
-      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد *",
-      labelEn: "Total convicted persons in the Corruption Crimes Court *",
+      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد",
+      labelEn: "Total convicted persons in the Corruption Crimes Court",
     },
     {
       id: "procedures",
       value: nf(sumProcedures),
-      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد *",
-      labelEn: "Investigation files completed by the Corruption Crimes Prosecution *",
+      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد",
+      labelEn: "Investigation files completed by the Corruption Crimes Prosecution",
     },
     {
       id: "defendants",
       value: nf(sumDefendants),
-      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد *",
-      labelEn: "Defendants referred to the Corruption Crimes Court *",
+      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد",
+      labelEn: "Defendants referred to the Corruption Crimes Court",
     },
     {
       id: "verdicts",
       value: nf(sumVerdicts),
-      label: "القضايا المفصولة بحكم حسب تقرير المرصد *",
-      labelEn: "Cases settled by verdict *",
+      label: "القضايا المفصولة بحكم حسب تقرير المرصد",
+      labelEn: "Cases settled by verdict",
     },
   ];
 }

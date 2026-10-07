@@ -80,8 +80,8 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "complaintsBySource",
     Chart: ComplaintsBySourceChart,
     table: () => dashboardData.complaintsBySource,
-    note: [{ label: "*", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
-    noteEn: [{ label: "*", text: "Complaint or report submitted jointly by a male and a female" }],
+    note: [{ label: "", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
+    noteEn: [{ label: "", text: "Complaint or report submitted jointly by a male and a female" }],
   },
   {
     id: 13,
@@ -92,8 +92,8 @@ const INDICATORS: IndicatorDef[] = [
     dataKey: "complaintsBySource",
     Chart: ComplaintsBySourcePeriodChart,
     table: () => dashboardData.complaintsBySource,
-    note: [{ label: "*", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
-    noteEn: [{ label: "*", text: "Complaint or report submitted jointly by a male and a female" }],
+    note: [{ label: "", text: "شكوى أو بلاغ مقدم بشكل مشترك من ذكر وأنثى معاً" }],
+    noteEn: [{ label: "", text: "Complaint or report submitted jointly by a male and a female" }],
   },
   {
     id: 3,
