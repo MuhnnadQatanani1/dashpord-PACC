@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
+import { exportPrintDoc } from "@/lib/export-pdf";
 import { FileDown } from "lucide-react";
 
 export const Route = createFileRoute("/main-indicators")({
@@ -382,6 +384,15 @@ function PrintDocument() {
 
 function MainIndicators() {
   const { t, locale } = useLocale();
+  const [exporting, setExporting] = useState(false);
+  const onExportPdf = async () => {
+    setExporting(true);
+    try {
+      await exportPrintDoc("main-indicators.pdf");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <SiteLayout>
@@ -391,8 +402,9 @@ function MainIndicators() {
         <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8">
           <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
             <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"
+              onClick={onExportPdf}
+              disabled={exporting}
+              className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-60 print:hidden"
             >
               <FileDown className="h-4 w-4" /> {t("mainInd.downloadPdf")}
             </button>

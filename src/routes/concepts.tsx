@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { getLocale, useLocale, dictionaries } from "@/i18n";
+import { exportPrintDoc } from "@/lib/export-pdf";
 import {
   BookOpenText,
   FileDown,
@@ -473,6 +475,15 @@ function PrintDocument({ categories }: { categories: ConceptCategory[] }) {
 
 function Concepts() {
   const { t } = useLocale();
+  const [exporting, setExporting] = useState(false);
+  const onExportPdf = async () => {
+    setExporting(true);
+    try {
+      await exportPrintDoc("concepts.pdf");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <SiteLayout>
@@ -486,8 +497,9 @@ function Concepts() {
         <section className="mx-auto max-w-7xl px-4 py-12 lg:px-8" dir="rtl">
           <div className="mb-10 flex justify-start">
             <button
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 print:hidden"
+              onClick={onExportPdf}
+              disabled={exporting}
+              className="inline-flex items-center gap-1.5 rounded-lg gradient-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-soft transition-opacity hover:opacity-90 disabled:opacity-60 print:hidden"
             >
               <FileDown className="h-4 w-4" /> {t("concepts.downloadPdf")}
             </button>

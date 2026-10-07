@@ -719,6 +719,29 @@
   }
 }
 
+/* Keep table rows intact across page breaks (print + PDF export) */
+.print-doc tr {
+  break-inside: avoid;
+}
+
+/* Staged off-screen copy used by the in-page PDF export (export-pdf.ts) */
+.print-doc--export {
+  display: block !important;
+  width: 718px;
+  margin: 0;
+  background: #fff;
+}
+/*
+ * html2canvas renders letter-spaced text grapheme-by-grapheme, which
+ * disconnects Arabic letterforms (fragmented headings in the PDF).
+ * Zero letter-spacing out on the staged copy only — screen typography
+ * (h1–h4 tracking, accessibility spacing) is left untouched.
+ */
+.print-doc--export,
+.print-doc--export * {
+  letter-spacing: normal !important;
+}
+
 /* ---------------------------------------------------------------
  * Accessibility widget overrides — driven by data-aa-* attributes
  * set on <html> by the accessibility store.
