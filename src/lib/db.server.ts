@@ -123,6 +123,31 @@ async function ensureTables(pool: sql.ConnectionPool) {
       created_at DATETIME2 NOT NULL DEFAULT GETDATE()
     );
   `);
+
+  await pool.request().query(`
+    IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'stories')
+    CREATE TABLE stories (
+      id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+      title_ar NVARCHAR(MAX) NOT NULL,
+      title_en NVARCHAR(MAX) NOT NULL,
+      body_ar NVARCHAR(MAX) NOT NULL,
+      body_en NVARCHAR(MAX) NOT NULL,
+      highlight_ar NVARCHAR(MAX) NULL,
+      highlight_en NVARCHAR(MAX) NULL,
+      callout_ar NVARCHAR(MAX) NULL,
+      callout_en NVARCHAR(MAX) NULL,
+      author_name_ar NVARCHAR(200) NULL,
+      author_name_en NVARCHAR(200) NULL,
+      author_title_ar NVARCHAR(200) NULL,
+      author_title_en NVARCHAR(200) NULL,
+      author_image_url NVARCHAR(500) NULL,
+      year_range NVARCHAR(50) NULL,
+      is_published BIT NOT NULL DEFAULT 1,
+      display_order INT NOT NULL DEFAULT 0,
+      created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+      updated_at DATETIME2 NOT NULL DEFAULT GETDATE()
+    );
+  `);
 }
 
 export async function getPool(): Promise<sql.ConnectionPool> {
