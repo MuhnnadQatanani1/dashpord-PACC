@@ -449,6 +449,14 @@ function PrintDocument({ categories }: { categories: ConceptCategory[] }) {
   return (
     <div className="print-doc hidden print:block">
       <header className="print-doc__header">
+        <div className="print-doc__logos">
+          <img src="/pacc-logo.png" alt="PACC" className="print-doc__logo" />
+          <img
+            src="/observatory-logo.png"
+            alt={t("common.logoAlt")}
+            className="print-doc__logo"
+          />
+        </div>
         <div className="print-doc__org">{t("concepts.printOrg")}</div>
         <h1>{t("concepts.printTitle")}</h1>
         <p className="print-doc__intro">{t("concepts.printIntro")}</p>
