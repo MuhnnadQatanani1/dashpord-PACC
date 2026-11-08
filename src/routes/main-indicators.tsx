@@ -38,26 +38,26 @@ type IndicatorBand = {
 const BANDS: IndicatorBand[] = [
   {
     id: "item-1",
-    labelAr: "البند 1",
-    labelEn: "Item 1",
+    labelAr: "المجال الأول",
+    labelEn: "Domain 1",
     titleAr:
-      "وجود قوانين وأنظمة وتعليمات معززة للبيئة الطاردة للفساد ومكافحته واضحة الأحكام ومحددة الصلاحيات",
+      "البيئة التشريعية المتعلقة بمكافحة الفساد على مستوى التشريعات الاساسية والمعززة للوقاية من الفساد والنزاهة والشفافية على مستوى التشريعات في عمومها",
     titleEn:
-      "Existence of laws, regulations, and instructions that strengthen an environment deterring and combating corruption, with clear provisions and defined authorities",
+      "The legislative environment for combating corruption, covering core legislation and provisions promoting corruption prevention, integrity, and transparency across legislation generally",
     rows: [
       {
         num: "1",
         titleAr:
-          "عدد التشريعات أو البنود في التشريعات التي تم إقرارها أو تعديلها المصنفة على انها معززة للوقاية من الفساد لدى الجهات الخاضعة وجهات انفاذ القانون",
+          "عدد التشريعات التي تم إقرارها أو تعديلها ذات الصلة بالنزاهة والشفافية والوقاية من الفساد",
         titleEn:
-          "Number of laws or legislative provisions enacted or amended that are classified as strengthening corruption prevention among covered entities and law-enforcement bodies",
+          "Number of laws enacted or amended relating to integrity, transparency, and corruption prevention",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "2",
-        titleAr: "جودة وفاعلية التشريعات ذات العلاقة بمكافحة الفساد",
-        titleEn: "Quality and effectiveness of anti-corruption-related legislation",
+        titleAr: "جودة التشريعات الأساسية ذات الصلة المباشرة بمكافحة الفساد",
+        titleEn: "Quality of core legislation directly related to combating corruption",
         unitAr: "غير متاح",
         unitEn: "Not available",
       },
@@ -65,15 +65,15 @@ const BANDS: IndicatorBand[] = [
   },
   {
     id: "item-2",
-    labelAr: "البند 2",
-    labelEn: "Item 2",
-    titleAr: "تطبيق القانون بفاعلية وعدالة ومساواة على الجميع",
-    titleEn: "Effective, fair, and equal application of the law to all",
+    labelAr: "المجال الثاني",
+    labelEn: "Domain 2",
+    titleAr: "أداء منظومة مكافحة الفساد وإنفاذ القانون ومخرجاتها",
+    titleEn: "Performance and outputs of the anti-corruption and law-enforcement system",
     rows: [
       {
         num: "3",
-        titleAr: "عدد الشكاوى/ البلاغات الواردة لهيئة مكافحة الفساد",
-        titleEn: "Number of complaints/reports received by the Anti-Corruption Commission",
+        titleAr: "عدد الشكاوى والبلاغات الواردة إلى هيئة مكافحة الفساد",
+        titleEn: "Number of complaints and reports received by the Anti-Corruption Commission",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -117,42 +117,40 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "9",
-        titleAr: "عدد ملفات التحقيق الجزائي المنجزة لدى نيابة جرائم الفساد",
-        titleEn:
-          "Number of criminal investigation files finalized by the Corruption Crimes Prosecution",
+        titleAr: "ملفات التحقيق الجزائي المنجزة لدى نيابة جرائم الفساد",
+        titleEn: "Criminal investigation files finalized by the Corruption Crimes Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "10",
-        titleAr: "عدد المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد",
+        titleAr: "عدد الموقوفين على ذمة التحقيق بقضايا الفساد لدى نيابة جرائم الفساد",
         titleEn:
-          "Number of defendants referred by the Corruption Crimes Prosecution to the Corruption Crimes Court",
+          "Number of persons detained pending investigation in corruption cases at the Corruption Crimes Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "11",
-        titleAr: "عدد القضايا المفصولة بحكم في محكمة جرائم الفساد",
-        titleEn: "Number of cases adjudicated by final ruling in the Corruption Crimes Court",
+        titleAr: "المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد",
+        titleEn:
+          "Defendants referred by the Corruption Crimes Prosecution to the Corruption Crimes Court",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "12",
-        titleAr: "عدد المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد",
-        titleEn: "Number of persons convicted in cases adjudicated by the Corruption Crimes Court",
+        titleAr: "القضايا المفصولة بحكم في محكمة جرائم الفساد",
+        titleEn: "Cases adjudicated by a ruling in the Corruption Crimes Court",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "13",
-        titleAr:
-          "مدة إدارة ونظر الشكوى والتصرف فيها بجميع مراحلها من لحظة استلامها وحتى الحسم بها بقرار من جهة الاختصاص او النطق بالحكم النهائي فيها من محكمة جرائم الفساد.",
-        titleEn:
-          "Time taken to process and dispose of a complaint through all stages, from receipt to final disposition by the competent authority or final judgment of the Corruption Crimes Court",
-        unitAr: "مدة زمنية",
-        unitEn: "Time period",
+        titleAr: "المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد",
+        titleEn: "Persons convicted in cases adjudicated by the Corruption Crimes Court",
+        unitAr: "عدد",
+        unitEn: "Count",
       },
       {
         num: "14",
@@ -163,6 +161,13 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "15",
+        titleAr: "مدة معالجة الشكوى والقضية عبر مراحل إنفاذ القانون",
+        titleEn: "Time taken to process complaints and cases across law-enforcement stages",
+        unitAr: "مدة زمنية",
+        unitEn: "Time period",
+      },
+      {
+        num: "16",
         titleAr: "عدد الحالات التي تم فيها استرداد العائدات والأموال الجرمية المهربة للخارج",
         titleEn:
           "Number of cases in which criminal proceeds and funds smuggled abroad were recovered",
@@ -170,37 +175,30 @@ const BANDS: IndicatorBand[] = [
         unitEn: "Count",
       },
       {
-        num: "16",
+        num: "17",
         titleAr: "قيمة العائدات والأموال الجرمية المهربة للخارج المستردة",
         titleEn: "Value of recovered criminal proceeds and funds smuggled abroad",
         unitAr: "قيمة مالية",
         unitEn: "Monetary value",
       },
       {
-        num: "17",
-        titleAr: "عدد المجرمين الفارِّين من العدالة المتهمين بجرائم فساد",
+        num: "18",
+        titleAr: "عدد المتهمين بجرائم فساد الفارّين من العدالة",
         titleEn: "Number of fugitives from justice charged with corruption offenses",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
-        num: "18",
+        num: "19",
         titleAr: "نسبة المحكوم عليهم بالسجن الفعلي في قضايا فساد",
         titleEn: "Percentage of persons sentenced to actual imprisonment in corruption cases",
         unitAr: "نسبة مئوية",
         unitEn: "Percentage",
       },
       {
-        num: "19",
-        titleAr: "نسبة الموقوفين على ذمة التحقيق بقضايا فساد",
-        titleEn: "Percentage of persons held in pretrial detention in corruption cases",
-        unitAr: "نسبة مئوية",
-        unitEn: "Percentage",
-      },
-      {
         num: "20",
-        titleAr: "عدد طلبات الحماية الواردة للهيئة",
-        titleEn: "Number of protection requests received by the Commission",
+        titleAr: "طلبات الحماية الواردة للهيئة",
+        titleEn: "Protection requests received by the Commission",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -214,8 +212,8 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "22",
-        titleAr: "عدد طلبات الحماية التي تم المتابعة عليها",
-        titleEn: "Number of protection requests that were followed up",
+        titleAr: "عدد طلبات الحماية التي تم قبولها حسب بنود محددة",
+        titleEn: "Number of protection requests accepted under specified categories",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -243,10 +241,9 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "26",
-        titleAr:
-          "عدد الأشخاص الذين تم فض إقرار الذمة المالية المرتبط بهم لأغراض الفحص بسبب شكوى او بلاغ ورد للهيئة أو اطلاع.",
+        titleAr: "عدد الأشخاص الذين تم فض إقرار الذمة المالية المرتبط بهم لأغراض الفحص.",
         titleEn:
-          "Number of persons whose financial disclosure statements were unsealed for examination purposes following a complaint, a report received by the Commission, or its own review",
+          "Number of persons whose financial disclosure statements were unsealed for examination",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -261,7 +258,7 @@ const BANDS: IndicatorBand[] = [
       {
         num: "28",
         titleAr:
-          "نسبة لأشخاص الذين اتصلوا مرة واحدة على الأقل بمسؤول حكومي ودفعوا رشوة لمسؤول حكومي أو طلب منهم أولئك المسؤولون الحكوميون دفع رشوة، خلال الاثني عشر شهرا السابقة",
+          "نسبة الأشخاص الذين اتصلوا مرة واحدة على الأقل بمسؤول حكومي ودفعوا رشوة لمسؤول حكومي أو طلب منهم أولئك المسؤولون الحكوميون دفع رشوة، خلال الاثني عشر شهرا السابقة",
         titleEn:
           "Percentage of persons who, at least once, contacted a government official and paid a bribe, or were asked to pay a bribe, during the preceding twelve months (SDG 16.5.1)",
         unitAr: "نسبة مئوية",
@@ -269,22 +266,25 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "29",
-        titleAr: "نسبة القضاة في قضايا فساد",
-        titleEn: "Ratio of judges implicated in corruption cases",
+        titleAr: "نسبة القضاة المكلّفين بالنظر في قضايا الفساد إلى إجمالي القضاة",
+        titleEn: "Percentage of judges assigned to hear corruption cases out of all judges",
         unitAr: "نسبة",
         unitEn: "Percentage",
       },
       {
         num: "30",
-        titleAr: "نسبة المحامون في قضايا فساد",
-        titleEn: "Ratio of lawyers implicated in corruption cases",
+        titleAr: "نسبة المحامين الذين تولّوا الترافع في قضايا الفساد إلى إجمالي المحامين",
+        titleEn:
+          "Percentage of lawyers who represented parties in corruption cases out of all lawyers",
         unitAr: "نسبة",
         unitEn: "Percentage",
       },
       {
         num: "31",
-        titleAr: "نسبة أعضاء النيابة في قضايا فساد",
-        titleEn: "Ratio of Public Prosecution members implicated in corruption cases",
+        titleAr:
+          "نسبة أعضاء النيابة العامة العاملين في نيابة جرائم الفساد إلى إجمالي أعضاء النيابة العامة",
+        titleEn:
+          "Percentage of Public Prosecution members working in the Corruption Crimes Prosecution out of all Public Prosecution members",
         unitAr: "نسبة",
         unitEn: "Percentage",
       },
@@ -350,11 +350,7 @@ function PrintDocument() {
       <header className="print-doc__header">
         <div className="print-doc__logos">
           <img src="/pacc-logo.png" alt="PACC" className="print-doc__logo" />
-          <img
-            src="/observatory-logo.png"
-            alt={t("common.logoAlt")}
-            className="print-doc__logo"
-          />
+          <img src="/observatory-logo.png" alt={t("common.logoAlt")} className="print-doc__logo" />
         </div>
         <div className="print-doc__org">{t("mainInd.printOrg")}</div>
         <h1>{t("mainInd.printTitle")}</h1>
