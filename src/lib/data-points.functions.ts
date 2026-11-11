@@ -74,7 +74,7 @@ const DASHBOARD_TABLES: Array<{ key: string; table: SubTable; label: string }> =
   },
   {
     key: "dashboard.completedComplaints.totalAtCommission",
-    label: `${dashboardData.completedComplaints.title} - الإجمالي لدى الهيئة`,
+    label: `${dashboardData.completedComplaints.title} - الإجمالي لدى هيئة مكافحة الفساد`,
     table: dashboardData.completedComplaints.totalAtCommission,
   },
   {

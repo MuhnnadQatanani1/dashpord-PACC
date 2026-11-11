@@ -1,41 +1,26 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Building2, MapPin } from "lucide-react";
+import { ArrowUpRight, Building2 } from "lucide-react";
 import { PalestineMap } from "./PalestineMap";
 import { GovernorateYearFilter } from "./GovernorateYearFilter";
 import { dataSource } from "@/lib/mock-data";
 import { useLocale } from "@/i18n";
-import { findGovernorateByName, formatCount, formatPercent } from "@/lib/governorate-map-data";
 import { ALL_STAT_YEARS, statsForYears } from "@/data/governorate-stats";
 
 export function ComplaintsByGovernorate() {
-  const { t, d, dir } = useLocale();
+  const { t, d, pick } = useLocale();
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [selectedYears, setSelectedYears] = useState<ReadonlySet<number>>(ALL_STAT_YEARS);
-
-  const governorates = useMemo(() => dataSource.getGovernorates(), []);
-  const filteredMap = useMemo(() => statsForYears(selectedYears), [selectedYears]);
-  const stats = useMemo(() => {
-    const total = Object.values(filteredMap).reduce((sum, v) => sum + v.complaints, 0);
-    return Object.entries(filteredMap)
-      .map(([name, v]) => ({
-        name,
-        complaints: v.complaints,
-        region: governorates.find((g) => g.name === name)?.label ?? "",
-        share: total > 0 ? v.complaints / total : 0,
-      }))
-      .sort((a, b) => b.complaints - a.complaints);
-  }, [filteredMap, governorates]);
-  const selected = useMemo(() => findGovernorateByName(stats, selectedName), [stats, selectedName]);
-  const maxCount = Math.max(...stats.map((s) => s.complaints), 1);
-
-  const handleGovernorateClick = useCallback((nameAr: string) => {
-    setSelectedName(nameAr);
-  }, []);
-  const clearSelection = useCallback(() => setSelectedName(null), []);
-
-  const unit = t("map.complaintsUnit");
-  const num = (v: number) => formatCount(v);
+  const governorates = useMemo(
+    () => dataSource.getGovernorates().filter((g) => g.label !== "قطاع غزة"),
+    [],
+  );
+  const filteredMap = useMemo(() => {
+    const all = statsForYears(selectedYears);
+    return Object.fromEntries(governorates.map((g) => [g.name, all[g.name]]));
+  }, [selectedYears, governorates]);
+  const selected = selectedName ? filteredMap[selectedName] : undefined;
+  const total = Object.values(filteredMap).reduce((sum, stat) => sum + stat.complaints, 0);
 
   return (
     <section
@@ -44,112 +29,98 @@ export function ComplaintsByGovernorate() {
       aria-labelledby="geo-title"
     >
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <div className="mb-10 max-w-2xl">
-          <div className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-            {t("home.geoEyebrow")}
-          </div>
+        <div className="mb-8 max-w-3xl">
+          <p className="mb-3 text-sm font-semibold text-accent">{t("home.geoEyebrow")}</p>
           <h2 id="geo-title" className="text-3xl font-bold text-primary md:text-4xl">
-            {t("home.geoTitle")}
+            {t("map.governoratesTitle")}
           </h2>
-          <p className="mt-3 leading-8 text-muted-foreground">{t("home.geoDesc")}</p>
+          <p className="mt-3 text-sm leading-8 text-muted-foreground">{t("map.summaryDesc")}</p>
+          <p className="mt-3 text-sm leading-8 text-muted-foreground">
+            {t("map.governoratesNote")}
+          </p>
         </div>
-
-        <div className="grid gap-6 lg:grid-cols-12">
-          {/* Map */}
+        <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <div className="mb-4">
-              <GovernorateYearFilter selected={selectedYears} onChange={setSelectedYears} />
-            </div>
-            <div className="relative h-[640px] w-full">
+            <GovernorateYearFilter selected={selectedYears} onChange={setSelectedYears} />
+            <div className="relative mt-4 h-[560px] w-full overflow-hidden rounded-xl border border-border bg-white">
               <PalestineMap
                 stats={filteredMap}
                 selectedAr={selectedName}
-                onGovernorateClick={handleGovernorateClick}
+                onGovernorateClick={(name) => setSelectedName(name)}
               />
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3 text-xs text-muted-foreground">
-              <div className="flex items-center gap-2">
+            <div className="mt-3 flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-2">
+                <span aria-hidden="true" className="h-3 w-3 rounded-sm bg-[#54798b]" />
+                {pick("محافظات الضفة الغربية", "West Bank governorates")}
+              </span>
+              <span className="inline-flex items-center gap-2">
                 <span
-                  className="h-3 w-24 rounded-sm bg-gradient-to-r from-[#e6d3ac] via-[#c5a06c] to-[#132f56]"
                   aria-hidden="true"
+                  className="h-3 w-3 rounded-sm border border-border bg-[#fbf8f1]"
                 />
-                <span>{t("home.geoLegendColor")}</span>
-              </div>
+                {pick("قطاع غزة: غير مشمول بالبيانات", "Gaza Strip: outside data coverage")}
+              </span>
             </div>
           </div>
-
-          {/* Details + CTA */}
-          <div className="space-y-4 lg:col-span-5">
+          <div className="space-y-5 lg:col-span-5">
+            <div className="rounded-xl border border-border bg-card p-6 shadow-soft">
+              <p className="text-sm text-muted-foreground">
+                {pick(
+                  "الشكاوى والبلاغات في محافظات الضفة الغربية",
+                  "Complaints and reports in West Bank governorates",
+                )}
+              </p>
+              <p className="mt-3 text-3xl font-bold text-primary">
+                {total.toLocaleString("en-US")}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {pick("11 محافظة · السنوات المختارة", "11 governorates · selected years")}
+              </p>
+            </div>
             <div
-              className="rounded-xl border border-border bg-card p-5 shadow-soft"
+              className="rounded-xl border border-border bg-card p-6 shadow-soft"
               aria-live="polite"
             >
-              <div className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+              <h3 className="mb-3 flex items-center gap-2 font-bold text-primary">
                 <Building2 className="h-4 w-4 text-accent" />
                 {t("home.geoDetailsTitle")}
-              </div>
-              {selected ? (
-                <div>
-                  <div className="text-lg font-extrabold text-primary">{d(selected.name)}</div>
-                  <div className="text-xs text-muted-foreground">{d(selected.region)}</div>
-                  <div className="mt-4 flex items-end justify-between gap-2">
-                    <div>
-                      <div className="text-3xl font-black text-foreground" dir={dir}>
-                        {num(selected.complaints)}
-                      </div>
-                      <div className="text-xs text-muted-foreground">{unit}</div>
-                    </div>
-                    <div className="text-end">
-                      <div className="text-base font-bold text-accent" dir={dir}>
-                        {formatPercent(selected.share)}
-                      </div>
-                      <div className="text-xs text-muted-foreground">{t("home.geoShare")}</div>
-                    </div>
-                  </div>
-                  <div
-                    className="mt-3 h-2 w-full overflow-hidden rounded-full bg-secondary"
-                    role="progressbar"
-                    aria-valuenow={Math.round((selected.complaints / maxCount) * 100)}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={t("home.geoShare")}
-                  >
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#c5a06c] to-[#132f56]"
-                      style={{
-                        width: `${Math.max(2, (selected.complaints / maxCount) * 100)}%`,
-                      }}
-                    />
-                  </div>
+              </h3>
+              {selectedName ? (
+                <>
+                  <p className="text-lg font-bold text-primary">{d(selectedName)}</p>
+                  <p className="mt-3 text-2xl font-bold text-accent">
+                    {selected ? selected.complaints.toLocaleString("en-US") : "—"}
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {selected
+                      ? t("map.complaintsUnit")
+                      : pick("غير مشمول بالبيانات", "Outside data coverage")}
+                  </p>
                   <button
                     type="button"
-                    onClick={clearSelection}
-                    className="mt-3 text-xs font-semibold text-accent hover:underline"
+                    onClick={() => setSelectedName(null)}
+                    className="focus-ring mt-4 text-sm font-semibold text-accent underline underline-offset-4"
                   >
                     {t("home.geoClear")}
                   </button>
-                </div>
+                </>
               ) : (
-                <p className="text-sm leading-6 text-muted-foreground">{t("home.geoSelectHint")}</p>
+                <p className="text-sm leading-8 text-muted-foreground">{t("home.geoSelectHint")}</p>
               )}
             </div>
-
+            <p className="text-xs leading-7 text-muted-foreground">
+              {pick(
+                "المصدر: بيانات التوزيع الجغرافي الموجودة في البوابة (2022–2025)، والمصنفة سابقاً كأرقام توضيحية. الإجمالي يقتصر على الضفة الغربية ولا يمثل الإجمالي الوطني.",
+                "Source: the portal’s existing geographic dataset (2022–2025), previously classified as illustrative. The total covers the West Bank only and is not a national total.",
+              )}
+            </p>
             <Link
               to="/map"
-              className="group flex w-full items-center justify-between gap-3 rounded-xl gradient-accent px-6 py-5 text-accent-foreground shadow-soft transition-transform hover:-translate-y-0.5 hover:opacity-95"
+              className="focus-ring inline-flex items-center gap-2 rounded-lg bg-navy px-5 py-3 text-sm font-bold text-white hover:bg-navy-dark"
             >
-              <span className="inline-flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/15 backdrop-blur">
-                  <MapPin className="h-5 w-5" />
-                </span>
-                <span className="text-start">
-                  <span className="block text-base font-extrabold">{t("home.geoOpenPage")}</span>
-                  <span className="block text-xs font-medium opacity-80">
-                    {t("home.geoOpenPageHint")}
-                  </span>
-                </span>
-              </span>
-              <ArrowUpRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              {t("home.geoOpenPage")}
+              <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

@@ -19,8 +19,8 @@ import { dashboardData, type SubTable } from "@/data/dashboardData";
 import { useLocale } from "@/i18n";
 import { DATA_EN } from "@/lib/enforcement-data-en";
 
-/** Brand palette for dashboard charts — navy first, gold second. */
-const CHART_COLORS = ["#132f56", "#c5a06c", "#2a4d7d", "#a8875a", "#d9bd93"];
+/** PACC navy and gold, complemented by muted slate and warm neutrals. */
+const CHART_COLORS = ["#19385b", "#b89153", "#668293", "#8c7964", "#a9b9be"];
 
 /** Legend pinned to the bottom, RTL-aligned. */
 const LEGEND = { align: "center", verticalAlign: "bottom" } as const;
@@ -476,7 +476,7 @@ function DualStacked({ top, bottom }: { top: ReactNode; bottom: ReactNode }) {
 // 1) Legislations (stacked by year)
 export function LegislationsChart({ selected }: { selected: YearFilter }) {
   const cols = [
-    "قرار بقانون",
+    "قانون/قرار بقانون",
     "مرسوم أو قرار رئاسي",
     "نظام أو لائحة أو قرار مجلس وزراء",
     "تعليمات أو قرارات تنظيمية",
@@ -590,7 +590,7 @@ export function CourtByCrimeChart({ selected }: { selected: YearFilter }) {
 // 9) Prosecution files completed by procedure (stacked)
 export function FilesCompletedByProcedureChart({ selected }: { selected: YearFilter }) {
   const cats = [
-    "إحالة لمحكمة جرائم الفساد",
+    "إحالة لمحكمة مكافحة الفساد",
     "حفظ",
     "ضم لملفات أخرى",
     "إحالة الى نيابات أخرى لعدم اختصاص",

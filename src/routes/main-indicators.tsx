@@ -79,23 +79,23 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "4",
-        titleAr: "عدد الملفات التحقيقية لدى الهيئة",
+        titleAr: "عدد الملفات التحقيقية لدى هيئة مكافحة الفساد",
         titleEn: "Number of investigation files opened by the Commission",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "5",
-        titleAr: "عدد الشكاوى المنجزة لدى الهيئة",
-        titleEn: "Number of complaints finalized by the Commission",
+        titleAr: "عدد الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد",
+        titleEn: "Number of complaints and reports finalized by the Commission",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "6",
-        titleAr: "الملفات التحقيقية المحالة من هيئة مكافحة الفساد الى نيابة جرائم الفساد",
+        titleAr: "الملفات التحقيقية المحالة من هيئة مكافحة الفساد الى نيابة مكافحة الفساد",
         titleEn:
-          "Investigation files referred by the Anti-Corruption Commission to the Corruption Crimes Prosecution",
+          "Investigation files referred by the Anti-Corruption Commission to the Anti-Corruption Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -103,52 +103,52 @@ const BANDS: IndicatorBand[] = [
         num: "7",
         titleAr: "عدد المشتبه بهم المحالين من هيئة مكافحة الفساد الى نيابة مكافحة الفساد",
         titleEn:
-          "Number of suspects referred by the Anti-Corruption Commission to the Corruption Crimes Prosecution",
+          "Number of suspects referred by the Anti-Corruption Commission to the Anti-Corruption Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "8",
-        titleAr: "عدد ملفات التحقيق الجزائي الواردة لنيابة جرائم الفساد",
+        titleAr: "عدد ملفات التحقيق الجزائي الواردة لنيابة مكافحة الفساد",
         titleEn:
-          "Number of criminal investigation files received by the Corruption Crimes Prosecution",
+          "Number of criminal investigation files received by the Anti-Corruption Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "9",
-        titleAr: "ملفات التحقيق الجزائي المنجزة لدى نيابة جرائم الفساد",
-        titleEn: "Criminal investigation files finalized by the Corruption Crimes Prosecution",
+        titleAr: "ملفات التحقيق الجزائي المنجزة لدى نيابة مكافحة الفساد",
+        titleEn: "Criminal investigation files finalized by the Anti-Corruption Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "10",
-        titleAr: "عدد الموقوفين على ذمة التحقيق بقضايا الفساد لدى نيابة جرائم الفساد",
+        titleAr: "عدد الموقوفين على ذمة التحقيق بقضايا الفساد لدى نيابة مكافحة الفساد",
         titleEn:
-          "Number of persons detained pending investigation in corruption cases at the Corruption Crimes Prosecution",
+          "Number of persons detained pending investigation in corruption cases at the Anti-Corruption Prosecution",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "11",
-        titleAr: "المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد",
+        titleAr: "المتهمين المحالين من نيابة مكافحة الفساد لمحكمة مكافحة الفساد",
         titleEn:
-          "Defendants referred by the Corruption Crimes Prosecution to the Corruption Crimes Court",
+          "Defendants referred by the Anti-Corruption Prosecution to the Anti-Corruption Court",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "12",
-        titleAr: "القضايا المفصولة بحكم في محكمة جرائم الفساد",
-        titleEn: "Cases adjudicated by a ruling in the Corruption Crimes Court",
+        titleAr: "القضايا المفصولة بحكم في محكمة مكافحة الفساد",
+        titleEn: "Cases adjudicated by a ruling in the Anti-Corruption Court",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "13",
-        titleAr: "المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد",
-        titleEn: "Persons convicted in cases adjudicated by the Corruption Crimes Court",
+        titleAr: "المدانين في القضايا المفصولة بحكم في محكمة مكافحة الفساد",
+        titleEn: "Persons convicted in cases adjudicated by the Anti-Corruption Court",
         unitAr: "عدد",
         unitEn: "Count",
       },
@@ -197,14 +197,14 @@ const BANDS: IndicatorBand[] = [
       },
       {
         num: "20",
-        titleAr: "طلبات الحماية الواردة للهيئة",
+        titleAr: "طلبات الحماية الواردة لهيئة مكافحة الفساد",
         titleEn: "Protection requests received by the Commission",
         unitAr: "عدد",
         unitEn: "Count",
       },
       {
         num: "21",
-        titleAr: "عدد طلبات التظلم على طلبات الحماية الواردة للهيئة",
+        titleAr: "عدد طلبات التظلم على طلبات الحماية الواردة لهيئة مكافحة الفساد",
         titleEn:
           "Number of grievances (appeals) filed against protection requests received by the Commission",
         unitAr: "عدد",
@@ -282,9 +282,9 @@ const BANDS: IndicatorBand[] = [
       {
         num: "31",
         titleAr:
-          "نسبة أعضاء النيابة العامة العاملين في نيابة جرائم الفساد إلى إجمالي أعضاء النيابة العامة",
+          "نسبة أعضاء النيابة العامة العاملين في نيابة مكافحة الفساد إلى إجمالي أعضاء النيابة العامة",
         titleEn:
-          "Percentage of Public Prosecution members working in the Corruption Crimes Prosecution out of all Public Prosecution members",
+          "Percentage of Public Prosecution members working in the Anti-Corruption Prosecution out of all Public Prosecution members",
         unitAr: "نسبة",
         unitEn: "Percentage",
       },

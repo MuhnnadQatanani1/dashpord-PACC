@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { HeroVisual } from "@/components/site/HeroVisual";
 import { ComplaintsByGovernorate } from "@/components/site/ComplaintsByGovernorate";
+import { HeroVisual } from "@/components/site/HeroVisual";
 import { dataSource } from "@/lib/mock-data";
 import { getDashboardSummary } from "@/lib/enforcement-kpis";
 import { YEARS as ENFORCEMENT_YEARS } from "@/components/site/EnforcementCharts";
@@ -12,7 +12,6 @@ import {
   Database,
   BookOpen,
   Layers,
-  ShieldCheck,
   Activity,
   ShieldAlert,
   CalendarCheck,
@@ -92,7 +91,10 @@ function Home() {
             </div>
           </div>
 
-          <div className="reveal flex justify-center lg:justify-end" style={{ animationDelay: "140ms" }}>
+          <div
+            className="reveal flex justify-center lg:justify-end"
+            style={{ animationDelay: "140ms" }}
+          >
             <HeroVisual />
           </div>
         </div>
@@ -119,7 +121,6 @@ function Home() {
         </div>
       </section>
 
-      {/* COMPLAINTS BY GOVERNORATE */}
       <ComplaintsByGovernorate />
 
       {/* QUICK NAV CARDS */}
@@ -130,12 +131,6 @@ function Home() {
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              {
-                to: "/commission",
-                icon: ShieldCheck,
-                title: t("home.explore1Title"),
-                desc: t("home.explore1Desc"),
-              },
               {
                 to: "/about",
                 icon: Layers,
@@ -196,7 +191,9 @@ function Home() {
               <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-light">
                 <ShieldAlert className="h-3.5 w-3.5" /> {t("home.ctaBadge")}
               </div>
-              <h2 className="text-3xl font-extrabold text-white md:text-4xl">{t("home.ctaTitle")}</h2>
+              <h2 className="text-3xl font-extrabold text-white md:text-4xl">
+                {t("home.ctaTitle")}
+              </h2>
               <p className="mt-3 text-base leading-8 text-white/85">{t("home.ctaDesc")}</p>
             </div>
             <div className="flex flex-wrap justify-start gap-3 md:justify-end">

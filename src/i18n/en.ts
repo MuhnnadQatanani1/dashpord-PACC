@@ -22,9 +22,9 @@ export const en: Dict = {
   "common.editBtn": "Edit",
 
   "nav.home": "Home",
-  "nav.about": "About the Observatory",
+  "nav.about": "About us",
   "nav.commission": "About the Commission",
-  "nav.observatory": "About the Observatory",
+  "nav.observatory": "About us",
   "nav.concepts": "Concepts & Terms",
   "nav.indicators": "Key Indicators",
   "nav.enforcement": "Law Enforcement Indicators",
@@ -50,8 +50,8 @@ export const en: Dict = {
 
   "footer.quickLinks": "Quick Links",
   "footer.aboutText":
-    "A national platform for monitoring and analyzing corruption, integrity, and governance indicators based on accurate official statistical data, supporting decision-makers and strengthening transparency and accountability in Palestine.",
-  "footer.about": "About the Observatory",
+    "A national platform for monitoring and analyzing corruption, integrity, and governance indicators, supporting decision-makers and strengthening transparency and accountability in Palestine.",
+  "footer.about": "About us",
   "footer.dashboard": "Interactive Dashboard",
   "footer.concepts": "Concepts & Terms",
   "footer.methodology": "Methodology",
@@ -261,7 +261,7 @@ export const en: Dict = {
   "home.heroBadge": "Anti-Corruption Commission",
   "home.heroTitle": "National Observatory for Integrity and Anti-Corruption Indicators",
   "home.heroDesc":
-    "A national platform for monitoring and analyzing integrity, transparency and anti-corruption indicators based on official data.",
+    "A national platform for monitoring and analyzing integrity, transparency and anti-corruption indicators.",
   "home.heroCta": "Dashboard",
   "home.heroStatUpdated": "Last update",
   "home.heroStatIndicators": "Number of indicators",
@@ -269,7 +269,7 @@ export const en: Dict = {
   "home.launchHeadline": "From measuring perceptions to measuring actual corruption indicators",
   "home.launchDate": "First public report — January 31, 2021",
   "home.launchP1":
-    "The National Observatory for Integrity and Anti-Corruption Indicators was launched to be the official Palestinian reference for monitoring and analyzing integrity and anti-corruption data, relying on the official records of the Commission, the Public Prosecution and the Corruption Crimes Court instead of perception surveys.",
+    "The National Observatory for Integrity and Anti-Corruption Indicators was launched to be the official Palestinian reference for monitoring and analyzing integrity and anti-corruption data, relying on the official records of the Commission, the Public Prosecution and the Anti-Corruption Court instead of perception surveys.",
   "home.launchP2":
     "The data published on this platform covers the period 2022 – 2025 and includes complaints and reports, investigation files, referrals to the Attorney General, court verdicts, financial disclosure declarations, and protection requests.",
   "home.kpiEyebrow": "Cumulative indicators",
@@ -322,8 +322,9 @@ export const en: Dict = {
   "home.exploreTitle": "Explore the platform",
   "home.explore1Title": "About the Commission",
   "home.explore1Desc": "Official overview of the Anti-Corruption Commission.",
-  "home.explore2Title": "About the Observatory",
-  "home.explore2Desc": "Vision, mission, objectives and the creation journey.",
+  "home.explore2Title": "About us",
+  "home.explore2Desc":
+    "Meet the National Observatory and the Anti-Corruption Commission, their visions and missions.",
   "home.explore3Title": "Concepts & Terms",
   "home.explore3Desc": "The indicator list and definition cards.",
   "home.explore4Title": "Interactive Dashboard",
@@ -380,13 +381,14 @@ export const en: Dict = {
 
   "meta.indicatorsTitle": "Numbers in Focus | National Observatory",
   "meta.indicatorsDesc":
-    "Figures and ratios derived from the official data of the Anti-Corruption Commission, the Prosecution and the Corruption Crimes Court 2022-2025.",
+    "Figures and ratios derived from the official data of the Anti-Corruption Commission, the Prosecution and the Anti-Corruption Court 2022-2025.",
   "indicators.eyebrow": "Numbers in Focus",
   "indicators.title": "Numbers and ratios in focus",
   "indicators.desc":
     "Ratios derived from the official statistical file for 2022-2025, highlighting notable patterns in corruption complaints, investigation files and court verdicts.",
 
-  "meta.methodTitle": "Methodology | National Observatory for Integrity and Anti-Corruption Indicators",
+  "meta.methodTitle":
+    "Methodology | National Observatory for Integrity and Anti-Corruption Indicators",
   "meta.methodDesc":
     "Data collection methodology, indicator calculation, confidentiality safeguards and whistleblower protection.",
   "method.eyebrow": "Methodology",
@@ -395,7 +397,7 @@ export const en: Dict = {
     "Full transparency in sources, calculation methods, update cadence, and protection guarantees.",
   "method.item1T": "Data sources",
   "method.item1D":
-    "The Commission's digital incoming register, referral data to the Anti-Corruption Prosecution, the Corruption Crimes Court registry, and the financial disclosure system.",
+    "The Commission's digital incoming register, referral data to the Anti-Corruption Prosecution, the Anti-Corruption Court registry, and the financial disclosure system.",
   "method.item2T": "Indicator methodology",
   "method.item2D":
     "A weighted formula: (likelihood of occurrence × impact) for each sector to calculate the actual risk level.",
@@ -475,7 +477,7 @@ export const en: Dict = {
     "Developing policies and plans and following up on shortcomings in legislation and procedures.",
   "comm.c2T": "Investigation and prosecution",
   "comm.c2D":
-    "Receiving reports, conducting investigations, and referring cases to the Corruption Crimes Prosecution.",
+    "Receiving reports, conducting investigations, and referring cases to the Anti-Corruption Prosecution.",
   "comm.c3T": "Protection",
   "comm.c3D":
     "Protecting witnesses, informants, reporters, experts, investigators and their families.",
@@ -510,12 +512,11 @@ export const en: Dict = {
   "comm.struct6":
     "• The National Observatory for Integrity and Anti-Corruption Indicators — an independent administrative unit.",
 
-  "meta.aboutTitle":
-    "About the Observatory | National Observatory for Integrity, Governance and Anti-Corruption Indicators",
+  "meta.aboutTitle": "About us | National Observatory for Integrity and Anti-Corruption Indicators",
   "meta.aboutDesc":
     "The National Observatory for Integrity, Governance and Anti-Corruption Indicators: establishment, vision, mission, objectives, creation journey, and data sources.",
-  "about.eyebrow": "About the Observatory",
-  "about.title": "National Observatory for Integrity, Governance and Anti-Corruption Indicators",
+  "about.eyebrow": "About us",
+  "about.title": "About us",
   "about.desc":
     "A pioneering national initiative launched by the Anti-Corruption Commission to monitor integrity, governance and anti-corruption indicators based on official figures and data.",
   "about.intro":
@@ -557,10 +558,11 @@ export const en: Dict = {
   "about.jstep7": "Publishing, dissemination and exchange of expertise",
   "about.dataTitle": "Data sources",
   "about.data1":
-    "Administrative records of the Anti-Corruption Commission and governmental and non-governmental institutions.",
-  "about.data2": "Specialized surveys and opinion polls.",
+    "Anti-Corruption Commission: administrative records and annual reports on complaints and reports, investigation files and referrals, protection requests, and financial disclosures, covering 2022–2025.",
+  "about.data2":
+    "Anti-Corruption Prosecution and Anti-Corruption Court: administrative records and annual reports on criminal investigation files, referrals, cases, and judgments for 2022–2025, including court data available through the Mizan system.",
   "about.data3":
-    "Issued legislation, Cabinet decisions, decision-makers' decisions and instructions, and national (strategic and sectoral) plans and their implementation plans, among others.",
+    "Palestinian Central Bureau of Statistics: the 2023 Rule of Law and Access to Justice Survey for bribery experience indicator 16.5.1. Survey results differ from administrative complaint and report records and do not measure the Commission’s performance.",
 
   "meta.conceptsTitle": "Concepts & Terms | National Observatory",
   "meta.conceptsDesc":
@@ -618,13 +620,13 @@ export const en: Dict = {
   "map.eyebrow": "Geographic Analysis",
   "map.title": "Map of Palestine and available geographic data",
   "map.desc": "",
-  "map.summaryTitle": "Geographic Distribution Summary",
+  "map.summaryTitle": "Geographic coverage",
   "map.summaryDesc":
-    "This page displays the governorates available in the Observatory database and allows comparing registered complaint and report volumes across them.",
-  "map.governoratesTitle": "Distribution of complaints and reports by governorate",
-  "map.complaintsUnit": "complaints/reports",
+    "West Bank governorates use one uniform color. Color does not indicate the number of complaints and reports or the level of corruption.",
+  "map.governoratesTitle": "West Bank governorates",
+  "map.complaintsUnit": "Complaints and reports",
   "map.governoratesNote":
-    "Illustrative figures based on the expected distribution of complaints and reports across governorates.",
+    "Unfortunately, Gaza Strip data are not included because of conditions in the Strip over the past few years. Missing data do not mean there were no complaints and reports.",
   "map.filterTitle": "Year filter:",
   "map.allYears": "All years",
   "map.loading": "Loading map…",
@@ -645,7 +647,7 @@ export const en: Dict = {
 
   "meta.dashboardTitle": "Interactive Data Dashboard | National Observatory",
   "meta.dashboardDesc":
-    "An interactive dashboard of the official indicators of the Commission, the Prosecution and the Corruption Crimes Court, with the ability to view detailed tables in Excel format.",
+    "An interactive dashboard of the official indicators of the Commission, the Prosecution and the Anti-Corruption Court, with the ability to view detailed tables in Excel format.",
   "dash.eyebrow": "Interactive Data Dashboard",
   "dash.title": "Interactive Indicators Dashboard",
   "dash.desc":
@@ -681,7 +683,7 @@ export const en: Dict = {
 
   "meta.mainIndTitle": "Law Enforcement Indicators | National Observatory",
   "meta.mainIndDesc":
-    "Law enforcement indicators of the Anti-Corruption Commission, the Prosecution and the Corruption Crimes Court according to the adopted official framework.",
+    "Law enforcement indicators of the Anti-Corruption Commission, the Prosecution and the Anti-Corruption Court according to the adopted official framework.",
   "mainInd.eyebrow": "Main Indicators",
   "mainInd.title": "Law Enforcement Indicators",
   "mainInd.desc": "",
@@ -722,8 +724,7 @@ export const en: Dict = {
   "meta.manageDesc":
     "Control panel for managing National Corruption Indicators Observatory content and reports.",
 
-  "meta.siteTitle":
-    "National Corruption Indicators Observatory | Anti-Corruption Commission",
+  "meta.siteTitle": "National Corruption Indicators Observatory | Anti-Corruption Commission",
   "meta.siteDesc":
     "A Palestinian national platform for monitoring, analyzing and publishing integrity, transparency and anti-corruption indicators, supporting decision-making and enhancing access to official data.",
   "meta.siteAuthor": "Anti-Corruption Commission",
@@ -757,12 +758,12 @@ export const en: Dict = {
   "dash2.ind4T": "Complaints and reports by receipt method",
   "dash2.ind5T": "Investigation files at the Commission by legal classification",
   "dash2.ind6T": "Number of complaints and reports completed at the Anti-Corruption Commission",
-  "dash2.ind7T": "Files referred to the Corruption Crimes Prosecution by source",
+  "dash2.ind7T": "Files referred to the Anti-Corruption Prosecution by source",
   "dash2.ind8T": "Prosecution files referred to court by crime",
   "dash2.ind9T": "Prosecution files completed by procedure",
-  "dash2.ind10T": "Defendants referred to the Corruption Crimes Court by gender",
+  "dash2.ind10T": "Defendants referred to the Anti-Corruption Court by gender",
   "dash2.ind11T": "Cases settled by verdict by outcome",
-  "dash2.ind12T": "Number of convicted persons in the Corruption Crimes Court",
+  "dash2.ind12T": "Number of convicted persons in the Anti-Corruption Court",
   "dash2.ind13T": "Complaints and reports by submission source",
   "dash2.ind14T": "Complaints and reports by receipt method",
   "dash2.max4Note":

@@ -88,13 +88,13 @@ const CONCEPT_CATEGORIES: ConceptCategory[] = [
         id: "archive-complaint",
         term: "حفظ الشكوى",
         definition:
-          "صدور قرار من رئيس هيئة مكافحة الفساد بحفظ الشكوى؛ وذلك بعد انتهاء إجراءات البحث و التحري والاستدلال وفق اختصاص الهيئة بعد عدم ثبوت وجود شبهات فساد في الشكوى أو البلاغ المقدم للهيئة.",
+          "صدور قرار من رئيس هيئة مكافحة الفساد بحفظ الشكوى؛ وذلك بعد انتهاء إجراءات البحث و التحري والاستدلال وفق اختصاص الهيئة بعد عدم ثبوت وجود شبهات فساد في الشكوى أو البلاغ المقدم لهيئة مكافحة الفساد.",
       },
       {
         id: "refer-complaint",
         term: "إحالة الشكوى",
         definition:
-          "صدور قرار من رئيس هيئة مكافحة الفساد بإحالة ملف الشكوى أو البلاغ إلى النائب العام، بعد ثبوت وجود شبهات فساد قوية في الشكوى أو البلاغ المقدم للهيئة بعد انتهاء إجراءات التحري والاستدلال.",
+          "صدور قرار من رئيس هيئة مكافحة الفساد بإحالة ملف الشكوى أو البلاغ إلى النائب العام، بعد ثبوت وجود شبهات فساد قوية في الشكوى أو البلاغ المقدم لهيئة مكافحة الفساد بعد انتهاء إجراءات التحري والاستدلال.",
       },
       {
         id: "complainant-reporter",
@@ -400,12 +400,12 @@ const CONCEPT_CATEGORIES: ConceptCategory[] = [
       },
       {
         id: "corruption-crimes-prosecution",
-        term: "نيابة جرائم الفساد",
+        term: "نيابة مكافحة الفساد",
         definition: "النيابة العامة المتخصصة بالنظر في جرائم الفساد.",
       },
       {
         id: "corruption-crimes-court",
-        term: "محكمة جرائم الفساد",
+        term: "محكمة مكافحة الفساد",
         definition: "هيئة المحكمة المختصة بالنظر في جرائم الفساد.",
       },
     ],
@@ -451,11 +451,7 @@ function PrintDocument({ categories }: { categories: ConceptCategory[] }) {
       <header className="print-doc__header">
         <div className="print-doc__logos">
           <img src="/pacc-logo.png" alt="PACC" className="print-doc__logo" />
-          <img
-            src="/observatory-logo.png"
-            alt={t("common.logoAlt")}
-            className="print-doc__logo"
-          />
+          <img src="/observatory-logo.png" alt={t("common.logoAlt")} className="print-doc__logo" />
         </div>
         <div className="print-doc__org">{t("concepts.printOrg")}</div>
         <h1>{t("concepts.printTitle")}</h1>

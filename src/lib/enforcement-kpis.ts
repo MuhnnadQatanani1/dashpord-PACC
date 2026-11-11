@@ -75,8 +75,8 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "completed",
       value: nf(sumCompleted),
-      label: "إجمالي الشكاوى والبلاغات المنجزة لدى الهيئة",
-      labelEn: "Total complaints and reports completed at the Commission",
+      label: "إجمالي الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد",
+      labelEn: "Total complaints and reports completed at the Anti-Corruption Commission",
     },
     {
       id: "legislations",
@@ -87,32 +87,32 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
     {
       id: "referred",
       value: nf(sumReferred),
-      label: "ملفات التحقيق الواردة لنيابة جرائم الفساد",
-      labelEn: "Investigation files received by the Corruption Crimes Prosecution",
+      label: "ملفات التحقيق الواردة لنيابة مكافحة الفساد",
+      labelEn: "Investigation files received by the Anti-Corruption Prosecution",
     },
     {
       id: "convicted",
       value: nf(sumConvicted),
-      label: "إجمالي المحكومين (المدانين) في محكمة جرائم الفساد",
-      labelEn: "Total convicted persons in the Corruption Crimes Court",
+      label: "إجمالي المحكومين (المدانين) في محكمة مكافحة الفساد",
+      labelEn: "Total convicted persons in the Anti-Corruption Court",
     },
     {
       id: "procedures",
       value: nf(sumProcedures),
-      label: "ملفات التحقيق المنجزة لنيابة جرائم الفساد",
-      labelEn: "Investigation files completed by the Corruption Crimes Prosecution",
+      label: "ملفات التحقيق المنجزة لنيابة مكافحة الفساد",
+      labelEn: "Investigation files completed by the Anti-Corruption Prosecution",
     },
     {
       id: "defendants",
       value: nf(sumDefendants),
-      label: "المتهمون الأفراد المحالون لمحكمة جرائم الفساد",
-      labelEn: "Defendants referred to the Corruption Crimes Court",
+      label: "المتهمون الأفراد المحالون لمحكمة مكافحة الفساد",
+      labelEn: "Defendants referred to the Anti-Corruption Court",
     },
     {
       id: "verdicts",
       value: nf(sumVerdicts),
-      label: "القضايا المفصولة بحكم حسب تقرير المرصد",
-      labelEn: "Cases settled by verdict",
+      label: "القضايا المفصولة بحكم من محكمة مكافحة الفساد",
+      labelEn: "Cases adjudicated by the Anti-Corruption Court",
     },
   ];
 }
@@ -121,7 +121,7 @@ export function getDashboardSummary(selected: YearFilter): SummaryKpi[] {
 export interface SpotlightKpi {
   id: string;
   value: string;
-  unit: "%" | "ملف" | "فرد" | "شكوى/بلاغ" | "مشتبه به" | "";
+  unit: "%" | "ملف" | "فرد" | "شكاوى وبلاغات" | "مشتبه به" | "";
   label: string;
   labelEn: string;
   note?: string;
@@ -269,18 +269,19 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "female-participation",
       value: pct(femaleSum, complaintsTotal),
       unit: "%",
-      label: "نسبة مشاركة الإناث ضمن الشكاوى الواردة إلى الهيئة",
-      labelEn: "Share of female complainants among complaints received by the Commission",
+      label: "نسبة مشاركة الإناث ضمن الشكاوى والبلاغات الواردة إلى هيئة مكافحة الفساد",
+      labelEn:
+        "Share of female complainants among complaints received by the Anti-Corruption Commission",
       isRatio: true,
       note: all
-        ? "أفراد-أنثى (140) من إجمالي 2923 شكوى/بلاغ"
-        : `أنثى (${nf(femaleSum)}) من إجمالي ${nf(complaintsTotal)} شكوى/بلاغ في السنوات المختارة`,
+        ? "أفراد-أنثى (140) من إجمالي 2923 شكاوى وبلاغات"
+        : `أنثى (${nf(femaleSum)}) من إجمالي ${nf(complaintsTotal)} شكاوى وبلاغات في السنوات المختارة`,
     },
     {
       id: "top-crime",
       value: pct(abuseSum, abuseTotal),
       unit: "%",
-      label: "من الشكاوى الواردة صُنّفت كإساءة استعمال للسلطة",
+      label: "من الشكاوى والبلاغات الواردة صُنّفت كإساءة استعمال للسلطة",
       labelEn: "of complaints received classified as abuse of power",
       isRatio: true,
       note: all
@@ -291,7 +292,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "personal-attendance",
       value: pct(attendanceSum, complaintsTotal),
       unit: "%",
-      label: "من الشكاوى الواردة عن طريق الحضور الشخصي والتسليم باليد",
+      label: "من الشكاوى والبلاغات الواردة عن طريق الحضور الشخصي والتسليم باليد",
       labelEn: "of complaints received by in-person attendance and hand delivery",
       isRatio: true,
       note: all ? "1086 شكوى من إجمالي 2923" : `${nf(attendanceSum)} من ${nf(complaintsTotal)}`,
@@ -300,7 +301,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "electronic",
       value: pct(electronicSum, complaintsTotal),
       unit: "%",
-      label: "من الشكاوى الواردة عبر الوسائل والتطبيقات الإلكترونية",
+      label: "من الشكاوى والبلاغات الواردة عبر الوسائل والتطبيقات الإلكترونية",
       labelEn: "of complaints received via electronic means and applications",
       isRatio: true,
       note: all ? "1634 شكوى من إجمالي 2923" : `${nf(electronicSum)} من ${nf(complaintsTotal)}`,
@@ -309,8 +310,8 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "forgery-files",
       value: pct(forgeryInv, totalReferredByCrime),
       unit: "%",
-      label: "من الملفات التحقيقية المحالة إلى النيابة عن جريمة التزوير",
-      labelEn: "of investigation files referred to the Prosecution for forgery",
+      label: "من الملفات التحقيقية المحالة إلى نيابة مكافحة الفساد عن جريمة التزوير",
+      labelEn: "of investigation files referred to the Anti-Corruption Prosecution for forgery",
       isRatio: true,
       note: all
         ? `${nf(forgeryInv)} من إجمالي ${nf(totalReferredByCrime)} ملفاً`
@@ -320,16 +321,18 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "suspects",
       value: nf(suspects),
       unit: "",
-      label: "عدد المحالين من الهيئة لنيابة",
-      labelEn: "Number referred by the Commission to the Prosecution",
+      label: "عدد المحالين من هيئة مكافحة الفساد لنيابة",
+      labelEn:
+        "Number referred by the Anti-Corruption Commission to the Anti-Corruption Prosecution",
       note: suspectsNote,
     },
     {
       id: "pacc-source",
       value: pct(paccSrc, paccSrcTotal),
       unit: "%",
-      label: "من ملفات التحقيق الجزائي الواردة إلى النيابة من الهيئة",
-      labelEn: "of criminal investigation files received by the Prosecution from the Commission",
+      label: "من ملفات التحقيق الجزائي الواردة إلى نيابة مكافحة الفساد من هيئة مكافحة الفساد",
+      labelEn:
+        "of criminal investigation files received by the Anti-Corruption Prosecution from the Anti-Corruption Commission",
       isRatio: true,
       note: all
         ? `${nf(paccSrc)} من إجمالي ${nf(paccSrcTotal)} قضية واردة`
@@ -339,15 +342,15 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "to-court",
       value: nf(toCourtTotalAll),
       unit: "",
-      label: "عدد الأفراد المحالين إلى محكمة جرائم الفساد",
-      labelEn: "Number of individuals referred to the Corruption Crimes Court",
+      label: "عدد الأفراد المحالين إلى محكمة مكافحة الفساد",
+      labelEn: "Number of individuals referred to the Anti-Corruption Court",
       note: `إضافة إلى ${nf(toCourtLegal)} أشخاص معنويين`,
     },
     {
       id: "court-top-crime",
       value: pct(forgeryCourt, courtTotalReferred),
       unit: "%",
-      label: "من الجرائم المحالة إلى المحكمة كيّفت على أنها تزوير",
+      label: "من الجرائم المحالة إلى محكمة مكافحة الفساد كيّفت على أنها تزوير",
       labelEn: "of crimes referred to court classified as forgery",
       isRatio: true,
       note: `${nf(forgeryCourt)} من إجمالي ${nf(courtTotalReferred)} ملفاً محالاً للمحكمة`,
@@ -356,7 +359,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "male-share",
       value: pct(toCourtMale, toCourtTotalAll),
       unit: "%",
-      label: "نسبة الذكور ضمن المتهمين المحالين إلى المحكمة",
+      label: "نسبة الذكور ضمن المتهمين المحالين إلى محكمة مكافحة الفساد",
       labelEn: "Share of males among defendants referred to court",
       isRatio: true,
       note: `${nf(toCourtMale)} ذكراً من إجمالي ${nf(toCourtTotalAll)} أفراد`,
@@ -365,7 +368,7 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       id: "conviction-rate",
       value: pct(convictionCount, verdictTotal),
       unit: "%",
-      label: "نسبة الإدانات ضمن القضايا المفصولة بحكم في المحكمة",
+      label: "نسبة الإدانات ضمن القضايا المفصولة بحكم في محكمة مكافحة الفساد",
       labelEn: "Share of convictions among cases settled by verdict",
       isRatio: true,
       note: `${nf(convictionCount)} إدانة من إجمالي ${nf(verdictTotal)} قضية مفصولة`,

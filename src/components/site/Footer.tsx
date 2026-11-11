@@ -9,22 +9,22 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 text-start lg:px-8">
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="inline-flex items-center gap-3">
+            <div className="inline-flex flex-col items-center gap-2">
               <a
                 href="https://www.pacc.ps/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t("footer.officialSite")}
-                className="focus-ring flex items-center rounded-xl bg-white p-3 shadow-elevated"
+                className="focus-ring flex items-center"
               >
-                <img src="/pacc-logo.png" alt="PACC" className="h-24 w-auto object-contain" />
+                <img src="/pacc-logo.png" alt="PACC" className="h-16 w-20 object-contain" />
               </a>
               <Link
                 to="/"
                 aria-label={t("common.logoAlt")}
-                className="focus-ring flex items-center rounded-xl bg-white p-3 shadow-elevated"
+                className="focus-ring flex items-center"
               >
-                <img src="/observatory-logo.png" alt="" className="h-24 w-auto object-contain" />
+                <img src="/observatory-logo.png" alt="" className="h-16 w-20 object-contain" />
               </Link>
             </div>
             <p className="mt-5 max-w-md text-sm leading-8 text-white/85 md:text-base">

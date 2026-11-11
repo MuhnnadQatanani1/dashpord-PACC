@@ -18,6 +18,7 @@ import {
   CourtVerdictsChart,
   ConvictedCountChart,
 } from "@/components/site/EnforcementCharts";
+import { IndicatorSource } from "@/components/site/IndicatorSource";
 import { DataTable } from "@/components/site/DataTable";
 import { getDashboardSummary } from "@/lib/enforcement-kpis";
 import { dashboardData, type SubTable } from "@/data/dashboardData";
@@ -127,16 +128,14 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 5,
-    title: "الملفات التحقيقية لدى الهيئة حسب التكييف القانوني",
+    title: "الملفات التحقيقية لدى هيئة مكافحة الفساد حسب التكييف القانوني",
     titleKey: "dash2.ind5T",
     subtitle: "مرتب تنازلياً حسب الحجم، مع فلتر سنة",
     kpi: "إجمالي 1049",
     dataKey: "investigationFilesByQualification",
     Chart: InvestigationFilesChart,
     table: () => dashboardData.investigationFilesByQualification,
-    note: [
-      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
-    ],
+    note: [{ label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" }],
     noteEn: [
       { label: "Note:", text: "May include investigation files carried over from previous years" },
     ],
@@ -145,7 +144,7 @@ const INDICATORS: IndicatorDef[] = [
     id: 6,
     title: "عدد الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد",
     titleKey: "dash2.ind6T",
-    subtitle: "الإجمالي لدى الهيئة حسب النتيجة (حفظ / عدم اختصاص / إحالة)",
+    subtitle: "الإجمالي لدى هيئة مكافحة الفساد حسب النتيجة (حفظ / عدم اختصاص / إحالة)",
     kpi: "إجمالي 2676",
     dataKey: "completedComplaints",
     Chart: CompletedComplaintsChart,
@@ -155,61 +154,61 @@ const INDICATORS: IndicatorDef[] = [
       { label: "", text: "يتوفر تفصيلان إضافيان: قبل التحقيق وبعد التحقيق." },
     ],
     noteEn: [
-      { label: "Note:", text: "May include complaints and reports carried over from previous years" },
-      { label: "", text: "Two additional breakdowns are available: before and after investigation." },
+      {
+        label: "Note:",
+        text: "May include complaints and reports carried over from previous years",
+      },
+      {
+        label: "",
+        text: "Two additional breakdowns are available: before and after investigation.",
+      },
     ],
   },
   {
     id: 7,
-    title: "الملفات المحالة لنيابة جرائم الفساد حسب المصدر",
+    title: "الملفات المحالة لنيابة مكافحة الفساد حسب المصدر",
     titleKey: "dash2.ind7T",
     subtitle: "هيئة / النائب العام / منبثقة عن قضية / واردة من جهات أخرى",
     kpi: "إجمالي 263 قضية",
     dataKey: "filesReferredToProsecutionBySource",
     Chart: FilesReferredBySourceChart,
     table: () => dashboardData.filesReferredToProsecutionBySource,
-    note: [
-      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
-    ],
+    note: [{ label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" }],
     noteEn: [
       { label: "Note:", text: "May include investigation files carried over from previous years" },
     ],
   },
   {
     id: 8,
-    title: "ملفات النيابة المحالة للمحكمة حسب الجرم",
+    title: "ملفات نيابة مكافحة الفساد المحالة لمحكمة مكافحة الفساد حسب الجرم",
     titleKey: "dash2.ind8T",
     subtitle: "أعمدة أفقية مع فلتر سنة (تُتجاهل القيم غير المتوفرة)",
     kpi: "إجمالي 458",
     dataKey: "prosecutionFilesReferredToCourtByCrime",
     Chart: CourtByCrimeChart,
     table: () => dashboardData.prosecutionFilesReferredToCourtByCrime,
-    note: [
-      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
-    ],
+    note: [{ label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" }],
     noteEn: [
       { label: "Note:", text: "May include investigation files carried over from previous years" },
     ],
   },
   {
     id: 9,
-    title: "ملفات النيابة المنجزة حسب الإجراء",
+    title: "ملفات نيابة مكافحة الفساد المنجزة حسب الإجراء",
     titleKey: "dash2.ind9T",
-    subtitle: "إحالة للمحكمة / حفظ / ضم / إحالة لنيابات أخرى",
+    subtitle: "إحالة لمحكمة مكافحة الفساد / حفظ / ضم / إحالة لنيابات أخرى",
     kpi: "إجمالي 219",
     dataKey: "prosecutionFilesCompletedByProcedure",
     Chart: FilesCompletedByProcedureChart,
     table: () => dashboardData.prosecutionFilesCompletedByProcedure,
-    note: [
-      { label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" },
-    ],
+    note: [{ label: "ملاحظة:", text: "قد تشمل ملفات تحقيقية مدورة من سنوات سابقة" }],
     noteEn: [
       { label: "Note:", text: "May include investigation files carried over from previous years" },
     ],
   },
   {
     id: 10,
-    title: "المتهمون المحالون لمحكمة جرائم الفساد حسب الجنس",
+    title: "المتهمون المحالون لمحكمة مكافحة الفساد حسب الجنس",
     titleKey: "dash2.ind10T",
     subtitle: "أفراد ذكر / أنثى",
     kpi: "إجمالي 310 أفراد",
@@ -239,7 +238,7 @@ const INDICATORS: IndicatorDef[] = [
   },
   {
     id: 12,
-    title: "عدد المحكوم عليهم (المدانين) في محكمة جرائم الفساد",
+    title: "عدد المحكوم عليهم (المدانين) في محكمة مكافحة الفساد",
     titleKey: "dash2.ind12T",
     subtitle: "تطور عدد المدانين حسب السنة",
     kpi: "إجمالي 45 مداناً",
@@ -382,6 +381,7 @@ function IndicatorCard({ ind, selected }: { ind: IndicatorDef; selected: YearFil
             </div>
           </div>
         )}
+        <IndicatorSource dataKey={ind.dataKey} years={selected} />
         {notes.length > 0 && (
           <div className="note mt-3">
             <Info className="note-icon" />

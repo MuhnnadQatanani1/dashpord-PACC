@@ -15,7 +15,6 @@ const NAV: NavItem[] = [
   {
     label: "nav.about",
     children: [
-      { to: "/commission", label: "nav.commission" },
       { to: "/about", label: "nav.observatory" },
       { to: "/concepts", label: "nav.concepts" },
     ],
@@ -54,14 +53,9 @@ function isGroup(item: NavItem): item is NavGroup {
 const SEARCH_ITEMS: Array<NavLeaf & { keywords: string }> = [
   { to: "/", label: "nav.home", keywords: "الرئيسية home المرصد الوطني مؤشرات الفساد" },
   {
-    to: "/commission",
-    label: "nav.commission",
-    keywords: "هيئة مكافحة الفساد commission pacc اختصاصات",
-  },
-  {
     to: "/about",
     label: "nav.observatory",
-    keywords: "عن المرصد observatory رؤية رسالة منهجية",
+    keywords: "من نحن عن المرصد هيئة مكافحة الفساد observatory pacc about us رؤية رسالة منهجية",
   },
   {
     to: "/concepts",
@@ -266,7 +260,7 @@ export function Navbar() {
   return (
     <header className="top fixed inset-x-0 top-0 z-[9999] bg-navy">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex shrink-0 flex-col items-center gap-1">
           <a
             href="https://www.pacc.ps/"
             target="_blank"
@@ -274,17 +268,13 @@ export function Navbar() {
             aria-label={t("footer.officialSite")}
             className="focus-ring flex items-center rounded-md"
           >
-            <img
-              src="/pacc-logo.png"
-              alt="PACC"
-              className="h-16 w-auto shrink-0 rounded bg-white object-contain"
-            />
+            <img src="/pacc-logo.png" alt="PACC" className="h-8 w-14 shrink-0 object-contain" />
           </a>
           <Link to="/" className="focus-ring flex items-center rounded-md">
             <img
               src="/observatory-logo.png"
               alt={t("common.logoAlt")}
-              className="h-16 w-auto shrink-0 rounded bg-white object-contain"
+              className="h-8 w-14 shrink-0 object-contain"
             />
           </Link>
         </div>

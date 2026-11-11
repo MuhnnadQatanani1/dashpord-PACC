@@ -227,14 +227,14 @@ export const complaintSectors: YearSeries[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Sheet 34 — Corruption Crimes Prosecution (official form no. 1)
+// Sheet 34 — Anti-Corruption Prosecution (official form no. 1)
 // ---------------------------------------------------------------------------
 export const prosecution: YearSeries[] = [
   { label: "القضايا الواردة — من هيئة مكافحة الفساد", y2022: 58, y2023: 35, y2024: 31, y2025: 28 },
   { label: "القضايا الواردة — من النائب العام", y2022: 29, y2023: 17, y2024: 12, y2025: 13 },
   { label: "المشتبه بهم المحالون — ذكور", y2022: 132, y2023: 88, y2024: 80, y2025: 79 },
   { label: "المشتبه بهم المحالون — إناث", y2022: 17, y2023: 9, y2024: 5, y2025: 1 },
-  { label: "منجزة — إحالة لمحكمة جرائم الفساد", y2022: 31, y2023: 39, y2024: 35, y2025: 34 },
+  { label: "منجزة — إحالة لمحكمة مكافحة الفساد", y2022: 31, y2023: 39, y2024: 35, y2025: 34 },
   { label: "منجزة — حفظ", y2022: 11, y2023: 20, y2024: 18, y2025: 11 },
   { label: "منجزة — إحالة لجهات أخرى", y2022: 2, y2023: 5, y2024: 3, y2025: 5 },
 ];
@@ -247,7 +247,7 @@ export const prosecutionCases = [
   { year: "2025", received: 41, completed: 50, rate: 122.0 },
 ];
 
-// Sheets 8 · 9 · 10 — Corruption Crimes Court
+// Sheets 8 · 9 · 10 — Anti-Corruption Court
 export const court = [
   { year: "2022", accused: 60, cases: 17, convictions: 7, acquittals: 9, convicted: 10 },
   { year: "2023", accused: 90, cases: 10, convictions: 6, acquittals: 4, convicted: 11 },
@@ -255,7 +255,7 @@ export const court = [
   { year: "2025", accused: 84, cases: 26, convictions: 12, acquittals: 14, convicted: 13 },
 ];
 
-// Sheet 35 — cases referred to the Corruption Crimes Court by crime type (aggregated)
+// Sheet 35 — cases referred to the Anti-Corruption Court by crime type (aggregated)
 export const courtCrimes: CrimeSlice[] = [
   { crime: "التزوير والتزييف", cases: 154 },
   { crime: "إساءة استعمال السلطة", cases: 45 },
@@ -404,7 +404,7 @@ export const monitoring: YearSeries[] = [
   },
   { label: "تقارير رصد من مصادر مفتوحة", y2022: null, y2023: null, y2024: 18, y2025: 29 },
   { label: "تقارير رصد عبر الربط البيني", y2022: null, y2023: null, y2024: 286, y2025: 296 },
-  { label: "شكاوى/بلاغات معتمدة من نتائج الرصد", y2022: 14, y2023: 2, y2024: 0, y2025: 0 },
+  { label: "شكاوى وبلاغات معتمدة من نتائج الرصد", y2022: 14, y2023: 2, y2024: 0, y2025: 0 },
 ];
 
 export const seizedFunds: YearSeries[] = [
@@ -594,15 +594,15 @@ export const datasets: DatasetItem[] = [
   },
   {
     id: "prosecution",
-    name: "نيابة جرائم الفساد (شيت 34 و7)",
-    description: "القضايا الواردة والمنجزة والمشتبه بهم لدى نيابة جرائم الفساد ونسبة الإنجاز.",
+    name: "نيابة مكافحة الفساد (شيت 34 و7)",
+    description: "القضايا الواردة والمنجزة والمشتبه بهم لدى نيابة مكافحة الفساد ونسبة الإنجاز.",
     updated: "2026-01-15",
     format: "CSV",
     rows: 12,
   },
   {
     id: "court",
-    name: "محكمة جرائم الفساد (شيت 8–10 و35)",
+    name: "محكمة مكافحة الفساد (شيت 8–10 و35)",
     description:
       "المتهمون المحالون، القضايا المفصولة بحكم، المدانون، وتوزيع القضايا حسب نوع الجرم.",
     updated: "2026-01-15",
@@ -659,7 +659,7 @@ export const dataStories: DataStory[] = [
     id: "verdicts-doubling",
     title: "تضاعف عدد القضايا المفصولة بحكم في 2025",
     summary:
-      "تكشف بيانات محكمة جرائم الفساد (شيت 9) قفزة نوعية في 2025 حيث تضاعف عدد القضايا المفصولة إلى 26 قضية، بزيادة 100% عن 2024 و53% عن 2022. الإدانات وحدها بلغت 12 حكماً، وهو الأعلى ضمن الفترة المرصودة.",
+      "تكشف بيانات محكمة مكافحة الفساد (شيت 9) قفزة نوعية في 2025 حيث تضاعف عدد القضايا المفصولة إلى 26 قضية، بزيادة 100% عن 2024 و53% عن 2022. الإدانات وحدها بلغت 12 حكماً، وهو الأعلى ضمن الفترة المرصودة.",
     headline: "×2",
     headlineLabel: "قضايا مفصولة (2024 → 2025)",
     series: [
@@ -765,9 +765,9 @@ export const indicators: IndicatorGauge[] = [
   {
     id: "enf-4",
     category: "إنفاذ",
-    label: "إنجاز نيابة جرائم الفساد",
+    label: "إنجاز نيابة مكافحة الفساد",
     value: 122,
-    description: "نسبة القضايا المنجزة لدى نيابة جرائم الفساد عام 2025 (شيت 7).",
+    description: "نسبة القضايا المنجزة لدى نيابة مكافحة الفساد عام 2025 (شيت 7).",
   },
   {
     id: "int-1",

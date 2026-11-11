@@ -12,7 +12,7 @@ export const dataEn: Record<string, string> = {
   "الملفات التحقيقية الواردة": "Received investigation files",
   "الملفات المحالة للنائب العام": "Files referred to the Attorney General",
   "القضايا المفصولة بحكم": "Cases concluded with a verdict",
-  "المدانون في محكمة الفساد": "Convicted persons in the Anti-Corruption Court",
+  "المدانون في محكمة مكافحة الفساد": "Convicted persons in the Anti-Corruption Court",
 
   // Journey milestones
   "اعتماد منهجية المؤشرات": "Adoption of the indicator methodology",
@@ -37,7 +37,7 @@ export const dataEn: Record<string, string> = {
   المجموع: "Total",
   المصدر: "Source",
   "نوع التشريع": "Legislation type",
-  "قرار بقانون": "Decree-law",
+  "قانون/قرار بقانون": "Law / decree-law",
   "مرسوم أو قرار رئاسي": "Presidential decree or decision",
   "نظام أو لائحة أو قرار مجلس وزراء": "Regulation, bylaw, or cabinet decision",
   "تعليمات أو قرارات تنظيمية": "Instructions or regulatory decisions",
@@ -100,7 +100,7 @@ export const dataEn: Record<string, string> = {
   "تسجيل 234 ملفاً تحقيقياً و879 شكوى وبلاغاً؛ اعتماد الجداول الإحصائية الموحّدة لأول مرة.":
     "Recording 234 investigation files and 879 complaints; unified statistical tables adopted for the first time.",
   "توسيع منظومة المؤشرات": "Expanding the indicator system",
-  "إضافة مؤشرات جديدة تشمل جرائم الفساد حسب التكييف الأولي، والشكاوى حسب مصدر التقديم ودرجة المشتكى عليه.":
+  "إضافة مؤشرات جديدة تشمل جرائم الفساد حسب التكييف الأولي، والشكاوى والبلاغات حسب مصدر التقديم ودرجة المشتكى عليه.":
     "Adding new indicators covering corruption crimes by preliminary classification, and complaints by submission source and defendant rank.",
   "التدقيق ومعالجة الفجوات": "Auditing and addressing gaps",
   "توحيد قائمة المقياس وتوثيق التحفظات على أرقام محددة وتصحيحها ضمن نسخ محدَّثة، ورصد بيانات غزة الاستثنائية.":
@@ -112,83 +112,77 @@ export const dataEn: Record<string, string> = {
   "تطوير المرصد التفاعلي الرقمي، ربط البيانات مع الجهات الشريكة، ونشر بيانات مفتوحة بصيغ قابلة للتحليل الآلي.":
     "Developing the interactive digital observatory, linking data with partner entities, and publishing open data in machine-readable formats.",
 
-  // Home KPI cards
-  "الشكاوى والبلاغات الواردة": "Received complaints and reports",
-  "الملفات التحقيقية الواردة": "Received investigation files",
-  "الملفات المحالة للنائب العام": "Files referred to the Attorney General",
-  "القضايا المفصولة بحكم": "Cases concluded with a verdict",
-  "المدانون في محكمة الفساد": "Convicted persons in the Corruption Court",
-
   // Data quality
   "يناير 2026": "January 2026",
 
   // Indicator entities
   "هيئة مكافحة الفساد": "Anti-Corruption Commission",
-  "نيابة جرائم الفساد": "Corruption Crimes Prosecution",
-  "محكمة جرائم الفساد": "Corruption Crimes Court",
+  "نيابة مكافحة الفساد": "Anti-Corruption Prosecution",
+  "محكمة مكافحة الفساد": "Anti-Corruption Court",
 
   // Data stories
-  "اتجاه الشكاوى الواردة لهيئة مكافحة الفساد":
+  "اتجاه الشكاوى والبلاغات الواردة لهيئة مكافحة الفساد":
     "Trend of complaints received by the Anti-Corruption Commission",
-  "رصدت الهيئة 2,923 شكوى وبلاغاً خلال الفترة 2022 – 2025، وسجّل عام 2022 أعلى عدد، ثم انخفضت الأرقام في 2023 وعادت للارتفاع التدريجي في 2024 و2025.":
+  "رصدت هيئة مكافحة الفساد 2,923 شكوى وبلاغاً خلال الفترة 2022 – 2025، وسجّل عام 2022 أعلى عدد، ثم انخفضت الأرقام في 2023 وعادت للارتفاع التدريجي في 2024 و2025.":
     "The Commission recorded 2,923 complaints and reports during 2022–2025, with 2022 recording the highest number, followed by a decline in 2023 and a gradual rise again in 2024 and 2025.",
   "شكوى وبلاغاً في عام 2022 (الأعلى خلال الفترة)":
     "complaints and reports in 2022 (the highest in the period)",
   "إساءة استعمال السلطة في صدارة تكييفات الفساد": "Abuse of power leads corruption classifications",
-  "يشكّل تكييف إساءة استعمال السلطة النسبة الأكبر من شبهات الفساد الواردة للهيئة خلال الفترة 2022 – 2025، متفوقاً على الرشوة والاختلاس والتزوير مجتمعة.":
+  "يشكّل تكييف إساءة استعمال السلطة النسبة الأكبر من شبهات الفساد الواردة لهيئة مكافحة الفساد خلال الفترة 2022 – 2025، متفوقاً على الرشوة والاختلاس والتزوير مجتمعة.":
     "Abuse of power accounts for the largest share of corruption suspicions received by the Commission during 2022–2025, surpassing bribery, embezzlement and forgery combined.",
   "من إجمالي الشكاوى والبلاغات الواردة خلال الفترة":
     "of all complaints and reports received during the period",
-  "معظم الشكاوى المنجزة تُحفظ لدى الهيئة":
+  "معظم الشكاوى والبلاغات المنجزة تُحفظ لدى هيئة مكافحة الفساد":
     "Most completed complaints are archived by the Commission",
-  "من بين القرارات الصادرة عن الهيئة في الشكاوى والبلاغات المنجزة، يذهب الجزء الأكبر نحو الحفظ، بينما تُحال نسبة أقل إلى النائب العام للتحقيق.":
+  "من بين القرارات الصادرة عن هيئة مكافحة الفساد في الشكاوى والبلاغات المنجزة، يذهب الجزء الأكبر نحو الحفظ، بينما تُحال نسبة أقل إلى النائب العام للتحقيق.":
     "Among the decisions issued by the Commission on completed complaints, the largest share is archived, while a smaller share is referred to the Attorney General for investigation.",
   "قرارات الحفظ من إجمالي القرارات الصادرة خلال الفترة":
     "of the total decisions issued during the period were archiving decisions",
-  "القنوات الإلكترونية تتصدر تقديم الشكاوى": "Electronic channels lead complaint submission",
-  "أصبحت الوسائل والتطبيقات الإلكترونية القناة الأولى لتقديم الشكاوى والبلاغات للهيئة خلال الفترة 2022 – 2025، متجاوزة الحضور الشخصي والجهات الرسمية.":
+  "القنوات الإلكترونية تتصدر تقديم الشكاوى والبلاغات":
+    "Electronic channels lead complaint submission",
+  "أصبحت الوسائل والتطبيقات الإلكترونية القناة الأولى لتقديم الشكاوى والبلاغات لهيئة مكافحة الفساد خلال الفترة 2022 – 2025، متجاوزة الحضور الشخصي والجهات الرسمية.":
     "Electronic means and applications became the leading channel for submitting complaints to the Commission during 2022–2025, surpassing in-person attendance and official channels.",
-  "من إجمالي الشكاوى الواردة عبر الوسائل الإلكترونية":
+  "من إجمالي الشكاوى والبلاغات الواردة عبر الوسائل الإلكترونية":
     "of all complaints received through electronic means",
-  "المشتبه بهم المحالون من الهيئة إلى النيابة":
+  "المشتبه بهم المحالون من هيئة مكافحة الفساد إلى نيابة مكافحة الفساد":
     "Suspects referred by the Commission to the Prosecution",
-  "بلغ إجمالي المشتبه بهم المحالين من الهيئة إلى نيابة جرائم الفساد خلال الفترة 2022 – 2025 نحو 427 مشتبهاً به، مع تذبذب الأرقام بين الأعوام.":
-    "A total of about 427 suspects were referred by the Commission to the Corruption Crimes Prosecution during 2022–2025, with figures fluctuating between years.",
+  "بلغ إجمالي المشتبه بهم المحالين من هيئة مكافحة الفساد إلى نيابة مكافحة الفساد خلال الفترة 2022 – 2025 نحو 427 مشتبهاً به، مع تذبذب الأرقام بين الأعوام.":
+    "A total of about 427 suspects were referred by the Commission to the Anti-Corruption Prosecution during 2022–2025, with figures fluctuating between years.",
   "مشتبهاً به محالاً خلال الفترة 2022 – 2025": "suspects referred during 2022–2025",
-  "أحكام الإدانة في محكمة جرائم الفساد": "Conviction verdicts in the Corruption Crimes Court",
-  "فصلت محكمة جرائم الفساد 69 قضية بحكم خلال الفترة 2022 – 2025، ومثّلت أحكام الإدانة نحو 33 قضية، مع تسجيل عام 2025 أعلى عدد من الأحكام.":
-    "The Corruption Crimes Court concluded 69 cases with verdicts during 2022–2025, with conviction verdicts covering about 33 cases and 2025 recording the highest number of verdicts.",
+  "أحكام الإدانة في محكمة مكافحة الفساد": "Conviction verdicts in the Anti-Corruption Court",
+  "فصلت محكمة مكافحة الفساد 69 قضية بحكم خلال الفترة 2022 – 2025، ومثّلت أحكام الإدانة نحو 33 قضية، مع تسجيل عام 2025 أعلى عدد من الأحكام.":
+    "The Anti-Corruption Court concluded 69 cases with verdicts during 2022–2025, with conviction verdicts covering about 33 cases and 2025 recording the highest number of verdicts.",
   "قضية إدانة من إجمالي القضايا المفصولة بحكم خلال الفترة":
     "conviction cases out of all cases concluded with a verdict during the period",
 
   // Spotlight indicators
   "نسبة الإناث الذين تقدمو بشكاوى لهيئة مكافحة الفساد":
     "Share of female complainants to the Anti-Corruption Commission",
-  "نسبة الشكاوى التي كان تكييفها الاولي إساءة استعمال السلطة":
+  "نسبة الشكاوى والبلاغات التي كان تكييفها الاولي إساءة استعمال السلطة":
     "Share of complaints initially classified as abuse of power",
-  "نسبة الشكاوى التي كان تكييفها الاولي الرشوة":
+  "نسبة الشكاوى والبلاغات التي كان تكييفها الاولي الرشوة":
     "Share of complaints initially classified as bribery",
-  "نسبة الشكاوى التي كان تكييفها الاولي الواسطة والمحسوبية والمحاباة":
+  "نسبة الشكاوى والبلاغات التي كان تكييفها الاولي الواسطة والمحسوبية والمحاباة":
     "Share of complaints initially classified as patronage, favoritism and nepotism",
-  "نسبة الشكاوى الواردة من خلال الوسائل والقنوات الإلكترونية":
+  "نسبة الشكاوى والبلاغات الواردة من خلال الوسائل والقنوات الإلكترونية":
     "Share of complaints received via electronic means and channels",
   "نسبة الشكاوى والبلاغات المحفوظة لدى هيئة مكافحة الفساد":
     "Share of complaints archived by the Anti-Corruption Commission",
-  "نسبة القضايا التحقيقية الواردة من الهيئة لنيابة جرائم الفساد":
-    "Share of investigation cases received by the Corruption Crimes Prosecution from the Commission",
-  "نسبة الذكور المحالين من النيابة لمحكمة جرائم الفساد":
-    "Share of males referred by the Prosecution to the Corruption Crimes Court",
-  "نسبة الملفات التحقيقية المحفوظة لدى النيابة":
+  "نسبة القضايا التحقيقية الواردة من هيئة مكافحة الفساد لنيابة مكافحة الفساد":
+    "Share of investigation cases received by the Anti-Corruption Prosecution from the Commission",
+  "نسبة الذكور المحالين من نيابة مكافحة الفساد لمحكمة مكافحة الفساد":
+    "Share of males referred by the Prosecution to the Anti-Corruption Court",
+  "نسبة الملفات التحقيقية المحفوظة لدى نيابة مكافحة الفساد":
     "Share of investigation files archived by the Prosecution",
-  "نسبة الملفات التحقيقية المحالة للمحكمة حسب اعلى تكييف":
+  "نسبة الملفات التحقيقية المحالة لمحكمة مكافحة الفساد حسب اعلى تكييف":
     "Share of investigation files referred to the Court by top classification",
   "نسبة الإدانة من الأحكام": "Conviction rate among verdicts",
 
   // Spotlight notes
-  "من إجمالي الشكاوى ذات الجنس المحدد (شيت 28).":
+  "من إجمالي الشكاوى والبلاغات ذات الجنس المحدد (شيت 28).":
     "of all complaints with a specified gender (Sheet 28).",
   "من إجمالي الملفات الواردة 2022-2025 (شيت 21).": "of all files received 2022–2025 (Sheet 21).",
-  "من إجمالي الشكاوى الواردة 2022-2025 (شيت 31).":
+  "من إجمالي الشكاوى والبلاغات الواردة 2022-2025 (شيت 31).":
     "of all complaints received 2022–2025 (Sheet 31).",
   "قرارات الحفظ من إجمالي القرارات الصادرة 2022-2025 (شيت 27).":
     "archiving decisions of all decisions issued 2022–2025 (Sheet 27).",
@@ -198,7 +192,7 @@ export const dataEn: Record<string, string> = {
     "of all suspects referred 2022–2025 (Sheet 34).",
   "قضايا الحفظ من إجمالي القضايا المنجزة 2022-2025 (شيت 34).":
     "archived cases of all completed cases 2022–2025 (Sheet 34).",
-  "قضايا الإحالة للمحكمة من إجمالي القضايا المنجزة 2022-2025 (شيت 34).":
+  "قضايا الإحالة لمحكمة مكافحة الفساد من إجمالي القضايا المنجزة 2022-2025 (شيت 34).":
     "court referral cases of all completed cases 2022–2025 (Sheet 34).",
   "المدانون من إجمالي القضايا المفصولة بحكم 2022-2025 (شيتات 8-10).":
     "convicted persons of all cases concluded with a verdict 2022–2025 (Sheets 8–10).",
@@ -209,7 +203,7 @@ export const dataEn: Record<string, string> = {
   الفاعلية: "Effectiveness",
   الشفافية: "Transparency",
   "العدالة وعدم التمييز": "Equity and non-discrimination",
-  "إلزام المؤسسات العامة والمسؤولين ببيان أعمالهم وقراراتهم ومحاسبتهم على أدائهم، عبر وحدات الرقابة الداخلية، ونظر الشكاوى والتظلمات، ومتابعة تنفيذ التوصيات الصادرة عن التقارير والدراسات والأبحاث.":
+  "إلزام المؤسسات العامة والمسؤولين ببيان أعمالهم وقراراتهم ومحاسبتهم على أدائهم، عبر وحدات الرقابة الداخلية، ونظر الشكاوى والبلاغات والتظلمات، ومتابعة تنفيذ التوصيات الصادرة عن التقارير والدراسات والأبحاث.":
     "Holding public institutions and officials accountable for their actions and decisions through internal control units, examining complaints and grievances, and following up on the implementation of recommendations from reports, studies and research.",
   "إشراك المجتمع المدني والقطاع الخاص والإعلام والمؤسسات التعليمية في مساءلة المسؤولين ومراقبة الأداء العام، ونشر ثقافة النزاهة ومكافحة الفساد ودعم جهود الوقاية منه.":
     "Engaging civil society, the private sector, media and educational institutions in holding officials accountable, monitoring public performance, spreading a culture of integrity and anti-corruption, and supporting prevention efforts.",
@@ -302,7 +296,7 @@ export const dataEn: Record<string, string> = {
   "غسل الأموال": "Money laundering",
   "الاستثمار الوظيفي / الحصول على منفعة شخصية / الاتجار غير المشروع":
     "Position exploitation / obtaining personal benefit / unlawful trading",
-  "إحالة لمحكمة جرائم الفساد": "Referred to the Corruption Crimes Court",
+  "إحالة لمحكمة مكافحة الفساد": "Referred to the Anti-Corruption Court",
   "ضم لملفات أخرى": "Merged into other files",
   "إحالة إلى نيابات أخرى لعدم الاختصاص":
     "Referred to other prosecutor offices for lack of jurisdiction",
@@ -323,7 +317,7 @@ export const dataEn: Record<string, string> = {
     "Number of legislations/items enacted or amended annually, classified as strengthening corruption prevention, distributed by legislation type.",
   "عدد الشكاوى والبلاغات الواردة لهيئة مكافحة الفساد حسب مصدر التقديم":
     "Number of complaints and reports received by the Anti-Corruption Commission by submission source",
-  "توزيع الشكاوى والبلاغات الواردة إلى الهيئة وفق مصدر تقديم الشكوى (أفراد، مؤسسات، مجهول/غير معروف).":
+  "توزيع الشكاوى والبلاغات الواردة إلى هيئة مكافحة الفساد وفق مصدر تقديم الشكوى (أفراد، مؤسسات، مجهول/غير معروف).":
     "Distribution of complaints and reports received by the Commission by complaint submission source (individuals, institutions, unknown/anonymous).",
   "الملف الإحصائي الرسمي — شيت 28": "Official statistical file — Sheet 28",
   "عدد الشكاوى والبلاغات الواردة مصنفة حسب مصدر التقديم لكل عام.":
@@ -351,7 +345,7 @@ export const dataEn: Record<string, string> = {
     "Number of complaints and reports received, classified by receipt method for each year.",
   "عدد الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد حسب الإجراء":
     "Number of completed complaints and reports at the Anti-Corruption Commission by action",
-  "توزيع الشكاوى والبلاغات المنجزة لدى الهيئة حسب الإجراء المتخذ بشأنها (حفظ، عدم اختصاص، إحالة إلى النائب العام).":
+  "توزيع الشكاوى والبلاغات المنجزة لدى هيئة مكافحة الفساد حسب الإجراء المتخذ بشأنها (حفظ، عدم اختصاص، إحالة إلى النائب العام).":
     "Distribution of completed complaints and reports at the Commission by the action taken on them (archiving, lack of jurisdiction, referral to the Attorney General).",
   "الملف الإحصائي الرسمي — شيت 5": "Official statistical file — Sheet 5",
   "عدد الشكاوى والبلاغات المنجزة مصنفة حسب الإجراء الصادر بشأنها لكل عام.":
@@ -369,57 +363,57 @@ export const dataEn: Record<string, string> = {
     "Distribution of investigation files referred to the Attorney General by type of criminal classification.",
   "عدد الملفات المحالة مصنفة حسب نوع التكييف الجرمي لكل عام.":
     "Number of referred files, classified by type of criminal classification for each year.",
-  "عدد المشتبه بهم المحالين من الهيئة إلى نيابة مكافحة الفساد":
+  "عدد المشتبه بهم المحالين من هيئة مكافحة الفساد إلى نيابة مكافحة الفساد":
     "Number of suspects referred by the Commission to the Corruption Prosecution",
-  "عدد القضايا التحقيقية الواردة إلى نيابة جرائم الفساد من هيئة مكافحة الفساد (المشتبه بهم المحالين للنيابة).":
-    "Number of investigation cases received by the Corruption Crimes Prosecution from the Anti-Corruption Commission (suspects referred to the Prosecution).",
+  "عدد القضايا التحقيقية الواردة إلى نيابة مكافحة الفساد من هيئة مكافحة الفساد (المشتبه بهم المحالين لنيابة مكافحة الفساد).":
+    "Number of investigation cases received by the Anti-Corruption Prosecution from the Anti-Corruption Commission (suspects referred to the Prosecution).",
   "الملف الإحصائي الرسمي — شيت 6": "Official statistical file — Sheet 6",
-  "عدد المشتبه بهم المحالين إلى النيابة لكل عام.":
+  "عدد المشتبه بهم المحالين إلى نيابة مكافحة الفساد لكل عام.":
     "Number of suspects referred to the Prosecution for each year.",
-  "عدد طلبات الحماية الواردة إلى الهيئة حسب الجنس":
+  "عدد طلبات الحماية الواردة إلى هيئة مكافحة الفساد حسب الجنس":
     "Number of protection requests received by the Commission by gender",
   "عدد طلبات الحماية الواردة إلى هيئة مكافحة الفساد خلال كل عام، مصنفة حسب جنس مقدم الطلب.":
     "Number of protection requests received by the Anti-Corruption Commission each year, classified by the gender of the applicant.",
   "الملف الإحصائي الرسمي — شيت 15": "Official statistical file — Sheet 15",
   "عدد طلبات الحماية الواردة مصنفة حسب الجنس (ذكور، إناث) لكل عام.":
     "Number of protection requests received, classified by gender (male, female) for each year.",
-  "عدد القضايا التحقيقية الواردة لنيابة جرائم الفساد حسب المصدر":
-    "Number of investigation cases received by the Corruption Crimes Prosecution by source",
-  "توزيع القضايا التحقيقية الواردة إلى نيابة جرائم الفساد وفق مصدر ورودها.":
-    "Distribution of investigation cases received by the Corruption Crimes Prosecution by their source.",
+  "عدد القضايا التحقيقية الواردة لنيابة مكافحة الفساد حسب المصدر":
+    "Number of investigation cases received by the Anti-Corruption Prosecution by source",
+  "توزيع القضايا التحقيقية الواردة إلى نيابة مكافحة الفساد وفق مصدر ورودها.":
+    "Distribution of investigation cases received by the Anti-Corruption Prosecution by their source.",
   "عدد القضايا الواردة مصنفة حسب المصدر (هيئة مكافحة الفساد، النائب العام، قضايا أخرى، جهات أخرى) لكل عام.":
     "Number of received cases, classified by source (Anti-Corruption Commission, Attorney General, other cases, other entities) for each year.",
-  "عدد المشتبه بهم المحالين لنيابة جرائم الفساد حسب الجنس":
-    "Number of suspects referred to the Corruption Crimes Prosecution by gender",
-  "توزيع المشتبه بهم المحالين إلى نيابة جرائم الفساد وفق الجنس (ذكور، إناث).":
-    "Distribution of suspects referred to the Corruption Crimes Prosecution by gender (male, female).",
+  "عدد المشتبه بهم المحالين لنيابة مكافحة الفساد حسب الجنس":
+    "Number of suspects referred to the Anti-Corruption Prosecution by gender",
+  "توزيع المشتبه بهم المحالين إلى نيابة مكافحة الفساد وفق الجنس (ذكور، إناث).":
+    "Distribution of suspects referred to the Anti-Corruption Prosecution by gender (male, female).",
   "عدد المشتبه بهم المحالين مصنفاً حسب الجنس لكل عام.":
     "Number of suspects referred, classified by gender for each year.",
-  "عدد القضايا المنجزة لدى نيابة جرائم الفساد حسب الإجراء":
-    "Number of completed cases at the Corruption Crimes Prosecution by action",
-  "توزيع القضايا التحقيقية المنجزة لدى النيابة حسب الإجراء (إحالة للمحكمة، حفظ، ضم لملفات أخرى، إحالة لنيابات أخرى).":
+  "عدد القضايا المنجزة لدى نيابة مكافحة الفساد حسب الإجراء":
+    "Number of completed cases at the Anti-Corruption Prosecution by action",
+  "توزيع القضايا التحقيقية المنجزة لدى نيابة مكافحة الفساد حسب الإجراء (إحالة لمحكمة مكافحة الفساد، حفظ، ضم لملفات أخرى، إحالة لنيابات أخرى).":
     "Distribution of completed investigation cases at the Prosecution by action (referral to the Court, archiving, merging into other files, referral to other prosecutor offices).",
   "الملف الإحصائي الرسمي — شيت 10": "Official statistical file — Sheet 10",
   "عدد القضايا المنجزة مصنفة حسب الإجراء لكل عام.":
     "Number of completed cases, classified by action for each year.",
-  "عدد المتهمين المحالين من نيابة جرائم الفساد إلى محكمة جرائم الفساد":
-    "Number of accused persons referred from the Corruption Crimes Prosecution to the Corruption Crimes Court",
-  "عدد المتهمين المحالين من نيابة جرائم الفساد إلى محكمة جرائم الفساد خلال كل عام.":
-    "Number of accused persons referred from the Corruption Crimes Prosecution to the Corruption Crimes Court each year.",
-  "عدد المتهمين المحالين إلى المحكمة سنوياً.":
+  "عدد المتهمين المحالين من نيابة مكافحة الفساد إلى محكمة مكافحة الفساد":
+    "Number of accused persons referred from the Anti-Corruption Prosecution to the Anti-Corruption Court",
+  "عدد المتهمين المحالين من نيابة مكافحة الفساد إلى محكمة مكافحة الفساد خلال كل عام.":
+    "Number of accused persons referred from the Anti-Corruption Prosecution to the Anti-Corruption Court each year.",
+  "عدد المتهمين المحالين إلى محكمة مكافحة الفساد سنوياً.":
     "Number of accused persons referred to the Court annually.",
-  "عدد القضايا المفصولة بحكم في محكمة جرائم الفساد حسب نتيجة الحكم":
-    "Number of cases concluded with a verdict in the Corruption Crimes Court by verdict outcome",
-  "توزيع القضايا المفصولة بحكم في محكمة جرائم الفساد وفق نتيجة الحكم (إدانة، براءة، عدم اختصاص، انقضاء الدعوى).":
-    "Distribution of cases concluded with a verdict in the Corruption Crimes Court by verdict outcome (conviction, acquittal, lack of jurisdiction, expiry of the case).",
+  "عدد القضايا المفصولة بحكم في محكمة مكافحة الفساد حسب نتيجة الحكم":
+    "Number of cases concluded with a verdict in the Anti-Corruption Court by verdict outcome",
+  "توزيع القضايا المفصولة بحكم في محكمة مكافحة الفساد وفق نتيجة الحكم (إدانة، براءة، عدم اختصاص، انقضاء الدعوى).":
+    "Distribution of cases concluded with a verdict in the Anti-Corruption Court by verdict outcome (conviction, acquittal, lack of jurisdiction, expiry of the case).",
   "الملف الإحصائي الرسمي — شيت 9": "Official statistical file — Sheet 9",
   "عدد القضايا المفصولة بحكم مصنفة حسب نتيجة الحكم لكل عام.":
     "Number of cases concluded with a verdict, classified by verdict outcome for each year.",
   "قيمة الأموال والعائدات الجرمية المحكوم بها حسب نوع العملة":
     "Value of adjudicated illicit funds and proceeds by currency type",
-  "قيمة الأموال والعائدات الجرمية المحكوم بها في أحكام محكمة جرائم الفساد، مصنفة حسب نوع العملة.":
-    "Value of illicit funds and proceeds adjudicated in the verdicts of the Corruption Crimes Court, classified by currency type.",
-  "أحكام محكمة جرائم الفساد — شيت 12": "Corruption Crimes Court verdicts — Sheet 12",
+  "قيمة الأموال والعائدات الجرمية المحكوم بها في أحكام محكمة مكافحة الفساد، مصنفة حسب نوع العملة.":
+    "Value of illicit funds and proceeds adjudicated in the verdicts of the Anti-Corruption Court, classified by currency type.",
+  "أحكام محكمة مكافحة الفساد — شيت 12": "Anti-Corruption Court verdicts — Sheet 12",
   "إجمالي القيم المحكوم بها نقداً ضمن الأحكام الصادرة، مصنفة حسب العملة.":
     "Total monetary values adjudicated within issued verdicts, classified by currency.",
 
@@ -456,7 +450,7 @@ export const dataEn: Record<string, string> = {
   // Main indicators — indicator 2
   "جودة وفاعلية التشريعات ذات العلاقة بمكافحة الفساد":
     "Quality and effectiveness of anti-corruption legislation",
-  "مؤشر يقيس مستوى جودة التشريعات ذات العلاقة بمكافحة الفساد من خلال القضاة وأعضاء النيابة العامة والعاملين في إنفاذ القانون في الهيئة والمحامين المخضرمين ممن عملوا في هذا المجال وعلى أساتذة القانون في الجامعات وأصحاب الرأي والمهتمين.":
+  "مؤشر يقيس مستوى جودة التشريعات ذات العلاقة بمكافحة الفساد من خلال القضاة وأعضاء النيابة العامة والعاملين في إنفاذ القانون في هيئة مكافحة الفساد والمحامين المخضرمين ممن عملوا في هذا المجال وعلى أساتذة القانون في الجامعات وأصحاب الرأي والمهتمين.":
     "An indicator measuring the quality of anti-corruption legislation based on judges, public prosecution members, law enforcement staff in the Commission, experienced lawyers who worked in this field, university law professors, opinion leaders and interested parties.",
   "سيتم تحديدها بالتعاون مع الجهاز المركزي للإحصاء الفلسطيني مع إمكانية المقارنة مع المعايير الدولية":
     "To be determined in cooperation with the Palestinian Central Bureau of Statistics, with the possibility of comparison with international standards",
@@ -464,7 +458,7 @@ export const dataEn: Record<string, string> = {
     "To be determined in cooperation with the Palestinian Central Bureau of Statistics",
 
   // Main indicators — indicator 3
-  "عدد الشكاوى/البلاغات الواردة لهيئة مكافحة الفساد":
+  "عدد الشكاوى والبلاغات الواردة لهيئة مكافحة الفساد":
     "Number of complaints/reports received by the Anti-Corruption Commission",
   "مؤشر يقيس عدد الشكاوى والبلاغات الواردة لهيئة مكافحة الفساد.":
     "An indicator measuring the number of complaints and reports received by the Anti-Corruption Commission.",
@@ -474,68 +468,67 @@ export const dataEn: Record<string, string> = {
     "Nature of action / gender of complainants, age, complainant's job rank, complaint submission source, initial classification of corruption suspicions, complaint receipt method, sector, complained-against entity, gender of the complained-against.",
 
   // Main indicators — indicator 4
-  "مؤشر يقيس عدد المشتبه بهم المحالين من الهيئة إلى نيابة مكافحة الفساد":
+  "مؤشر يقيس عدد المشتبه بهم المحالين من هيئة مكافحة الفساد إلى نيابة مكافحة الفساد":
     "An indicator measuring the number of suspects referred by the Commission to the Corruption Prosecution",
-  "مجموع عدد المشتبه بهم المحالين من الهيئة إلى نيابة مكافحة الفساد":
+  "مجموع عدد المشتبه بهم المحالين من هيئة مكافحة الفساد إلى نيابة مكافحة الفساد":
     "Total number of suspects referred by the Commission to the Corruption Prosecution",
   "جنس المشتبه به/ العمر/ الوظيفة/ مكان السكن على مستوى المحافظة/ مستوى التعليم/ مستوى الدخل":
     "Suspect's gender / age / occupation / place of residence at governorate level / education level / income level",
 
   // Main indicators — indicator 5
-  "عدد الملفات التحقيقية لدى الهيئة": "Number of investigation files at the Commission",
-  "مؤشر يقيس عدد الملفات التحقيقية لدى الهيئة":
+  "عدد الملفات التحقيقية لدى هيئة مكافحة الفساد": "Number of investigation files at the Commission",
+  "مؤشر يقيس عدد الملفات التحقيقية لدى هيئة مكافحة الفساد":
     "An indicator measuring the number of investigation files at the Commission",
-  "عدد الملفات التحقيقية لدى الهيئة سنوياً":
+  "عدد الملفات التحقيقية لدى هيئة مكافحة الفساد سنوياً":
     "Number of investigation files at the Commission annually",
   "طبيعة الإجراء، التكييف القانوني بعد التحقيق، عدد الشكاوى والبلاغات لكل ملف تحقيقي.":
     "Nature of action, legal classification after investigation, number of complaints and reports per investigation file.",
 
   // Main indicators — indicator 6
-  "عدد الملفات التحقيقية المنجزة لدى الهيئة":
+  "عدد الملفات التحقيقية المنجزة لدى هيئة مكافحة الفساد":
     "Number of completed investigation files at the Commission",
-  "مؤشر يقيس عدد الملفات التحقيقية المنجزة لدى الهيئة":
+  "مؤشر يقيس عدد الملفات التحقيقية المنجزة لدى هيئة مكافحة الفساد":
     "An indicator measuring the number of completed investigation files at the Commission",
-  "عدد الملفات التحقيقية المنجزة من إجمالي المسجل في سجلات الهيئة سنوياً":
+  "عدد الملفات التحقيقية المنجزة من إجمالي المسجل في سجلات هيئة مكافحة الفساد سنوياً":
     "Number of investigation files completed out of the total registered in the Commission's records annually",
   "التكييف القانوني بعد التحقيق، عدد الشكاوى والبلاغات لكل ملف تحقيقي.":
     "Legal classification after investigation, number of complaints and reports per investigation file.",
 
   // Main indicators — indicator 7
-  "عدد ملفات التحقيق الجزائي الواردة لنيابة جرائم الفساد":
-    "Number of criminal investigation files received by the Corruption Crimes Prosecution",
-  "مؤشر يقيس عدد القضايا التحقيقية الواردة لنيابة جرائم الفساد سنوياً":
-    "An indicator measuring the number of investigation cases received by the Corruption Crimes Prosecution annually",
-  "مجموع عدد القضايا التحقيقية الواردة لنيابة جرائم الفساد سنوياً":
-    "Total number of investigation cases received by the Corruption Crimes Prosecution annually",
+  "عدد ملفات التحقيق الجزائي الواردة لنيابة مكافحة الفساد":
+    "Number of criminal investigation files received by the Anti-Corruption Prosecution",
+  "مؤشر يقيس عدد القضايا التحقيقية الواردة لنيابة مكافحة الفساد سنوياً":
+    "An indicator measuring the number of investigation cases received by the Anti-Corruption Prosecution annually",
+  "مجموع عدد القضايا التحقيقية الواردة لنيابة مكافحة الفساد سنوياً":
+    "Total number of investigation cases received by the Anti-Corruption Prosecution annually",
   "مصدر ورودها، جنس المشتبه بهم المحالين، طبيعة الإجراء، التكييف القانوني بقرار الاتهام":
     "Source of receipt, gender of referred suspects, nature of action, legal classification by indictment decision",
 
   // Main indicators — indicator 8
-  "عدد المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد":
-    "Number of accused persons referred from the Corruption Crimes Prosecution to the Corruption Crimes Court",
-  "مؤشر يقيس عدد المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد":
-    "An indicator measuring the number of accused persons referred from the Corruption Crimes Prosecution to the Corruption Crimes Court",
-  "مجموع عدد المتهمين المحالين من نيابة جرائم الفساد لمحكمة جرائم الفساد":
-    "Total number of accused persons referred from the Corruption Crimes Prosecution to the Corruption Crimes Court",
+  "عدد المتهمين المحالين من نيابة مكافحة الفساد لمحكمة مكافحة الفساد":
+    "Number of accused persons referred from the Anti-Corruption Prosecution to the Anti-Corruption Court",
+  "مؤشر يقيس عدد المتهمين المحالين من نيابة مكافحة الفساد لمحكمة مكافحة الفساد":
+    "An indicator measuring the number of accused persons referred from the Anti-Corruption Prosecution to the Anti-Corruption Court",
+  "مجموع عدد المتهمين المحالين من نيابة مكافحة الفساد لمحكمة مكافحة الفساد":
+    "Total number of accused persons referred from the Anti-Corruption Prosecution to the Anti-Corruption Court",
   "الجنس/ العمر/ الوظيفة/ مكان السكن على مستوى المحافظة/ مستوى التعليم/ مستوى الدخل":
     "Gender / age / occupation / place of residence at governorate level / education level / income level",
 
   // Main indicators — indicator 9
-  "عدد القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "Number of cases concluded with a verdict in the Corruption Crimes Court",
-  "مؤشر يقيس عدد القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "An indicator measuring the number of cases concluded with a verdict in the Corruption Crimes Court",
-  "مجموع عدد القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "Total number of cases concluded with a verdict in the Corruption Crimes Court",
-  "نتيجة الحكم": "Verdict outcome",
+  "عدد القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "Number of cases concluded with a verdict in the Anti-Corruption Court",
+  "مؤشر يقيس عدد القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "An indicator measuring the number of cases concluded with a verdict in the Anti-Corruption Court",
+  "مجموع عدد القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "Total number of cases concluded with a verdict in the Anti-Corruption Court",
 
   // Main indicators — indicator 10
-  "عدد المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "Number of convicted persons in cases concluded with a verdict in the Corruption Crimes Court",
-  "مؤشر يقيس عدد المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "An indicator measuring the number of convicted persons in cases concluded with a verdict in the Corruption Crimes Court",
-  "مجموع عدد المدانين في القضايا المفصولة بحكم في محكمة جرائم الفساد":
-    "Total number of convicted persons in cases concluded with a verdict in the Corruption Crimes Court",
+  "عدد المدانين في القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "Number of convicted persons in cases concluded with a verdict in the Anti-Corruption Court",
+  "مؤشر يقيس عدد المدانين في القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "An indicator measuring the number of convicted persons in cases concluded with a verdict in the Anti-Corruption Court",
+  "مجموع عدد المدانين في القضايا المفصولة بحكم في محكمة مكافحة الفساد":
+    "Total number of convicted persons in cases concluded with a verdict in the Anti-Corruption Court",
 
   // Main indicators — indicator 11
   "قيمة الأموال والعائدات الجرمية المحكوم بها": "Value of adjudicated illicit funds and proceeds",
@@ -546,10 +539,10 @@ export const dataEn: Record<string, string> = {
   "نوع العملة، الصنف": "Currency type, category",
 
   // Main indicators — indicator 12
-  "مدة إدارة ونظر الشكوى والتصرف فيها بجميع مراحلها من لحظة استلامها وحتى الحسم بها بقرار من جهة الاختصاص أو النطق بالحكم النهائي فيها من محكمة جرائم الفساد.":
-    "Duration of managing, examining and disposing of a complaint through all its stages, from receipt until final resolution by a decision of the competent authority or a final verdict by the Corruption Crimes Court.",
-  "مؤشر يقيس المدة الزمنية التي يستغرقها نظر الشكوى من لحظة استلامها لغاية الحسم بها بقرار من جهة الاختصاص أو بحكم نهائي من محكمة جرائم الفساد":
-    "An indicator measuring the time taken to examine a complaint from receipt until final resolution by a decision of the competent authority or a final verdict by the Corruption Crimes Court",
+  "مدة إدارة ونظر الشكوى والتصرف فيها بجميع مراحلها من لحظة استلامها وحتى الحسم بها بقرار من جهة الاختصاص أو النطق بالحكم النهائي فيها من محكمة مكافحة الفساد.":
+    "Duration of managing, examining and disposing of a complaint through all its stages, from receipt until final resolution by a decision of the competent authority or a final verdict by the Anti-Corruption Court.",
+  "مؤشر يقيس المدة الزمنية التي يستغرقها نظر الشكوى من لحظة استلامها لغاية الحسم بها بقرار من جهة الاختصاص أو بحكم نهائي من محكمة مكافحة الفساد":
+    "An indicator measuring the time taken to examine a complaint from receipt until final resolution by a decision of the competent authority or a final verdict by the Anti-Corruption Court",
   "الفترة الزمنية المستغرقة لمعالجة الشكوى من تاريخ استلامها إلى تاريخ البت بها من جهات الاختصاص.":
     "The time period spent processing a complaint from its receipt date to its final resolution by the competent authorities.",
   "حسب جهة الاختصاص (هيئة، نيابة، قضاء)":
@@ -570,7 +563,7 @@ export const dataEn: Record<string, string> = {
     "Financial disclosure declarations distributed to filers in covered entities.",
   "مؤشر يقيس عدد الإقرارات الموزعة على المكلفين في الجهات الخاضعة.":
     "An indicator measuring the number of declarations distributed to filers in covered entities.",
-  "عدد الإقرارات التي قامت الهيئة بتوزيعها على المكلفين في الجهات الخاضعة خلال فترة زمنية محددة.":
+  "عدد الإقرارات التي قامت هيئة مكافحة الفساد بتوزيعها على المكلفين في الجهات الخاضعة خلال فترة زمنية محددة.":
     "Number of declarations distributed by the Commission to filers in covered entities within a specific time period.",
   "القطاع، جهة العمل": "Sector, employer",
 
@@ -578,13 +571,13 @@ export const dataEn: Record<string, string> = {
   "نسبة إقرارات الذمة المالية المستوفاة": "Share of completed financial disclosure declarations",
   "مؤشر يقيس نسبة الإقرارات المستوفاة من إجمالي مجموع الإقرارات التي تم طلبها.":
     "An indicator measuring the share of completed declarations out of the total requested declarations.",
-  "عدد الإقرارات التي طلبتها الهيئة مقسوماً على عدد الإقرارات التي استلمتها الهيئة فعلياً مضروباً بـ 100%.":
+  "عدد الإقرارات التي طلبتها هيئة مكافحة الفساد مقسوماً على عدد الإقرارات التي استلمتها هيئة مكافحة الفساد فعلياً مضروباً بـ 100%.":
     "Number of declarations requested by the Commission divided by the number actually received by the Commission, multiplied by 100%.",
   "الجنس، القطاع، جهة العمل، فئة المكلف، نوع الإقرار، الدرجة الوظيفية.":
     "Gender, sector, employer, filer category, declaration type, job rank.",
 
   // Main indicators — indicator 16
-  "عدد الأشخاص الذين تم فض إقرار الذمة المالية المرتبط بهم لأغراض الفحص بسبب شكوى أو بلاغ ورد للهيئة أو اطلاع.":
+  "عدد الأشخاص الذين تم فض إقرار الذمة المالية المرتبط بهم لأغراض الفحص بسبب شكوى أو بلاغ ورد لهيئة مكافحة الفساد أو اطلاع.":
     "Number of persons whose financial disclosure declaration was opened for examination purposes due to a complaint or report received by the Commission, or upon inspection.",
   "مؤشر يقيس عدد الأشخاص الذين تم فض إقرار الذمة المالية المرتبط بهم لأغراض الفحص بسبب ورود شكوى أو بلاغ بحقهم أو اطلاع.":
     "An indicator measuring the number of persons whose financial disclosure declaration was opened for examination purposes due to a complaint or report filed against them, or upon inspection.",
@@ -596,27 +589,28 @@ export const dataEn: Record<string, string> = {
   // Main indicators — indicator 17
   "نسبة إقرارات الذمة المالية التي تم فضها لأغراض الفحص الدوري":
     "Share of financial disclosure declarations opened for periodic examination purposes",
-  "مؤشر يقيس نسبة إقرارات الذمة المالية التي تم فضها لأغراض الفحص من إجمالي مجموع الإقرارات المستلمة لسنة ما ومن إجمالي مجموع الإقرارات بالهيئة":
+  "مؤشر يقيس نسبة إقرارات الذمة المالية التي تم فضها لأغراض الفحص من إجمالي مجموع الإقرارات المستلمة لسنة ما ومن إجمالي مجموع الإقرارات بهيئة مكافحة الفساد":
     "An indicator measuring the share of financial disclosure declarations opened for examination purposes out of the total declarations received for a given year and out of the total declarations at the Commission",
   "مجموع عدد إقرارات الذمة المالية التي تم فضها لأغراض الفحص الدوري":
     "Total number of financial disclosure declarations opened for periodic examination purposes",
   السبب: "Reason",
 
   // Main indicators — indicator 18
-  "عدد طلبات الحماية الواردة للهيئة": "Number of protection requests received by the Commission",
-  "مؤشر يقيس عدد طلبات الحماية الواردة للهيئة لمبلغين/مشتكين وللأشخاص وثيقي الصلة بهم":
+  "عدد طلبات الحماية الواردة لهيئة مكافحة الفساد":
+    "Number of protection requests received by the Commission",
+  "مؤشر يقيس عدد طلبات الحماية الواردة لهيئة مكافحة الفساد لمبلغين/مشتكين وللأشخاص وثيقي الصلة بهم":
     "An indicator measuring the number of protection requests received by the Commission for whistleblowers/complainants and persons closely related to them",
-  "مجموع عدد طلبات الحماية الواردة للهيئة":
+  "مجموع عدد طلبات الحماية الواردة لهيئة مكافحة الفساد":
     "Total number of protection requests received by the Commission",
   "الجنس، نوع الحماية المطلوبة، نتيجة الطلب، الجهة المطلوب الحماية منها.":
     "Gender, type of protection requested, request outcome, entity from which protection is sought.",
 
   // Main indicators — indicator 19
-  "عدد طلبات التظلم على طلبات الحماية الواردة للهيئة":
+  "عدد طلبات التظلم على طلبات الحماية الواردة لهيئة مكافحة الفساد":
     "Number of appeal requests against protection decisions received by the Commission",
-  "مؤشر يقيس عدد طلبات التظلم على طلبات الحماية الواردة للهيئة":
+  "مؤشر يقيس عدد طلبات التظلم على طلبات الحماية الواردة لهيئة مكافحة الفساد":
     "An indicator measuring the number of appeal requests against protection decisions received by the Commission",
-  "مجموع عدد طلبات التظلم على طلبات الحماية الواردة للهيئة":
+  "مجموع عدد طلبات التظلم على طلبات الحماية الواردة لهيئة مكافحة الفساد":
     "Total number of appeal requests against protection decisions received by the Commission",
   "نتيجة الطلب": "Request outcome",
 
@@ -634,8 +628,6 @@ export const dataEn: Record<string, string> = {
     "Number of cases in which smuggled illicit funds and proceeds abroad were recovered",
   "مؤشر يقيس عدد الحالات التي تم فيها استرداد العائدات والأموال الجرمية المهربة للخارج":
     "An indicator measuring the number of cases in which smuggled illicit funds and proceeds abroad were recovered",
-  "عدد الحالات التي تم فيها استرداد العائدات والأموال الجرمية المهربة للخارج":
-    "Number of cases in which smuggled illicit funds and proceeds abroad were recovered",
 
   // Main indicators — indicator 22
   "قيمة العائدات والأموال الجرمية المهربة للخارج المستردة":
@@ -700,10 +692,11 @@ export const dataEn: Record<string, string> = {
   "الجنس، العمر، سنوات الخبرة": "Gender, age, years of experience",
 
   // Main indicators — indicator 29
-  "نسبة أعضاء النيابة في قضايا فساد": "Share of prosecution members in corruption cases",
-  "مؤشر يقيس نسبة أعضاء النيابة ممن يترافعون في قضايا فساد بأي من مراحل التقاضي":
+  "نسبة أعضاء نيابة مكافحة الفساد في قضايا فساد":
+    "Share of prosecution members in corruption cases",
+  "مؤشر يقيس نسبة أعضاء نيابة مكافحة الفساد ممن يترافعون في قضايا فساد بأي من مراحل التقاضي":
     "An indicator measuring the share of prosecution members who litigate in corruption cases in any of the litigation stages",
-  "مجموع عدد أعضاء النيابة ممن يترافعون في قضايا فساد بأي من مراحل التقاضي الثلاث نسبةً إلى المجموع الكلي لأعداد المدعين العامين أو النواب العامين المعينين في النيابة العامة":
+  "مجموع عدد أعضاء نيابة مكافحة الفساد ممن يترافعون في قضايا فساد بأي من مراحل التقاضي الثلاث نسبةً إلى المجموع الكلي لأعداد المدعين العامين أو النواب العامين المعينين في النيابة العامة":
     "Total number of prosecution members who litigate in corruption cases in any of the three litigation stages, relative to the total number of public prosecutors or attorney generals appointed in the Public Prosecution",
 };
 

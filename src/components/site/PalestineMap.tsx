@@ -37,30 +37,6 @@ const CENTROIDS: Record<string, [number, number]> = {
   "PS-RFH": [10, 435],
 };
 
-/** Sequential scale from pale gold through gold to deep navy. */
-const COLOR_STOPS: Array<[number, [number, number, number]]> = [
-  [0, [230, 211, 172]],
-  [0.5, [197, 160, 108]],
-  [1, [19, 47, 86]],
-];
-
-function lerp(a: number, b: number, t: number) {
-  return Math.round(a + (b - a) * t);
-}
-
-function colorFor(t: number): string {
-  const x = Math.max(0, Math.min(1, t));
-  const [s0, c0] = COLOR_STOPS[0];
-  const [s1, c1] = COLOR_STOPS[1];
-  const [s2, c2] = COLOR_STOPS[2];
-  if (x <= s1) {
-    const u = (x - s0) / (s1 - s0);
-    return `rgb(${lerp(c0[0], c1[0], u)}, ${lerp(c0[1], c1[1], u)}, ${lerp(c0[2], c1[2], u)})`;
-  }
-  const u = (x - s1) / (s2 - s1);
-  return `rgb(${lerp(c1[0], c2[0], u)}, ${lerp(c1[1], c2[1], u)}, ${lerp(c1[2], c2[2], u)})`;
-}
-
 export function PalestineMap({ stats, selectedAr, onGovernorateClick }: PalestineMapProps) {
   const { locale, pick } = useLocale();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,11 +50,13 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
 
   const areas = useMemo(() => {
     const base = stats ?? governorateStats;
-    const max = Math.max(1, ...Object.values(base).map((s) => s.complaints));
     return governorates.map((p) => {
-      const stat = base[p.nameAr];
-      const t = stat ? Math.pow(stat.complaints / max, 0.8) : 0;
-      return { ...p, stat, fill: stat ? colorFor(t) : NO_DATA_FILL };
+      const stat = p.id.match(/^PS-(NGZ|GZA|DEB|KYS|RFH)$/) ? undefined : base[p.nameAr];
+      return {
+        ...p,
+        stat,
+        fill: /^PS-(NGZ|GZA|DEB|KYS|RFH)$/.test(p.id) ? NO_DATA_FILL : "#54798b",
+      };
     });
   }, [governorates, stats]);
 
@@ -149,7 +127,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
         preserveAspectRatio="xMidYMid meet"
         overflow="visible"
         className="h-full w-full"
-        role="img"
+        role="group"
         aria-label={pick("خريطة فلسطين حسب المحافظات", "Map of Palestine by governorate")}
       >
         {backgrounds.map((bg) => (
@@ -163,6 +141,17 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
             className={`static-map-gov ${
               hoveredAr === area.nameAr || effectiveActive === area.nameAr ? "is-hover" : ""
             } ${effectiveActive === area.nameAr ? "is-active" : ""}`}
+            role="button"
+            tabIndex={0}
+            aria-label={locale === "ar" ? area.nameAr : area.nameEn}
+            onFocus={() => handleClick(area, area.stat)}
+            onBlur={dismiss}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleClick(area, area.stat);
+              }
+            }}
             onMouseEnter={() => setHoveredAr(area.nameAr)}
             onMouseMove={(event) => handleMove(event, area, area.stat)}
             onMouseLeave={() => setHoveredAr(null)}
@@ -172,7 +161,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
               {locale === "ar" ? area.nameAr : area.nameEn}
               {area.stat
                 ? ` — ${area.stat.complaints.toLocaleString("en-US")} ${
-                    locale === "ar" ? "شكوى/بلاغ" : "complaints/reports"
+                    locale === "ar" ? "شكاوى وبلاغات" : "complaints/reports"
                   }`
                 : ` — ${pick("لا توجد بيانات", "No data available")}`}
             </title>
@@ -191,7 +180,7 @@ export function PalestineMap({ stats, selectedAr, onGovernorateClick }: Palestin
           <div className="text-xs text-muted-foreground">
             {tip.stat
               ? `${tip.stat.complaints.toLocaleString("en-US")} ${
-                  locale === "ar" ? "شكوى/بلاغ" : "complaints/reports"
+                  locale === "ar" ? "شكاوى وبلاغات" : "complaints/reports"
                 }`
               : pick("لا توجد بيانات", "No data available")}
           </div>

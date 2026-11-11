@@ -18,7 +18,7 @@ export const DATA_EN: Record<string, string> = {
   "القطاع/الجهة": "Sector / entity",
 
   // ---- legislations ----
-  "قرار بقانون": "Decree-law",
+  "قانون/قرار بقانون": "Law / decree-law",
   "مرسوم أو قرار رئاسي": "Presidential decree or decision",
   "نظام أو لائحة أو قرار مجلس وزراء": "Regulation/bylaw/cabinet decision",
   "تعليمات أو قرارات تنظيمية": "Instructions or regulatory decisions",
@@ -53,7 +53,7 @@ export const DATA_EN: Record<string, string> = {
   "عدم الاختصاص": "Lack of jurisdiction",
   "إحالة الى النائب العام": "Referred to the Public Prosecutor",
   "إحالة لنيابات أخرى لعدم اختصاص": "Referred to other prosecutions, lack of jurisdiction",
-  "إحالة لمحكمة جرائم الفساد": "Referred to the Corruption Crimes Court",
+  "إحالة لمحكمة مكافحة الفساد": "Referred to the Anti-Corruption Court",
   "ضم لملفات أخرى": "Merged with other files",
   "عدد المدانين": "Number of convicted",
 
@@ -114,7 +114,7 @@ export const DATA_EN: Record<string, string> = {
   "2024 (تفصيل الجنس)": "2024 (gender breakdown)",
 
   // ---- value names ----
-  الشكاوى: "Complaints",
+  "الشكاوى والبلاغات": "Complaints and reports",
   الملفات: "Files",
   "التوزيع الكلي للفترة": "Total distribution for the period",
   "يعرض أكبر 4 أصناف قيمةً — استخدم زر «عرض البيانات» لرؤية البقية.":

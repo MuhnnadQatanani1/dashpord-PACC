@@ -17,7 +17,7 @@ export const Route = createFileRoute("/about")({
 });
 
 function About() {
-  const { t } = useLocale();
+  const { t, pick } = useLocale();
   const objectives = [t("about.obj1"), t("about.obj2"), t("about.obj3"), t("about.obj4")];
   const journeySteps = [
     t("about.jstep1"),
@@ -33,16 +33,80 @@ function About() {
 
   return (
     <SiteLayout>
-      <PageHeader
-        eyebrow={t("about.eyebrow")}
-        title={t("about.title")}
-        description={t("about.desc")}
-      />
+      <PageHeader eyebrow={t("about.eyebrow")} title={t("about.title")} />
+
+      <section id="commission" className="scroll-mt-28 border-t border-border bg-surface py-16">
+        <div className="mx-auto max-w-7xl px-4 lg:px-8">
+          <p className="mb-3 text-sm font-semibold text-accent">
+            {pick("نبذة رسمية", "Official overview")}
+          </p>
+          <h2 className="text-3xl font-bold text-primary">
+            {pick("هيئة مكافحة الفساد", "Anti-Corruption Commission")}
+          </h2>
+          <p className="mt-6 max-w-4xl text-base leading-9 text-foreground/85">
+            {pick(
+              "مؤسسة رسمية مستقلة أُنشئت بموجب قانون مكافحة الفساد الفلسطيني رقم (1) لسنة 2005 وتعديلاته، تتمتع بالشخصية الاعتبارية والأهلية القانونية الكاملة، وترتبط برئيس دولة فلسطين.",
+              "An independent official institution established under Palestinian Anti-Corruption Law No. (1) of 2005, as amended. It has legal personality and full legal capacity and is affiliated with the President of the State of Palestine.",
+            )}
+          </p>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {[
+              [
+                pick("الرؤية", "Vision"),
+                pick(
+                  "مجتمع فلسطيني خالٍ من الفساد تسوده قيم النزاهة والشفافية والمساءلة.",
+                  "A Palestinian society free from corruption, guided by integrity, transparency, and accountability.",
+                ),
+              ],
+              [
+                pick("الرسالة", "Mission"),
+                pick(
+                  "تعزيز منظومة النزاهة والوقاية من الفساد ومكافحته، وحماية المال العام، من خلال إنفاذ القانون وبناء الشراكات والتوعية.",
+                  "Strengthen integrity, prevent and combat corruption, and protect public funds through law enforcement, partnerships, and awareness.",
+                ),
+              ],
+              [
+                pick("القيم", "Values"),
+                pick(
+                  "الاستقلالية، الحياد، المهنية، السرية، النزاهة، والعمل بروح الفريق.",
+                  "Independence, impartiality, professionalism, confidentiality, integrity, and teamwork.",
+                ),
+              ],
+            ].map(([title, text]) => (
+              <div key={title} className="rounded-xl border border-border bg-card p-6">
+                <h3 className="text-xl font-bold text-primary">{title}</h3>
+                <p className="mt-3 leading-8 text-muted-foreground">{text}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-sm leading-8">
+            {pick(
+              "للمزيد عن هيئة مكافحة الفساد، تفضل بزيارة ",
+              "Read more about the Anti-Corruption Commission at ",
+            )}
+            <a
+              href="https://www.pacc.ps/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-ring font-bold text-accent underline underline-offset-4"
+            >
+              pacc.ps
+            </a>
+          </p>
+        </div>
+      </section>
 
       {/* النشأة */}
       <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6 text-base leading-9 text-foreground/85">
+            <h2 className="text-2xl font-bold text-primary">
+              {pick(
+                "المرصد الوطني لمؤشرات النزاهة ومكافحة الفساد",
+                "National Observatory for Integrity and Anti-Corruption Indicators",
+              )}
+            </h2>
+            <p className="font-medium">{t("about.desc")}</p>
             <p>{t("about.intro")}</p>
           </div>
 
