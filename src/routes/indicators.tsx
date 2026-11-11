@@ -111,6 +111,7 @@ function Indicators() {
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {kpis.map((k, i) => {
             const c = SPOTLIGHT_COLORS[i % SPOTLIGHT_COLORS.length];
+            const hint = locale === "ar" ? k.hint : k.hintEn;
             return (
               <article
                 key={k.id}
@@ -138,6 +139,11 @@ function Indicators() {
                 <h3 className="mt-4 min-h-[2.5rem] text-[15px] font-bold leading-6 text-foreground">
                   {locale === "ar" ? k.label : k.labelEn}
                 </h3>
+                {hint && (
+                  <p className="mt-3 border-t border-gold/20 pt-3 text-xs leading-6 text-muted-foreground">
+                    {hint}
+                  </p>
+                )}
               </article>
             );
           })}

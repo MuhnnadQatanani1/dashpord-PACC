@@ -124,6 +124,8 @@ export interface SpotlightKpi {
   unit: "%" | "ملف" | "فرد" | "شكاوى وبلاغات" | "مشتبه به" | "";
   label: string;
   labelEn: string;
+  hint?: string;
+  hintEn?: string;
   note?: string;
   isRatio?: boolean;
 }
@@ -283,6 +285,8 @@ export function getSpotlight(selected: YearFilter): SpotlightKpi[] {
       unit: "%",
       label: "من الشكاوى والبلاغات الواردة صُنّفت كإساءة استعمال للسلطة",
       labelEn: "of complaints received classified as abuse of power",
+      hint: "«إساءة استعمال السلطة» تصنيف عام يشمل مختلف صور جرائم الفساد",
+      hintEn: "Abuse of power is a broad classification covering multiple forms of corruption.",
       isRatio: true,
       note: all
         ? "2256 من إجمالي 2923 - الأعلى تكراراً في السنوات الأربع"

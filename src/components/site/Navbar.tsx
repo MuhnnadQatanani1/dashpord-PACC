@@ -260,7 +260,7 @@ export function Navbar() {
   return (
     <header className="top fixed inset-x-0 top-0 z-[9999] bg-navy">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 lg:px-8">
-        <div className="flex shrink-0 flex-col items-center gap-1">
+        <div className="flex shrink-0 items-center">
           <a
             href="https://www.pacc.ps/"
             target="_blank"
@@ -270,13 +270,6 @@ export function Navbar() {
           >
             <img src="/pacc-logo.png" alt="PACC" className="h-8 w-14 shrink-0 object-contain" />
           </a>
-          <Link to="/" className="focus-ring flex items-center rounded-md">
-            <img
-              src="/observatory-logo.png"
-              alt={t("common.logoAlt")}
-              className="h-8 w-14 shrink-0 object-contain"
-            />
-          </Link>
         </div>
 
         <nav className="hidden xl:flex items-center gap-1">
